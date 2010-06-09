@@ -123,6 +123,7 @@ def load_app_from_file():
     return objs
 
 def load_app_objs():
+    import time
     modules = []
     for module in [common, desktop, distribution]:
         import types
@@ -134,11 +135,12 @@ def load_app_objs():
     names = set()
     for module in modules:
         for name in dir(module):
+            begin = time.time()
             if name in names: continue
             if name[0]=='_' or name=='I' or name=='N': continue
             app_class = getattr(module,name)
             if not isinstance(app_class, types.ClassType) or not issubclass(app_class, I): continue
-    
+            
             try:
                 check_class_members(app_class)
                 app_class_obj = app_class()
@@ -156,11 +158,12 @@ def load_app_objs():
                 app_class_obj.logo_pixbuf = load_app_icon(name)
                 objs.append(app_class_obj)
                 names.add(name)
+                app_class_obj.load_time = time.time() - begin
             except:
                 print 'Cannot load class %s' % name
                 print_traceback()
 
-    return objs + load_custom_app_objs() + load_app_from_file()
+    return objs #+ load_custom_app_objs() + load_app_from_file()
 
 def load_app_objs_from_extension(extension):
     import types
@@ -340,13 +343,21 @@ if __name__ == '__main__':
     
     import time
     begin = time.time()
-    load_app_objs()
-    print time.time() - begin
+    objs = load_app_objs()
+#    print 'load_app_objs:', time.time() - begin
     
     begin = time.time()
     load_custom_app_objs()
-    print time.time() - begin
+#    print 'load_custom_app_objs:', time.time() - begin
     
     begin = time.time()
     load_app_from_file()
-    print time.time() - begin
+#    print 'load_app_from_file:', time.time() - begin
+    
+    for obj in objs:
+        print obj.__class__.__name__, obj.load_time
+    
+#    from libapp import _ff_extension
+#    from ubuntu.third_party_repos import _repo
+#    print 'ff_extension_cost', reduce(lambda x,y: x+y, [obj.load_time for obj in objs if isinstance(obj, _ff_extension)])
+#    print 'repo_cost', reduce(lambda x,y: x+y, [obj.load_time for obj in objs if isinstance(obj, _repo)])
