@@ -1,8 +1,11 @@
 #coding:utf8
 
-import os, sys, gtk, thread
+import os, sys, gtk, thread, gobject
 
 class Textbox(gtk.VBox):
+    __gsignals__ = {"key-pressed" : (gobject.SIGNAL_RUN_FIRST,
+                                     gobject.TYPE_NONE,
+                                     [gobject.TYPE_PYOBJECT])}
     def use_monospace_font(self, textview):
         import pango
         font = pango.FontDescription('Monospace')
@@ -18,6 +21,8 @@ class Textbox(gtk.VBox):
     def scroll_to_end(self):
         pos = self.textbuffer.get_insert()
         self.textview.scroll_to_mark(pos, 0)
+    def on_key_press_event(self, widget, event):
+        self.emit('key-pressed', event)
     def __init__(self):
         self.textbuffer = gtk.TextBuffer()
         self.textview = gtk.TextView(self.textbuffer)
@@ -28,6 +33,7 @@ class Textbox(gtk.VBox):
         scroll.add(self.textview)
         gtk.VBox.__init__(self, False, 0)
         self.pack_start(scroll)
+        self.textview.connect('key_press_event', self.on_key_press_event)
     def write(self, string):
         enditer = self.textbuffer.get_end_iter()
         self.textbuffer.insert(enditer, string)
@@ -48,6 +54,9 @@ class Terminal(gtk.VBox):
         gtk.VBox.__init__(self, False, 0)
         self.textbox = Textbox()
         self.pack_start(self.textbox)
+        self.textbox.connect('key-pressed', self.on_key_press_event)
+    def on_key_press_event(self, widget, event):
+        print event
     def run(self, commandline, env=None, cwd=None):
         import subprocess
         import select
