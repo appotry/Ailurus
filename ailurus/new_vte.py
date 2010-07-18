@@ -144,11 +144,9 @@ class TestTerminal(unittest.TestCase):
         with open('/tmp/a.py', 'w') as f:
             f.write('for i in range(10):\n'
                     '    print i\n'
-                    '    import sys\n'
-                    '    sys.stdout.flush()\n'
                     '    import time\n'
                     '    time.sleep(1)')
-        ret = self.terminal.run("python /tmp/a.py")
+        ret = self.terminal.run("python -u /tmp/a.py")
         self.assertEqual(ret, 0)
 
 if __name__ == '__main__':
