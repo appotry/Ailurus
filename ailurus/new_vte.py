@@ -157,8 +157,11 @@ class TestTerminal(unittest.TestCase):
         ret = self.terminal.run("python -u /tmp/a.py")
         self.assertEqual(ret, 0)
 
+    def testWGET(self):
+        self.terminal.run('wget "http://ailurus.googlecode.com/files/ailurus_10.06.93-0lucid1_all.deb"')
+
 if __name__ == '__main__':
 #    unittest.main()
     suite = unittest.TestSuite()
-    suite.addTest(TestTextbox('testWrapALongLine'))
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    suite.addTest(TestTerminal('testWGET'))
+    unittest.TextTestRunner(verbosity=9).run(suite)
