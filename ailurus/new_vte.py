@@ -21,6 +21,7 @@ class Textbox(gtk.VBox):
     def __init__(self):
         self.textbuffer = gtk.TextBuffer()
         self.textview = gtk.TextView(self.textbuffer)
+        self.textview.set_wrap_mode(gtk.WRAP_CHAR)
         self.use_monospace_font(self.textview)
         self.uneditable(self.textview)
         scroll = self.get_scroll()
@@ -70,7 +71,7 @@ class Terminal(gtk.VBox):
         return task.returncode
         
 import unittest
-class TestTextbox:#(unittest.TestCase):
+class TestTextbox(unittest.TestCase):
     def setUp(self):
         textbox = Textbox()
         dialog = gtk.Dialog(buttons = (gtk.STOCK_OK, gtk.RESPONSE_OK))
@@ -102,6 +103,13 @@ class TestTextbox:#(unittest.TestCase):
         for i in range(1000):
             self.textbox.write(str(i))
             self.textbox.write('\n')
+
+    def testWrapALongLine(self):
+        for i in range(100):
+            self.textbox.write('n')
+
+        for i in range(100):
+            self.textbox.write('abcde ')
         
 class TestTerminal(unittest.TestCase):
     def setUp(self):
@@ -152,5 +160,5 @@ class TestTerminal(unittest.TestCase):
 if __name__ == '__main__':
 #    unittest.main()
     suite = unittest.TestSuite()
-    suite.addTest(TestTerminal('testRunALongProcess'))
+    suite.addTest(TestTextbox('testWrapALongLine'))
     unittest.TextTestRunner(verbosity=2).run(suite)
