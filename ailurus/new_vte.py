@@ -39,7 +39,7 @@ class Textbox(gtk.VBox):
         self.do_gtk_pending_events()
     def do_gtk_pending_events(self):
         while gtk.events_pending():
-            gtk.main_iteration()
+            gtk.main_iteration(False)
 
 class Terminal(gtk.VBox):
     def __init__(self):
@@ -50,7 +50,8 @@ class Terminal(gtk.VBox):
     def run(self, commandline, env=None, cwd=None):
         import subprocess
         import select
-        task = subprocess.Popen(commandline, stdin = subprocess.PIPE,
+        task = subprocess.Popen(commandline,
+                                stdin = subprocess.PIPE,
                                 stdout = subprocess.PIPE, stderr = subprocess.PIPE,
                                 shell = True, cwd = cwd, env = env)
         self.current_task = task
@@ -113,7 +114,7 @@ class TestTerminal(unittest.TestCase):
         window.connect('delete-event', gtk.main_quit)
         self.terminal = terminal
         self.window = window
-        while gtk.events_pending(): gtk.main_iteration()
+        while gtk.events_pending(): gtk.main_iteration(False)
     
     def tearDown(self):
         gtk.main()
@@ -143,6 +144,8 @@ class TestTerminal(unittest.TestCase):
         with open('/tmp/a.py', 'w') as f:
             f.write('for i in range(10):\n'
                     '    print i\n'
+                    '    import sys\n'
+                    '    sys.stdout.flush()\n'
                     '    import time\n'
                     '    time.sleep(1)')
         ret = self.terminal.run("python /tmp/a.py")
