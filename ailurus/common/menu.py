@@ -226,17 +226,17 @@ def __others():
     help_contribute = gtk.MenuItem(_('Contributing to Ailurus'))
     help_contribute.connect('activate', lambda w: show_contribution_to_ailurus())
     
-    help_update = image_file_menuitem(_('Check for updates'), D+'suyun_icons/m_check_update.png', 16) 
+    help_update = gtk.MenuItem(_('Check for updates')) 
     def callback(*w):
         while gtk.events_pending(): gtk.main_iteration()
         import thread
         thread.start_new_thread(check_update, ())
     help_update.connect('activate', callback)
 
-    help_propose_suggestion = image_file_menuitem(_('Propose suggestion'), D+'umut_icons/m_propose_suggestion.png', 16)
+    help_propose_suggestion = gtk.MenuItem(_('Propose suggestion'))
     help_propose_suggestion.connect('activate', lambda w: report_bug())
 
-    help_report_bug = image_file_menuitem(_('Report bugs'), D+'umut_icons/bug.png', 16)
+    help_report_bug = gtk.MenuItem(_('Report bugs'))
     help_report_bug.connect('activate', 
         lambda w: report_bug() )
     
