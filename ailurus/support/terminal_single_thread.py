@@ -1,6 +1,6 @@
 #coding: utf-8
 #
-# Ailurus - a simple application installer and GNOME tweaker
+# Ailurus - a tool for changing hidden GNOME configuration
 #
 # Copyright (C) 2009-2010, Ailurus developers and Ailurus contributors
 # Copyright (C) 2007-2010, Trusted Digital Technology Laboratory, Shanghai Jiao Tong University, China.
