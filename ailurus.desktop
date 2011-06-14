@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Ailurus
-Comment=a simple application installer and GNOME tweaker
+Comment=a tool for changing hidden GNOME configuration
 Exec=ailurus
 Icon=ailurus
 Terminal=false

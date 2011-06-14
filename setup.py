@@ -13,19 +13,7 @@ version = f.read().strip()
 f.close()
 
 setup(name = 'ailurus',
-      description = 'a simple application installer and GNOME tweaker',
-      long_description = 
-'''Ailurus is simple application installer and GNOME tweaker, which aims at making Linux easier to use.
-
-Features:
-* Help users learn some Linux skills
-* Install some nice applications
-* Enable some third party repositories
-* Display basic hardware information
-* Clean APT cache
-* Backup and recover APT status
-* Change GNOME settings 
-''',
+      description = 'a tool for changing hidden GNOME configuration',
       version = version,
       maintainer = 'Homer Xing',
       maintainer_email = 'homer.xing@gmail.com',

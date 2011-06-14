@@ -6,7 +6,7 @@
 Name:			ailurus
 Version: 10.10.5
 Release:		1%{?dist}
-Summary:		A simple application installer and GNOME tweaker
+Summary:		A tool for changing hidden GNOME configuration
 Group:			Applications/System
 License:		GPLv2+
 URL:			http://ailurus.googlecode.com/
@@ -18,15 +18,7 @@ BuildArch:		noarch
 Requires:		polkit pygtk2 notify-python vte rpm-python pygobject2 dbus-python wget unzip gnome-python2-gnomekeyring
 
 %description
-Ailurus is a simple application installer and GNOME tweaker.
-
-Features:
-* Help users learn some Linux skills
-* Install some nice applications
-* Display basic hardware information
-* Clean YUM cache
-* Backup and recover YUM status
-* Change GNOME settings 
+Ailurus is a tool for changing hidden GNOME configuration.
 
 %prep
 %setup -q -n %{name}-%{version}
