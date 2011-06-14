@@ -538,7 +538,6 @@ class MainView:
         from system_setting_pane import SystemSettingPane
         from clean_up_pane import CleanUpPane
         from info_pane import InfoPane
-        from install_remove_pane import InstallRemovePane
         from computer_doctor_pane import ComputerDoctorPane
         if UBUNTU or UBUNTU_DERIV:
             from ubuntu.repos_config_pane import ReposConfigPane
@@ -554,7 +553,6 @@ class MainView:
             self.register(ReposConfigPane)
         if FEDORA:
             self.register(FedoraReposEditPane)
-        self.register(InstallRemovePane)
         self.register(SystemSettingPane, load_setting)
         self.register(InfoPane, load_info)
         
