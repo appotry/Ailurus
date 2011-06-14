@@ -85,12 +85,12 @@ def check_required_packages():
         ubuntu_missing.append('python-notify')
         fedora_missing.append('notify-python')
         archlinux_missing.append('python-notify')
-    try: import vte
-    except: 
-        debian_missing.append('python-vte')
-        ubuntu_missing.append('python-vte')
-        fedora_missing.append('vte')
-        archlinux_missing.append('vte')
+#    try: import vte
+#    except: 
+#        debian_missing.append('python-vte')
+#        ubuntu_missing.append('python-vte')
+#        fedora_missing.append('vte')
+#        archlinux_missing.append('vte')
     try: import apt
     except: 
         debian_missing.append('python-apt')
@@ -110,16 +110,16 @@ def check_required_packages():
         ubuntu_missing.append('python-gnomekeyring')
         fedora_missing.append('gnome-python2-gnomekeyring')
         archlinux_missing.append('python-gnomekeyring') # I am not sure. python-gnomekeyring is on AUR. get nothing from pacman -Ss python*keyring 
-    if not os.path.exists('/usr/bin/unzip'):
-        debian_missing.append('unzip')
-        ubuntu_missing.append('unzip')
-        fedora_missing.append('unzip')
-        archlinux_missing.append('unzip')
-    if not os.path.exists('/usr/bin/wget'):
-        debian_missing.append('wget')
-        ubuntu_missing.append('wget')
-        fedora_missing.append('wget')
-        archlinux_missing.append('wget')
+#    if not os.path.exists('/usr/bin/unzip'):
+#        debian_missing.append('unzip')
+#        ubuntu_missing.append('unzip')
+#        fedora_missing.append('unzip')
+#        archlinux_missing.append('unzip')
+#    if not os.path.exists('/usr/bin/wget'):
+#        debian_missing.append('wget')
+#        ubuntu_missing.append('wget')
+#        fedora_missing.append('wget')
+#        archlinux_missing.append('wget')
         
     try: # detect policykit version 0.9.x
         import dbus

@@ -2113,30 +2113,32 @@ else:
     BACKEND = None
     installation_command_backend = None
 
-GNOME = False
-KDE = False
-XFCE = False
+# GNOME = False
+# KDE = False
+# XFCE = False
 # Thank you, GShutdown Team!
 # This code is from gshutdown/src/values.c
 # GPLv2
-WINDOW_MANAGER = window_manager_name()
-if WINDOW_MANAGER == "Metacity":
-    GNOME = True
-elif WINDOW_MANAGER == "KWin":
-    KDE = True
-elif WINDOW_MANAGER == "Xfwm4":
-    XFCE = True
-else:
-    print 'Window Manager is not recognized:', WINDOW_MANAGER
+# WINDOW_MANAGER = window_manager_name()
+# if WINDOW_MANAGER == "Metacity":
+#     GNOME = True
+# elif WINDOW_MANAGER == "KWin":
+#     KDE = True
+# elif WINDOW_MANAGER == "Xfwm4":
+#     XFCE = True
+# else:
+#     print 'Window Manager is not recognized:', WINDOW_MANAGER
     # These functions are less effective, but they work.
-    GNOME = Config.is_GNOME()
-    KDE = Config.is_KDE()
-    XFCE = Config.is_XFCE()
-if GNOME:
-    DESKTOP = 'gnome'
-elif KDE:
-    DESKTOP = 'kde'
-elif XFCE:
-    DESKTOP = 'xfce'
-else:
-    DESKTOP = ''
+#     GNOME = Config.is_GNOME()
+#     KDE = Config.is_KDE()
+#     XFCE = Config.is_XFCE()
+# if GNOME:
+#     DESKTOP = 'gnome'
+# elif KDE:
+#     DESKTOP = 'kde'
+# elif XFCE:
+#     DESKTOP = 'xfce'
+# else:
+#     DESKTOP = ''
+
+DESKTOP = 'gnome'
