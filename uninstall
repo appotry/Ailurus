@@ -4,5 +4,5 @@ log=installed_files
 if [ -f $log ] ; then
     cat $log | xargs rm -rf
     rm -f $log
-    echo "Ailurus has been uninstalled"
+    echo "The software has been uninstalled"
 fi
