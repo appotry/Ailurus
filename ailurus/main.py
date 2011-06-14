@@ -120,9 +120,6 @@ def check_required_packages():
         ubuntu_missing.append('wget')
         fedora_missing.append('wget')
         archlinux_missing.append('wget')
-    if not os.path.exists('/usr/bin/gdebi-gtk'):
-        debian_missing.append('gdebi')
-        ubuntu_missing.append('gdebi')
         
     try: # detect policykit version 0.9.x
         import dbus
