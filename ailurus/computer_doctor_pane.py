@@ -26,10 +26,6 @@ class ComputerDoctorPane(gtk.VBox):
     icon = D+'sora_icons/m_computer_doctor.png'
     text = _('Computer\nDoctor')
     
-    def render_type_func(self, column, cell, model, iter):
-        cure_obj = model.get_value(iter, 1)
-        pixbuf = [self.icon_must_fix, self.icon_suggestion][cure_obj.type]
-        cell.set_property('pixbuf', pixbuf)
     def render_text_func(self, column, cell, model, iter):
         cure_obj = model.get_value(iter, 1)
         markup = '<b>%s</b>' % cure_obj.__doc__
@@ -95,8 +91,6 @@ class ComputerDoctorPane(gtk.VBox):
         self.column_text.set_title(text)
     def __init__(self, main_view, cure_objs):
         self.cure_objs = cure_objs
-        self.icon_must_fix = get_pixbuf(D+'sora_icons/c_must_fix.png', 24, 24)
-        self.icon_suggestion = get_pixbuf(D+'sora_icons/c_suggestion.png', 24, 24)
         self.liststore = liststore = gtk.ListStore(bool, gobject.TYPE_PYOBJECT) # apply?, cure_object
         self.sortedstore = sortedstore = gtk.TreeModelSort(liststore)
         sortedstore.set_sort_func(1000, self.sort_by_type)
@@ -110,10 +104,6 @@ class ComputerDoctorPane(gtk.VBox):
         column_toggle.pack_start(render_toggle, False)
         column_toggle.add_attribute(render_toggle, 'active', 0)
         column_toggle.set_sort_column_id(0)
-        column_type = gtk.TreeViewColumn()
-        column_type.pack_start(render_type, False)
-        column_type.set_cell_data_func(render_type, self.render_type_func)
-        column_type.set_sort_column_id(1000)
         self.column_text = column_text = gtk.TreeViewColumn()
         column_text.pack_start(render_text)
         column_text.set_cell_data_func(render_text, self.render_text_func)
@@ -121,7 +111,6 @@ class ComputerDoctorPane(gtk.VBox):
         self.view = view = gtk.TreeView(sortedstore)
         view.set_rules_hint(True)
         view.append_column(column_toggle)
-        view.append_column(column_type)
         view.append_column(column_text)
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
