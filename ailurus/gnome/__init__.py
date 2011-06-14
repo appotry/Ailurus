@@ -19,4 +19,3 @@
 import apps
 import osinfo
 import setting
-import tips

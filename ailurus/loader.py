@@ -373,16 +373,6 @@ def load_others_menuitems():
             ret.extend(module.menu.get_others_menu())
     return ret
 
-def load_tips():
-    import types
-    ret = []
-    for module in [common, desktop, distribution]:
-        if module:
-            assert isinstance(module, types.ModuleType)
-            if hasattr(module, 'tips') and hasattr(module.tips, 'get'):
-                ret.extend(module.tips.get())
-    return ret
-
 def load_cure_objs():
     modules = []
     for module in [common, desktop, distribution]:

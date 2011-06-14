@@ -22,4 +22,3 @@ import hardwareinfo
 import menu
 import osinfo
 import setting
-import tips
