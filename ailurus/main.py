@@ -407,9 +407,6 @@ class MainView:
         item = toolitem(D+'sora_icons/m_preference.png', _('Preferences'), 'button_release_event', 
                         self.__show_popupmenu_on_toolbaritem, self.menu_preference)
         self.toolbar.insert(item, 0)
-        item = toolitem(D+'sora_icons/m_study_linux.png', _('Study\nLinux'), 'button_release_event', 
-                        self.__show_popupmenu_on_toolbaritem, create_menu_from(load_study_linux_menuitems()))
-        self.toolbar.insert(item, 0)
 
     def add_pane_buttons_in_toolbar(self):
         for key in self.ordered_key:

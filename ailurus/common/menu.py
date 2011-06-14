@@ -23,37 +23,6 @@ from lib import *
 from libu import *
 from support.checkupdate import *
 
-def __study_linux():
-    study_url_items = [ 
-        (True, gtk.STOCK_HELP, _('How to compile a LaTeX file into pdf file ?'), 
-         'http://ailurus.cn/?p=329', False),
-        (True, gtk.STOCK_HELP, _('Check Linux device driver'),
-         'http://kmuto.jp/debian/hcl/', False),
-         ]
-
-    def __get_menu(items):
-        ret = []
-        for item in items:
-            if item == None: 
-                ret.append( gtk.SeparatorMenuItem() )
-                continue 
-            if item[4]==False or (item[4] and Config.is_Chinese_locale()):
-                if item[0]: menu_item = image_stock_menuitem(item[1], item[2])
-                else: menu_item = image_file_menuitem(item[2], item[1], 16)
-                menu_item.url = item[3]
-                menu_item.connect('activate', lambda w: open_web_page(w.url))
-                ret.append( menu_item )
-        return ret
-    
-    ret = __get_menu(study_url_items)
-    study_show_tip = image_file_menuitem(_('Tip of the day'), D+'sora_icons/m_tip_of_the_day.png', 16)
-    def show_day_tip(*w):
-        from support.tipoftheday import TipOfTheDay
-        TipOfTheDay()
-    study_show_tip.connect('activate', show_day_tip)
-    ret.insert(0, study_show_tip)
-    return ret
-
 def set_proxy_server():
     proxy_string_entry = gtk.Entry()
     try:    proxy_string_entry.set_text(get_proxy_string())
@@ -303,9 +272,6 @@ def __others():
              help_propose_suggestion, 
              help_report_bug, help_translate, special_thank, about, statistics, ]
    
-def get_study_linux_menu():
-    return __study_linux()
-
 def get_preferences_menu():
     return __preferences()
 
