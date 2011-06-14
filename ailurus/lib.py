@@ -332,15 +332,6 @@ class Config:
                 a = line.split('=')[1].strip()
         return a
     @classmethod
-    def is_Deepin(cls): # Linux Deepin is based on XUbuntu karmic
-        import platform
-        return platform.dist()[0] == 'Deepin'
-    @classmethod
-    def get_Deepin_version(cls):
-        'return karmic'
-        import platform
-        return platform.dist()[2]
-    @classmethod
     def is_Fedora(cls):
         import os
         return os.path.exists('/etc/fedora-release')
@@ -2085,7 +2076,6 @@ except:
 UBUNTU = Config.is_Ubuntu()
 UBUNTU_DERIV = False # True value means Ubuntu derivative. For Ubuntu it is False. For Mint it is True.
 MINT = Config.is_Mint()
-DEEPIN = Config.is_Deepin()
 FEDORA = Config.is_Fedora()
 ARCHLINUX = Config.is_ArchLinux()
 DEBIAN = Config.is_Debian()
@@ -2099,12 +2089,6 @@ elif MINT:
     UBUNTU_DERIV = True
     VERSION = Config.get_Mint_version() # VERSION is in ['5', '6', '7', '8', '9', '10']
     VERSION = ['hardy', 'intrepid', 'jaunty', 'karmic', 'lucid', 'maverick'][int(VERSION)-5]
-    BACKEND = APT
-    installation_command_backend = debian_installation_command
-elif DEEPIN:
-    DISTRIBUTION = 'ubuntu'
-    UBUNTU_DERIV = True
-    VERSION = Config.get_Deepin_version()
     BACKEND = APT
     installation_command_backend = debian_installation_command
 elif FEDORA:
