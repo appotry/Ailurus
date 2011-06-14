@@ -544,19 +544,19 @@ def packed_env_string():
 def daemon():
     import dbus
     bus = dbus.SystemBus()
-    obj = bus.get_object('cn.ailurus', '/')
+    obj = bus.get_object('com.googlecode.ailurus', '/')
     return obj
 
 def get_dbus_daemon_version():
-    ret = daemon().get_version(dbus_interface='cn.ailurus.Interface')
+    ret = daemon().get_version(dbus_interface='com.googlecode.ailurus.Interface')
     return ret    
 
 def restart_dbus_daemon():
     authenticate()
-    daemon().exit(dbus_interface='cn.ailurus.Interface')
+    daemon().exit(dbus_interface='com.googlecode.ailurus.Interface')
 
 def get_authentication_method():
-    ret = daemon().get_check_permission_method(dbus_interface='cn.ailurus.Interface')
+    ret = daemon().get_check_permission_method(dbus_interface='com.googlecode.ailurus.Interface')
     ret = int(ret)
     return ret
 
@@ -565,16 +565,16 @@ def authenticate():
         import dbus, os
         bus = dbus.SessionBus()
         policykit = bus.get_object('org.freedesktop.PolicyKit.AuthenticationAgent', '/')
-        policykit.ObtainAuthorization('cn.ailurus', dbus.UInt32(0), dbus.UInt32(os.getpid()))
+        policykit.ObtainAuthorization('com.googlecode.ailurus', dbus.UInt32(0), dbus.UInt32(os.getpid()))
 
 def spawn_as_root(command):
     is_string_not_empty(command)
     
     authenticate()
-    daemon().spawn(command, packed_env_string(), dbus_interface='cn.ailurus.Interface')
+    daemon().spawn(command, packed_env_string(), dbus_interface='com.googlecode.ailurus.Interface')
 
 def drop_priviledge():
-    daemon().drop_priviledge(dbus_interface='cn.ailurus.Interface')
+    daemon().drop_priviledge(dbus_interface='com.googlecode.ailurus.Interface')
     
 class AccessDeniedError(Exception):
     'User press cancel button in policykit window'
@@ -587,10 +587,10 @@ def run_as_root(cmd, ignore_error=False):
     print '\x1b[1;33m', _('Run command:'), cmd, '\x1b[m'
     authenticate()
     try:
-        daemon().run(cmd, packed_env_string(), timeout=36000, dbus_interface='cn.ailurus.Interface')
+        daemon().run(cmd, packed_env_string(), timeout=36000, dbus_interface='com.googlecode.ailurus.Interface')
     except dbus.exceptions.DBusException, e:
-        if e.get_dbus_name() == 'cn.ailurus.AccessDeniedError': raise AccessDeniedError(*e.args)
-        elif e.get_dbus_name() == 'cn.ailurus.CommandFailError':
+        if e.get_dbus_name() == 'com.googlecode.ailurus.AccessDeniedError': raise AccessDeniedError(*e.args)
+        elif e.get_dbus_name() == 'com.googlecode.ailurus.CommandFailError':
             if not ignore_error: raise CommandFailError(cmd)
         else: raise
 
@@ -746,10 +746,10 @@ def run_as_root_in_terminal(command, ignore_error=False):
 
     authenticate()
     try:
-        daemon().run(string, packed_env_string(), timeout=36000, dbus_interface='cn.ailurus.Interface')
+        daemon().run(string, packed_env_string(), timeout=36000, dbus_interface='com.googlecode.ailurus.Interface')
     except dbus.exceptions.DBusException, e:
-        if e.get_dbus_name() == 'cn.ailurus.AccessDeniedError': raise AccessDeniedError(*e.args)
-        elif e.get_dbus_name() == 'cn.ailurus.CommandFailError':
+        if e.get_dbus_name() == 'com.googlecode.ailurus.AccessDeniedError': raise AccessDeniedError(*e.args)
+        elif e.get_dbus_name() == 'com.googlecode.ailurus.CommandFailError':
             if not ignore_error:
                 if os.path.exists('/tmp/ailurus_subprocess_dump'): 
                     dump = open('/tmp/ailurus_subprocess_dump').read()
@@ -922,9 +922,9 @@ class APT:
 #        print '\x1b[1;32m', _('Installing packages:'), ' '.join(packages), '\x1b[m'
 #        try:
 #            daemon().apt_command('install', ','.join(packages),
-#                                 packed_env_string(), timeout=3600, dbus_interface='cn.ailurus.Interface')
+#                                 packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
 #        except dbus.exceptions.DBusException, e:
-#            if e.get_dbus_name() == 'cn.ailurus.CannotDownloadError':
+#            if e.get_dbus_name() == 'com.googlecode.ailurus.CannotDownloadError':
 #                raise CannotDownloadError(*packages)
     @classmethod
     def remove(cls, *packages):
@@ -933,7 +933,7 @@ class APT:
         run_as_root_in_terminal('apt-get remove %s' % ' '.join(packages))
 #        print '\x1b[1;31m', _('Removing packages:'), ' '.join(packages), '\x1b[m'
 #        daemon().apt_command('remove', ','.join(packages),
-#                             packed_env_string(), timeout=3600, dbus_interface='cn.ailurus.Interface')
+#                             packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
     @classmethod
     def neet_to_run_apt_get_update(cls):
         cls.apt_get_update_is_called = False
@@ -941,7 +941,7 @@ class APT:
     def apt_get_update(cls):
         if cls.apt_get_update_is_called == False:
             run_as_root_in_terminal('apt-get update', ignore_error = True)
-#            daemon().apt_command('update', '', packed_env_string(), timeout=3600, dbus_interface='cn.ailurus.Interface')
+#            daemon().apt_command('update', '', packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
             cls.apt_get_update_is_called = True
             cls.cache_changed()
     @classmethod
@@ -951,14 +951,14 @@ class APT:
             run_as_root('gdebi-gtk "%s"' % package) # FIXME
 #            run_as_root_in_terminal('dpkg -i "%s"' % package)
 #            daemon().apt_command('install_local', package,
-#                                 packed_env_string(), timeout=3600, dbus_interface='cn.ailurus.Interface')
+#                                 packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
     @classmethod
     def is_cache_lockable(cls):
         import dbus
         try:
-            daemon().is_apt_cache_lockable(dbus_interface='cn.ailurus.Interface')
+            daemon().is_apt_cache_lockable(dbus_interface='com.googlecode.ailurus.Interface')
         except dbus.exceptions.DBusException, e:
-            if e.get_dbus_name() == 'cn.ailurus.CannotLockAptCacheError':
+            if e.get_dbus_name() == 'com.googlecode.ailurus.CannotLockAptCacheError':
                 raise CannotLockAptCacheError(e.get_dbus_message())
 
 class CannotLockAptCacheError(Exception):

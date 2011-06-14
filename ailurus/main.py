@@ -194,9 +194,9 @@ def check_home_dir_permission():
     dialog.destroy()
 
 def check_dbus_daemon_status():
-    if not with_same_content('/etc/dbus-1/system.d/cn.ailurus.conf', '/usr/share/ailurus/support/cn.ailurus.conf'):
+    if not with_same_content('/etc/dbus-1/system.d/com.googlecode.ailurus.conf', '/usr/share/ailurus/support/com.googlecode.ailurus.conf'):
         correct_conf_files = False
-    elif not with_same_content('/usr/share/dbus-1/system-services/cn.ailurus.service', '/usr/share/ailurus/support/cn.ailurus.service'):
+    elif not with_same_content('/usr/share/dbus-1/system-services/com.googlecode.ailurus.service', '/usr/share/ailurus/support/com.googlecode.ailurus.service'):
         correct_conf_files = False
     else:
         correct_conf_files = True
@@ -234,8 +234,8 @@ def check_dbus_daemon_status():
         print >>message, _('System configuration file should be updated.')
         print >>message, _('Please run these commands using <b>su</b> or <b>sudo</b>:')
         print >>message, ''
-        print >>message, '<span color="blue">', 'cp /usr/share/ailurus/support/cn.ailurus.conf /etc/dbus-1/system.d/cn.ailurus.conf', '</span>'
-        print >>message, '<span color="blue">', 'cp /usr/share/ailurus/support/cn.ailurus.service /usr/share/dbus-1/system-services/cn.ailurus.service', '</span>'
+        print >>message, '<span color="blue">', 'cp /usr/share/ailurus/support/com.googlecode.ailurus.conf /etc/dbus-1/system.d/com.googlecode.ailurus.conf', '</span>'
+        print >>message, '<span color="blue">', 'cp /usr/share/ailurus/support/com.googlecode.ailurus.service /usr/share/dbus-1/system-services/com.googlecode.ailurus.service', '</span>'
         print >>message, ''
         show_text_dialog(message.getvalue())
     elif not same_daemon:

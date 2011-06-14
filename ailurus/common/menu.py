@@ -133,9 +133,6 @@ def show_contribution_to_ailurus():
     table.attach(right_label(_('Project homepage:')), 0, 1, 1, 2, gtk.FILL, gtk.FILL)
     table.attach(url_button('http://ailurus.googlecode.com/'), 1, 2, 1, 2, gtk.FILL, gtk.FILL)
     
-    table.attach(right_label(_('Project news:')), 0, 1, 2, 3, gtk.FILL, gtk.FILL)
-    table.attach(url_button('http://ailurus.cn/'), 1, 2, 2, 3, gtk.FILL, gtk.FILL)
-    
     table.attach(right_label(_('Code repository:')), 0, 1, 3, 4, gtk.FILL, gtk.FILL)
     table.attach(url_button('http://github.com/homerxing/Ailurus'), 1, 2, 3, 4, gtk.FILL, gtk.FILL)
     
@@ -229,10 +226,6 @@ def __others():
     help_contribute = gtk.MenuItem(_('Contributing to Ailurus'))
     help_contribute.connect('activate', lambda w: show_contribution_to_ailurus())
     
-    help_blog = image_stock_menuitem(gtk.STOCK_HOME, _('Ailurus blog'))
-    help_blog.connect('activate', 
-        lambda w: open_web_page('http://ailurus.cn/' ) )
-    
     help_update = image_file_menuitem(_('Check for updates'), D+'suyun_icons/m_check_update.png', 16) 
     def callback(*w):
         while gtk.events_pending(): gtk.main_iteration()
@@ -262,7 +255,7 @@ def __others():
     
     return [ 
 #             changelog, 
-             help_contribute, help_blog, help_update, 
+             help_contribute, help_update, 
              help_propose_suggestion, 
              help_report_bug, help_translate, about, statistics, ]
    

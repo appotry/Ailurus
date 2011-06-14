@@ -35,28 +35,28 @@ else:
 version = 14 # must be integer
 
 class AccessDeniedError(dbus.DBusException):
-    _dbus_error_name = 'cn.ailurus.AccessDeniedError'
+    _dbus_error_name = 'com.googlecode.ailurus.AccessDeniedError'
 
 class CommandFailError(dbus.DBusException):
-    _dbus_error_name = 'cn.ailurus.CommandFailError'
+    _dbus_error_name = 'com.googlecode.ailurus.CommandFailError'
 
 class CannotLockAptCacheError(dbus.DBusException):
-    _dbus_error_name = 'cn.ailurus.CannotLockAptCacheError'
+    _dbus_error_name = 'com.googlecode.ailurus.CannotLockAptCacheError'
 
 class AptPackageNotExistError(dbus.DBusException):
-    _dbus_error_name = 'cn.ailurus.AptPackageNotExistError'
+    _dbus_error_name = 'com.googlecode.ailurus.AptPackageNotExistError'
 
 class LocalDebPackageResolutionError(dbus.DBusException):
-    _dbus_error_name = 'cn.ailurus.LocalDebPackageResolutionError'
+    _dbus_error_name = 'com.googlecode.ailurus.LocalDebPackageResolutionError'
 
 class CannotUpdateAptCacheError(dbus.DBusException):
-    _dbus_error_name = 'cn.ailurus.CannotUpdateAptCacheError'
+    _dbus_error_name = 'com.googlecode.ailurus.CannotUpdateAptCacheError'
 
 class CannotDownloadError(dbus.DBusException):
-    _dbus_error_name = 'cn.ailurus.CannotDownloadError'
+    _dbus_error_name = 'com.googlecode.ailurus.CannotDownloadError'
 
 class AilurusFulgens(dbus.service.Object):
-    @dbus.service.method('cn.ailurus.Interface', 
+    @dbus.service.method('com.googlecode.ailurus.Interface', 
                                           in_signature='ss', 
                                           out_signature='', 
                                           sender_keyword='sender')
@@ -74,7 +74,7 @@ class AilurusFulgens(dbus.service.Object):
         if task.returncode:
             raise CommandFailError(command, task.returncode)
 
-    @dbus.service.method('cn.ailurus.Interface', 
+    @dbus.service.method('com.googlecode.ailurus.Interface', 
                                           in_signature='ss', 
                                           out_signature='i', 
                                           sender_keyword='sender')
@@ -87,19 +87,19 @@ class AilurusFulgens(dbus.service.Object):
         task = subprocess.Popen(command, shell=True, env=env)
         return task.pid
 
-    @dbus.service.method('cn.ailurus.Interface', 
+    @dbus.service.method('com.googlecode.ailurus.Interface', 
                                           in_signature='', 
                                           out_signature='i') 
     def get_check_permission_method(self):
         return self.check_permission_method
 
-    @dbus.service.method('cn.ailurus.Interface', 
+    @dbus.service.method('com.googlecode.ailurus.Interface', 
                                           in_signature='', 
                                           out_signature='i') 
     def get_version(self):
         return version
 
-    @dbus.service.method('cn.ailurus.Interface', 
+    @dbus.service.method('com.googlecode.ailurus.Interface', 
                                           in_signature='', 
                                           out_signature='',
                                           sender_keyword='sender')
@@ -122,7 +122,7 @@ class AilurusFulgens(dbus.service.Object):
     def __init__(self, mainloop):
         self.mainloop = mainloop # use to terminate mainloop
         self.authorized_sender = set()
-        bus_name = dbus.service.BusName('cn.ailurus', bus = dbus.SystemBus())
+        bus_name = dbus.service.BusName('com.googlecode.ailurus', bus = dbus.SystemBus())
         dbus.service.Object.__init__(self, bus_name, '/')
         self.apt_cache = None # an instance of apt.cache.Cache
         self.lock1_fd = -1 # a fd
@@ -145,7 +145,7 @@ class AilurusFulgens(dbus.service.Object):
         
         obj = dbus.SystemBus().get_object('org.freedesktop.PolicyKit', '/')
         obj = dbus.Interface(obj, 'org.freedesktop.PolicyKit')
-        granted = obj.IsSystemBusNameAuthorized('cn.ailurus', sender, False)
+        granted = obj.IsSystemBusNameAuthorized('com.googlecode.ailurus', sender, False)
         if 'yes' != granted:
             raise AccessDeniedError('Session is not authorized. Authorization method = 0')
 
@@ -156,14 +156,14 @@ class AilurusFulgens(dbus.service.Object):
         obj = dbus.SystemBus().get_object('org.freedesktop.PolicyKit1', '/org/freedesktop/PolicyKit1/Authority')
         obj = dbus.Interface(obj, 'org.freedesktop.PolicyKit1.Authority')
         (granted, _, details) = obj.CheckAuthorization(
-                ('system-bus-name', {'name': sender}), 'cn.ailurus', {}, dbus.UInt32(1), '', timeout=600)
+                ('system-bus-name', {'name': sender}), 'com.googlecode.ailurus', {}, dbus.UInt32(1), '', timeout=600)
         if not granted:
             raise AccessDeniedError('Session is not authorized. Authorization method = 1')
 
     def __get_dict(self, string):
         return eval(string)
     
-    @dbus.service.method('cn.ailurus.Interface',
+    @dbus.service.method('com.googlecode.ailurus.Interface',
                                     in_signature='',
                                     out_signature='',
                                     sender_keyword='sender')
@@ -178,7 +178,7 @@ class AilurusFulgens(dbus.service.Object):
         for key in ['DISPLAY', 'TERM', 'PATH']:
             os.putenv(key, env_dict[key])
 
-    @dbus.service.method('cn.ailurus.Interface', in_signature='sss', out_signature='', sender_keyword='sender')
+    @dbus.service.method('com.googlecode.ailurus.Interface', in_signature='sss', out_signature='', sender_keyword='sender')
     def apt_command(self, command, argument, env_string, sender=None):
         self.check_permission(sender)
         self.__prepare_env(env_string)
@@ -229,7 +229,7 @@ class AilurusFulgens(dbus.service.Object):
             raise CannotLockAptCacheError('apt_pkg.PkgSystemLock')
         self.holding_apt_lock = True
     
-    @dbus.service.method('cn.ailurus.Interface', in_signature='', out_signature='b')
+    @dbus.service.method('com.googlecode.ailurus.Interface', in_signature='', out_signature='b')
     def is_apt_cache_lockable(self):
         if self.holding_apt_lock:
             return True
@@ -259,22 +259,22 @@ class AilurusFulgens(dbus.service.Object):
         self.unlock_apt_pkg_global_lock()
         self.holding_apt_lock = False
     
-    @dbus.service.method('cn.ailurus.Interface', in_signature='', out_signature='')
+    @dbus.service.method('com.googlecode.ailurus.Interface', in_signature='', out_signature='')
     def apt_open_cache(self):
         if self.apt_cache: self.apt_cache.open()
         else: self.apt_cache = apt.cache.Cache()
 
-    @dbus.service.method('cn.ailurus.Interface', in_signature='', out_signature='')
+    @dbus.service.method('com.googlecode.ailurus.Interface', in_signature='', out_signature='')
     def apt_close_cache(self):
         self.apt_cache = None
         gc.collect()
 
-    @dbus.service.method('cn.ailurus.Interface', in_signature='s', out_signature='b')
+    @dbus.service.method('com.googlecode.ailurus.Interface', in_signature='s', out_signature='b')
     def apt_package_exists(self, package_name):
         assert self.apt_cache is not None
         return package_name in self.apt_cache
     
-    @dbus.service.method('cn.ailurus.Interface', in_signature='s', out_signature='b')
+    @dbus.service.method('com.googlecode.ailurus.Interface', in_signature='s', out_signature='b')
     def apt_package_installed(self, package_name):
         assert self.apt_cache is not None
         if package_name not in self.apt_cache: return False
