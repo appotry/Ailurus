@@ -165,65 +165,6 @@ Their copyright are holded by MA Yue.''')
     about.run()
     about.destroy()
 
-def show_special_thank_dialog():
-    import StringIO
-    text = StringIO.StringIO()
-    print >>text, _('We wish to express thankfulness to these projects:')
-    print >>text, '<b>Lazybuntu, UbuntuAssistant'
-    print >>text, 'GTweakUI, Easy Life, Ubuntu-tweak, CPU-G</b>'
-    print >>text
-    print >>text, _('We sincerely thank these people:')
-    print >>text
-    print >>text, _('The people who provide inspiration:')
-    print >>text, '<b>PCMan, Careone, novia, '
-    print >>text, 'BAI Qingjie, Aron Xu, Federico Vera, '
-    print >>text, 'ZHU Jiandi, Maksim Lagoshin, '
-    print >>text, 'Romeo-Adrian Cioaba, David Morre, '
-    print >>text, 'LIANG Suilong, Lovenemesis, CHEN Lei, '
-    print >>text, 'DaringSoule, Ramesh Mandaleeka, JCOM, '
-    print >>text, 'Michael McBride, CHEN Zhixue, hicks1gb, '
-    print >>text, 'Silber Cobra, lopeztobal, zsarosi</b>'
-    print >>text
-    print >>text, _('The people who designs the logo:')
-    print >>text, '<b>SU Yun</b>'
-    print >>text
-    print >>text, _('The people who maintain PPA repository:')
-    print >>text, '<b>Aron Xu</b>'
-    print >>text
-    print >>text, _('The people who maintain Fedora package:')
-    print >>text, '<b>LIANG Suilong</b>'
-    print >>text
-    print >>text, _('The people who maintain ArchLinux package:')
-    print >>text, '<b>Jorge Madrid (kiefer)</b>'
-    print >>text
-    print >>text, _('The people who provide a lot of Linux skills:')
-    print >>text, '<b>Oneleaf</b>'
-    print >>text
-    print >>text, _('The people who help translate Ailurus')
-    print >>text 
-    print >>text, _('The people who report bugs')
-    print >>text
-    print >>text, _('and the people not mensioned here.')
-    import gtk
-    label = gtk.Label()
-    label.set_markup(text.getvalue())
-    text.close()
-    label.set_justify(gtk.JUSTIFY_CENTER)
-    scroll = gtk.ScrolledWindow()
-    scroll.add_with_viewport(label)
-    scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-    scroll.set_shadow_type(gtk.SHADOW_NONE)
-    scroll.set_size_request(-1, 500)
-    dialog = gtk.Dialog( _('Thanks'), None, 
-        gtk.DIALOG_MODAL | 
-        gtk.DIALOG_NO_SEPARATOR, 
-        buttons = (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
-    dialog.set_border_width(10)
-    dialog.vbox.pack_start(scroll, False, False)
-    dialog.vbox.show_all()
-    dialog.run()
-    dialog.destroy()
-
 def show_changelog():
     # Not used, since ChangeLog should not be put in '/usr/share/ailurus/'
     # Shall we download ChangeLog from github?

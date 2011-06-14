@@ -254,9 +254,6 @@ def __others():
     help_translate.connect('activate', 
         lambda w: open_web_page('https://translations.launchpad.net/ailurus/trunk' ) )
     
-    special_thank = gtk.MenuItem( _('Special thanks') )
-    special_thank.connect('activate', lambda *w: show_special_thank_dialog())
-    
     about = gtk.MenuItem( _('About') )
     about.connect('activate', lambda *w: show_about_dialog())
     
@@ -270,7 +267,7 @@ def __others():
 #             changelog, 
              help_contribute, help_blog, help_update, 
              help_propose_suggestion, 
-             help_report_bug, help_translate, special_thank, about, statistics, ]
+             help_report_bug, help_translate, about, statistics, ]
    
 def get_preferences_menu():
     return __preferences()
