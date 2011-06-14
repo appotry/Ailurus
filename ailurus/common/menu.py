@@ -241,10 +241,7 @@ def __others():
     help_update.connect('activate', callback)
 
     help_propose_suggestion = image_file_menuitem(_('Propose suggestion'), D+'umut_icons/m_propose_suggestion.png', 16)
-    def propose_suggestion(*w):
-        from support.gae import ProposeSuggestionWindow
-        ProposeSuggestionWindow()
-    help_propose_suggestion.connect('activate', propose_suggestion)
+    help_propose_suggestion.connect('activate', lambda w: report_bug())
 
     help_report_bug = image_file_menuitem(_('Report bugs'), D+'umut_icons/bug.png', 16)
     help_report_bug.connect('activate', 
