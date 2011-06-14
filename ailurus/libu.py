@@ -313,10 +313,6 @@ def exception_happened(etype, value, tb):
     print >>msg, 'Ailurus version:', AILURUS_VERSION
 
     title_box = gtk.HBox(False, 5)
-    if os.path.exists(D+'umut_icons/bug.png'):
-        image = gtk.Image()
-        image.set_from_file(D+'umut_icons/bug.png')
-        title_box.pack_start(image, False)
     title = label_left_align(_('A bug appears. Would you please tell Ailurus developers? Thank you!') + 
                              '\n' + _('Please copy and paste following text into bug report web-page.'))
     title_box.pack_start(title, False)

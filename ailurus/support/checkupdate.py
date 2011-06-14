@@ -91,7 +91,7 @@ def check_update(silent = False):
         label = gtk.Label( _('You are using the latest Ailurus :)') )
         vbox.pack_start(label)
     image = gtk.Image()
-    image.set_from_file(D+'suyun_icons/update.png')
+    image.set_from_file(D+'suyun_icons/ailurus.png')
     hbox = gtk.HBox(False, 5)
     hbox.pack_start(image, False)
     hbox.pack_start(vbox, False)
@@ -107,7 +107,7 @@ def show_about_dialog():
     import gtk
     gtk.about_dialog_set_url_hook( lambda dialog, link: 1 )
     about = gtk.AboutDialog()
-    about.set_logo(gtk.gdk.pixbuf_new_from_file(D+'suyun_icons/logo.png'))
+    about.set_logo(gtk.gdk.pixbuf_new_from_file(D+'suyun_icons/ailurus.png'))
     about.set_name('Ailurus')
     about.set_version(AILURUS_VERSION)
     about.set_website_label( _('Project homepage') )
@@ -152,14 +152,8 @@ along with Ailurus; if not, write to the Free Software Foundation, Inc.,
 All images in directory "data/suyun_icons" are released under the GPL License.
 Their copyright are holded by SU Yun.
 
-All images in directory "data/umut_icons" are released under the GNU Lesser General Public License.
-Their copyright are holded by M. Umut Pulat.
-
 All images in directory "data/sona_icons" are released under the GPL License. 
-Their copyright are holded by Andrea Soragna.
-
-All images in directory "data/velly_icons" are released under the GPL License. 
-Their copyright are holded by MA Yue.''')
+Their copyright are holded by Andrea Soragna.''')
     about.vbox.pack_start( gtk.Label( _('\nThis version is released at %s.') % AILURUS_RELEASE_DATE), False)
     about.vbox.show_all()
     about.run()

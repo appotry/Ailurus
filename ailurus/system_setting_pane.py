@@ -38,16 +38,12 @@ class SystemSettingPane(gtk.VBox):
         self.left_store = left_store = gtk.ListStore(gtk.gdk.Pixbuf, str, str) #pixbuf, text, category
         for iconpath, text, category in Set.array:
             if category in existing_categories:
-                pixbuf = icon(iconpath)
-                left_store.append([pixbuf, text, category])
+                left_store.append([None, text, category])
                 
         left_store_sort = gtk.TreeModelSort(left_store)
         left_store_sort.set_sort_column_id(1, gtk.SORT_ASCENDING)
-        render_pixbuf = gtk.CellRendererPixbuf()
         render_text = gtk.CellRendererText()
         column = gtk.TreeViewColumn()
-        column.pack_start(render_pixbuf, False)
-        column.add_attribute(render_pixbuf, 'pixbuf', 0)
         column.pack_start(render_text, False)
         column.add_attribute(render_text, 'text', 1)
         treeview = gtk.TreeView(left_store_sort)
