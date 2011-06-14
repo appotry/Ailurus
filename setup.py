@@ -23,7 +23,7 @@ setup(name = 'ailurus',
       packages = ['ailurus', 'ailurus.common', 'ailurus.gnome', 'ailurus.archlinux', 
                   'ailurus.fedora', 'ailurus.ubuntu', 'ailurus.support', 'ailurus.publickey', ],
       package_data={'ailurus': ['native_apps', 'version', 
-                                'icons/suyun_icons/*',],
+                                'icons/sora_icons/*', 'icons/suyun_icons/*', ],
                     'ailurus.support': [os.path.basename(f) for f in glob.glob('ailurus/support/*') if '.' not in os.path.basename(f)],
                     'ailurus.publickey': [os.path.basename(f) for f in glob.glob('ailurus/publickey/*')], },
       data_files = [
