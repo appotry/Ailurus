@@ -332,22 +332,6 @@ class Config:
                 a = line.split('=')[1].strip()
         return a
     @classmethod
-    def is_YLMF(cls):
-        import os
-        if not os.path.exists('/etc/lsb-release'): 
-            return False
-        with open('/etc/lsb-release') as f:
-            c = f.read()
-        return 'Ylmf_OS' in c
-    @classmethod
-    def get_YLMF_version(cls):
-        '''return 'hardy', 'intrepid', 'jaunty', 'karmic' or 'lucid'.'''
-        with open('/etc/lsb-release') as f:
-            lines = f.readlines()
-        for line in lines:
-            if line.startswith('DISTRIB_CODENAME='):
-                return line.split('=')[1].strip()
-    @classmethod
     def is_Deepin(cls): # Linux Deepin is based on XUbuntu karmic
         import platform
         return platform.dist()[0] == 'Deepin'
@@ -2101,7 +2085,6 @@ except:
 UBUNTU = Config.is_Ubuntu()
 UBUNTU_DERIV = False # True value means Ubuntu derivative. For Ubuntu it is False. For Mint it is True.
 MINT = Config.is_Mint()
-YLMF = Config.is_YLMF()
 DEEPIN = Config.is_Deepin()
 FEDORA = Config.is_Fedora()
 ARCHLINUX = Config.is_ArchLinux()
@@ -2116,12 +2099,6 @@ elif MINT:
     UBUNTU_DERIV = True
     VERSION = Config.get_Mint_version() # VERSION is in ['5', '6', '7', '8', '9', '10']
     VERSION = ['hardy', 'intrepid', 'jaunty', 'karmic', 'lucid', 'maverick'][int(VERSION)-5]
-    BACKEND = APT
-    installation_command_backend = debian_installation_command
-elif YLMF:
-    DISTRIBUTION = 'ubuntu'
-    UBUNTU_DERIV = True
-    VERSION = Config.get_YLMF_version()
     BACKEND = APT
     installation_command_backend = debian_installation_command
 elif DEEPIN:
