@@ -35,11 +35,11 @@ def __gnome():
                     micro = re.search('<micro>(.+)</micro>', line).group(1)
                     break
         string = "%s.%s.%s" % (platform, minor, micro)
-        ret.append( row(_('GNOME version:'), string, D+'umut_icons/i_gnome.png' ) )
+        ret.append( row(_('GNOME version:'), string) )
     except:
         print_traceback()
         
-    try: ret.append( row(_('GNOME locale:'), os.environ['LANG'], D+'sora_icons/i_locale.png' ) )
+    try: ret.append( row(_('GNOME locale:'), os.environ['LANG']) )
     except: print_traceback()
 
     return ret

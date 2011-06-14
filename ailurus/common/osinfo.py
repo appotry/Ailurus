@@ -21,20 +21,20 @@ import sys, os
 from lib import *
 
 def __default_shell():
-    return [row(_('Default shell:'), os.environ['SHELL'], D+'sora_icons/default_information_icon.png')]
+    return [row(_('Default shell:'), os.environ['SHELL'])]
 
 def __host_name():
     __host_name.please_refresh_me = True
-    try: return [row(_('Host name:'), get_output('hostname'), D+'umut_icons/i_host.png' )]
+    try: return [row(_('Host name:'), get_output('hostname'))]
     except: print_traceback()
     return []
 
 def __kernel():
     ret = []
-    try: ret.append( row(_('Kernel version:'), get_output('uname -r'), D+'umut_icons/tux.png' ) )
+    try: ret.append( row(_('Kernel version:'), get_output('uname -r')) )
     except: print_traceback()
     
-    try: ret.append( row(_('Kernel arch:'), get_output('uname -m'), D+'umut_icons/tux.png' ) )
+    try: ret.append( row(_('Kernel arch:'), get_output('uname -m')) )
     except: print_traceback()
     return ret
 
@@ -42,14 +42,14 @@ def __xorg():
     try:
         for line in get_output('Xorg -version').split('\n'):
             if line.startswith('X.Org X Server'):
-                return [row(_('X server version:'), line.strip(), D+'umut_icons/i_X.png')]
+                return [row(_('X server version:'), line.strip())]
     except:
         print_traceback()
         return []
 
 def __gcc():
     try:
-        return [row(_('GCC version:'), get_output('gcc -dumpversion').strip(), D+'umut_icons/i_gcc.png')]
+        return [row(_('GCC version:'), get_output('gcc -dumpversion').strip())]
     except: print_traceback()
     return []
 
@@ -57,14 +57,14 @@ def __java():
     try:
         import re 
         c=re.split('"', get_output('java -version'))[1]
-        return [row(_('Java version:'), c, D+'umut_icons/i_java.png' )]
+        return [row(_('Java version:'), c)]
     except CommandFailError: pass
     except: print_traceback()
     return []
 
 def __python():
      try: 
-         return [row(_('Python version:'), sys.version.split()[0], D+'sora_icons/default_information_icon.png' )]
+         return [row(_('Python version:'), sys.version.split()[0])]
      except: 
          print_traceback()
          return []
@@ -72,7 +72,7 @@ def __python():
 def __gtk():
      try:
          import gtk
-         return [row(_('GTK version:'), '.'.join(map(str, gtk.gtk_version)), D+'sora_icons/default_information_icon.png')]
+         return [row(_('GTK version:'), '.'.join(map(str, gtk.gtk_version)))]
      except:
          print_traceback()
          return []
@@ -80,7 +80,7 @@ def __gtk():
 def __pygtk():
      try: 
          import gtk
-         return [row(_('PyGTK version:'), '.'.join(map(str, gtk.pygtk_version)), D+'sora_icons/default_information_icon.png' )]
+         return [row(_('PyGTK version:'), '.'.join(map(str, gtk.pygtk_version)))]
      except: 
          print_traceback()
          return []
@@ -104,7 +104,7 @@ def __uptime():
             print >>text, hours, ngettext('hour', 'hours', hours),
         if minutes:
             print >>text, minutes, ngettext('minute', 'minutes', minutes),
-        return [row(_('Uptime:'), text.getvalue(), D+'umut_icons/i_uptime.png' )]
+        return [row(_('Uptime:'), text.getvalue())]
     except:
         print_traceback()
         return []
@@ -113,7 +113,7 @@ def __user():
     try: 
         import os
         string = '%s (UID: %s, GID: %s)'%(os.environ['USER'], os.getuid(), os.getgid() )
-        return [row(_('Current user:'), string, D+'umut_icons/i_userinfo.png')]
+        return [row(_('Current user:'), string)]
     except: 
         print_traceback()
         return []
@@ -130,17 +130,13 @@ def __opengl():
             if v[0]=='OpenGL version string': vendor_version = v[1].strip()
             if v[0]=='OpenGL renderer string': renderer = v[1].strip()
         if direct_render:
-            ret.append( row(_('OpenGL direct rendering:'), direct_render, 
-                            D+'umut_icons/i_opengl.png') )
+            ret.append( row(_('OpenGL direct rendering:'), direct_render) )
         if vendor:
-            ret.append( row(_('OpenGL vendor:'), vendor, 
-                            D+'umut_icons/i_opengl.png') )
+            ret.append( row(_('OpenGL vendor:'), vendor) )
         if renderer:
-            ret.append( row(_('OpenGL renderer:'), renderer, 
-                            D+'umut_icons/i_opengl.png') )
+            ret.append( row(_('OpenGL renderer:'), renderer) )
         if vendor_version:
-            ret.append( row(_('OpenGL version:'), vendor_version, 
-                            D+'umut_icons/i_opengl.png') )
+            ret.append( row(_('OpenGL version:'), vendor_version) )
 
     except: 
         print_traceback()
@@ -150,7 +146,7 @@ def __opengl():
 def __firefox():
     try:
         return [row(_('Firefox version:'), 
-          get_output('firefox -version').split(',')[0], D+'umut_icons/i_firefox.png' )]
+          get_output('firefox -version').split(',')[0])]
     except: print_traceback()
     return []
 
@@ -158,7 +154,7 @@ def __os_version():
     try:
         import platform
         name, version = platform.dist()[0:2]
-        return [row(_('%s version:') % name, version, D+'umut_icons/tux.png' )]
+        return [row(_('%s version:') % name, version)]
     except:
         print_traceback()
         return [] 

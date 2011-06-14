@@ -30,7 +30,8 @@ except: # raise exception in python console because __file__ is not defined
     assert os.path.exists(A), 'Please put ailurus code in $HOME/workspace/Ailurus/'
 D = A + '/icons/'
 
-def row(text, value, icon, tooltip = None): # only used in hardwareinfo.py and osinfo.py
+def row(text, value, icon = None, tooltip = None): # only used in hardwareinfo.py and osinfo.py
+    assert icon is None # do not display icon anymore
     return (text, value, icon, tooltip)
 
 class I:

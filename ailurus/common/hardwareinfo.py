@@ -34,21 +34,21 @@ def __bios():
     try:
         string = __read('/sys/devices/virtual/dmi/id/bios_vendor').strip()
         assert string
-        ret.append( row(_('BIOS vendor:'), string, D+'umut_icons/i_bios.png') )
+        ret.append( row(_('BIOS vendor:'), string) )
     except:
         print_traceback()
 
     try:
         string = __read('/sys/devices/virtual/dmi/id/bios_version').strip()
         assert string
-        ret.append( row(_('BIOS version:'), string, D+'umut_icons/i_bios.png') )
+        ret.append( row(_('BIOS version:'), string) )
     except:
         print_traceback()
         
     try:
         string = __read('/sys/devices/virtual/dmi/id/bios_date').strip()
         assert string
-        ret.append( row(_('BIOS release date:'), string, D+'umut_icons/i_bios.png') )
+        ret.append( row(_('BIOS release date:'), string) )
     except:
         print_traceback()
     
@@ -59,7 +59,7 @@ def __motherboard():
     try:
         string = __read('/sys/devices/virtual/dmi/id/board_name').strip()
         assert string
-        ret.append( row(_('Motherboard name:'), string, D+'umut_icons/i_motherboard.png') )
+        ret.append( row(_('Motherboard name:'), string) )
     except IOError: pass
     except:
         print_traceback()
@@ -67,7 +67,7 @@ def __motherboard():
     try:
         string = __read('/sys/devices/virtual/dmi/id/board_vendor').strip()
         assert string
-        ret.append( row(_('Motherboard vendor:'), string, D+'umut_icons/i_motherboard.png') )
+        ret.append( row(_('Motherboard vendor:'), string) )
     except IOError: pass
     except:
         print_traceback()
@@ -113,7 +113,7 @@ def __cpu():
                     if multicore: name = _('CPU %s name:') % core
                     else: name = _('CPU name:')
                     value = v[1].strip().replace('  ',' ')
-                    ret.append(row(name, value, D+'umut_icons/i_cpu.png'))
+                    ret.append(row(name, value))
                 elif v[0] == 'bogomips':
                     if multicore: 
                         mips_name = _('CPU %s Mips:') % core
@@ -127,9 +127,9 @@ def __cpu():
                         L2_cache_name = _('Level 2 cache:')
                     L1_cache_value = cache_info['cpu%s' % (core-1)]['L1']
                     L2_cache_value = cache_info['cpu%s' % (core-1)]['L2']
-                    if L1_cache_value: ret.append(row(L1_cache_name, L1_cache_value, D+'umut_icons/i_cpu.png'))
-                    if L2_cache_value: ret.append(row(L2_cache_name, L2_cache_value, D+'umut_icons/i_cpu.png'))
-                    ret.append(row(mips_name, mips_value, D+'umut_icons/i_cpu.png', _('It is a measure for the computation speed. "Mips" is short for Millions of Instructions Per Second.')))
+                    if L1_cache_value: ret.append(row(L1_cache_name, L1_cache_value))
+                    if L2_cache_value: ret.append(row(L2_cache_name, L2_cache_value))
+                    ret.append(row(mips_name, mips_value, tooltip = _('It is a measure for the computation speed. "Mips" is short for Millions of Instructions Per Second.')))
             
             _64bit = _('No')
             f.seek(0, 0)
@@ -139,7 +139,7 @@ def __cpu():
                 if v[0]=='flags':
                     if ' lm ' in v[1]:
                         _64bit = _('Yes!')
-            ret.append( row(_('64 bit CPU?'), _64bit, D+'umut_icons/i_cpu.png') )
+            ret.append( row(_('64 bit CPU?'), _64bit) )
     except:
         print_traceback()
 
@@ -161,7 +161,7 @@ def __cpu_temp():
         with open(tempfile) as f:
             for line in f:
                 v = line.split(':')
-            return [row(_('CPU temperature'), v[-1].strip(), D+'umut_icons/i_cpu.png')]
+            return [row(_('CPU temperature'), v[-1].strip())]
     except:
         print_traceback()
         return []
@@ -180,7 +180,7 @@ def __mem():
                         new_string = '%.1f MB' % (value/1024)
                     else:
                         new_string = string
-                    return [row(_('Total memory:'), new_string, D+'umut_icons/i_memory.png' )]
+                    return [row(_('Total memory:'), new_string)]
     except:
         print_traceback()
         return []
@@ -194,7 +194,7 @@ def __swap():
             filename, type, size = line.split()[0:3]
             total_size += int(size)
         if total_size:
-            return [row(_('Total swap:'), _('%s MBytes') % (total_size/1000), D+'umut_icons/i_memory.png' )]
+            return [row(_('Total swap:'), _('%s MBytes') % (total_size/1000))]
         else:
             return [] # no swap
     except:
@@ -209,11 +209,11 @@ def __pci():
             v = line.split(' ', 1)[1]
             v = v.split(':', 1)
             if v[0]=='Display controller':
-                ret.append( row(_('Display card:'), v[1].strip(), D+'umut_icons/i_display.png' ) )
+                ret.append( row(_('Display card:'), v[1].strip()) )
             elif v[0]=='Ethernet controller':
-                ret.append( row(_('Ethernet card:'), v[1].strip(), D+'umut_icons/i_ethernet.png' ) )
+                ret.append( row(_('Ethernet card:'), v[1].strip()) )
             elif v[0]=='Multimedia audio controller':
-                ret.append( row(_('Audio card:'), v[1].strip(), D+'umut_icons/i_audiocard.png' ) )
+                ret.append( row(_('Audio card:'), v[1].strip()) )
     except:
         print_traceback()
     return ret
@@ -230,7 +230,7 @@ def __battery_state():
                     elif v=='charging': v=_('charging')
                     elif v=='discharging': v=_('discharging')
                     else: raise RuntimeError(v)
-                    return [row(_('Battery charging state:'), v, D+'umut_icons/i_battery.png')]
+                    return [row(_('Battery charging state:'), v)]
     except:
         print_traceback()
         return []
@@ -242,7 +242,7 @@ def __battery_remaining_capacity():
             for line in f:
                 v = line.split(':')
                 if v[0] == 'remaining capacity':
-                    return [row(_('Battery remaining capacity:'), v[1].strip(), D+'umut_icons/i_battery.png')]
+                    return [row(_('Battery remaining capacity:'), v[1].strip())]
     except:
         print_traceback()
         return []
@@ -254,7 +254,7 @@ def __battery_capacity():
             for line in f:
                 v = line.split(':')
                 if v[0] == 'last full capacity':
-                    return[row(_('Battery full capacity:'), v[1].strip(), D+'umut_icons/i_battery.png')]
+                    return[row(_('Battery full capacity:'), v[1].strip())]
     except:
         print_traceback()
         return []

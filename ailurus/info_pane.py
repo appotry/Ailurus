@@ -21,17 +21,6 @@ import gtk, sys, os
 from lib import *
 from libu import *
 
-missing_files = [] # used only in get_information_pixbuf. do not continuously display error messages.
-
-def get_information_pixbuf(path, width, height):
-    if not os.path.exists(path):
-        global missing_files
-        if path not in missing_files:
-            print path, 'is missing'
-            missing_files.append(path)
-        path = D+'sora_icons/default_information_icon.png'
-    return get_pixbuf(path, width, height)
-
 class InfoPane(gtk.VBox):
     icon = D+'sora_icons/m_hardware.png'
     text = _('Information')
@@ -70,27 +59,22 @@ class InfoPane(gtk.VBox):
             func.result = func()
         
         self.hardware_subtree_text = _('Hardware Information')
-        self.hardware_subtree_icon = get_pixbuf(D + 'sora_icons/m_hardware.png', 24, 24)
         self.os_subtree_text = _('Linux Information')
-        self.os_subtree_icon = get_pixbuf(D+'sora_icons/m_linux.png', 24, 24)
         
         gtk.VBox.__init__(self, False, 10)
         
-        button = image_stock_button(gtk.STOCK_PRINT, _('Print all information'))
-        button.connect('clicked', lambda w: self.print_all_information())
-        align_button = gtk.Alignment(0, 0.5)
-        align_button.add(button)
+#        button = image_stock_button(gtk.STOCK_PRINT, _('Print all information'))
+#        button.connect('clicked', lambda w: self.print_all_information())
+#        align_button = gtk.Alignment(0, 0.5)
+#        align_button.add(button)
         
         self.treestore = gtk.TreeStore(gtk.gdk.Pixbuf, str, str)
         self.treeview = treeview = gtk.TreeView(self.treestore)
         column = gtk.TreeViewColumn()
         treeview.append_column(column)
         treeview.set_headers_visible(False)
-        pixbuf_render = gtk.CellRendererPixbuf()
         text_render = gtk.CellRendererText()
         value_render = gtk.CellRendererText()
-        column.pack_start(pixbuf_render, False)
-        column.add_attribute(pixbuf_render, 'pixbuf', 0)
         column.pack_start(text_render, False)
         column.add_attribute(text_render, 'text', 1)
         column.pack_start(value_render, False)
@@ -102,7 +86,7 @@ class InfoPane(gtk.VBox):
         scrollwindow.set_shadow_type (gtk.SHADOW_IN)
         
         self.pack_start(scrollwindow)
-        self.pack_start(align_button, False)
+#        self.pack_start(align_button, False)
         
         self.refresh()
 
@@ -124,17 +108,15 @@ class InfoPane(gtk.VBox):
 
         self.treestore.clear()
         
-        subtree_root = self.treestore.append(None, [self.hardware_subtree_icon, self.hardware_subtree_text, None])
+        subtree_root = self.treestore.append(None, [None, self.hardware_subtree_text, None])
         for func in self.hardware_functions:
             for row in func.result:
-                pixbuf = get_information_pixbuf(row[2], 24, 24)
-                self.treestore.append(subtree_root, [pixbuf, row[0], row[1]])
+                self.treestore.append(subtree_root, [None, row[0], row[1]])
                 
-        subtree_root = self.treestore.append(None, [self.os_subtree_icon, self.os_subtree_text, None])
+        subtree_root = self.treestore.append(None, [None, self.os_subtree_text, None])
         for func in self.os_functions:
             for row in func.result:
-                pixbuf = get_information_pixbuf(row[2], 24, 24)
-                self.treestore.append(subtree_root, [pixbuf, row[0], row[1]])
+                self.treestore.append(subtree_root, [None, row[0], row[1]])
 
         self.treeview.expand_all()
 
