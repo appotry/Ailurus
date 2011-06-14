@@ -150,31 +150,6 @@ class Query_before_remove_a_lot_of_files(C) :
 #        run_as_root('rm -f /usr/local/share/applications/firefox.nopango.desktop')
 #        run_as_root('rm -f /usr/share/applications/firefox.nopango.desktop')
 
-class Show_a_Linux_skill_bubble(C):
-    __doc__ = _('Show a random Linux skill after you log in to GNOME')
-    detail = _('Create file:') + ' ' + os.path.expanduser('~/.config/autostart/show-a-linux-skill-bubble.desktop')
-    autostart_path = os.path.expanduser('~/.config/autostart/')
-    file = autostart_path + 'show-a-linux-skill-bubble.desktop'
-    content = ('[Desktop Entry]\n'
-               'Name=Show a random Linux skill after logging in.\n'
-               'Comment=Show a random Linux skill after you log in to GNOME. Help you learn Linux.\n'
-               'Exec=/usr/share/ailurus/support/show-a-linux-skill-bubble\n'
-               'Terminal=false\n'
-               'Type=Application\n'
-               'Icon=ailurus\n'
-               'Categories=System;\n'
-               'StartupNotify=false\n')
-    def exists(self):
-        if not os.path.exists(self.file): return True
-        with open(self.file) as f:
-            if f.read() != self.content: return True
-        return False
-    def cure(self):
-        if not os.path.exists(self.autostart_path):
-            run('mkdir -p "%s"' % self.autostart_path)
-        with open(self.file, 'w') as f:
-            f.write(self.content)
-
 class Own_usr_lib_eclipse_by_root(C):
     __doc__ = _('Let root own /usr/lib/eclipse and /usr/share/eclipse')
     detail = _('Otherwise, Pydev and CDT do not work.')
