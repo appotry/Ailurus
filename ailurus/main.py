@@ -504,23 +504,23 @@ class MainView:
         WindowPos.load(window,'main')
         
         from system_setting_pane import SystemSettingPane
-        from clean_up_pane import CleanUpPane
+#        from clean_up_pane import CleanUpPane
         from info_pane import InfoPane
-        from computer_doctor_pane import ComputerDoctorPane
-        if UBUNTU or UBUNTU_DERIV:
-            from ubuntu.repos_config_pane import ReposConfigPane
-        if FEDORA:
-            from fedora.repos_edit_pane import FedoraReposEditPane
+#        from computer_doctor_pane import ComputerDoctorPane
+#        if UBUNTU or UBUNTU_DERIV:
+#            from ubuntu.repos_config_pane import ReposConfigPane
+#        if FEDORA:
+#            from fedora.repos_edit_pane import FedoraReposEditPane
 
-        self.register(ComputerDoctorPane, load_cure_objs)
-        self.register(CleanUpPane)
-        if BACKEND:
-            from snapshot_pane import SnapshotPane
-            self.register(SnapshotPane)
-        if UBUNTU or UBUNTU_DERIV:
-            self.register(ReposConfigPane)
-        if FEDORA:
-            self.register(FedoraReposEditPane)
+#        self.register(ComputerDoctorPane, load_cure_objs)
+#        self.register(CleanUpPane)
+#        if BACKEND:
+#            from snapshot_pane import SnapshotPane
+#            self.register(SnapshotPane)
+#        if UBUNTU or UBUNTU_DERIV:
+#            self.register(ReposConfigPane)
+#        if FEDORA:
+#            self.register(FedoraReposEditPane)
         self.register(SystemSettingPane, load_setting)
         self.register(InfoPane, load_info)
         
