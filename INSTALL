@@ -1,18 +1,11 @@
-Installing Ailurus
-==================
-
-  Installation
+  Installing
   ------------
 
-    To install Ailurus on Fedora, perform the following command as root:
+    Perform the following command as root:
     
       $ python setup.py install
-      
-    To install Ailurus on Ubuntu (or Mint), perform the following command as root:
-    
-      $ python setup.py install --install-layout=deb
 
-  Run Ailurus
+  Running
   -----------
 
-	You can launch the program by typing "ailurus" at the command line.
+	Run "ailurus" in a terminal.
