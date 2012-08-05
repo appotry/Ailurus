@@ -8,13 +8,9 @@ except ImportError:
     print 'Would you please install package "python-distutils-extra" first?'
     sys.exit()
 
-f = open('ailurus/version')
-version = f.read().strip()
-f.close()
-
 setup(name = 'ailurus',
       description = 'a tool for changing hidden GNOME configuration',
-      version = version,
+      version = '12.08',
       maintainer = 'Homer Xing',
       maintainer_email = 'homer.xing@gmail.com',
       url = 'http://ailurus.googlecode.com/',
@@ -22,9 +18,7 @@ setup(name = 'ailurus',
       platforms = ['linux'],
       packages = ['ailurus', 'ailurus.common', 'ailurus.gnome', 
                   'ailurus.fedora', 'ailurus.ubuntu', 'ailurus.support',],
-      package_data={'ailurus': ['native_apps', 'version', ],
-                    'ailurus.support': [os.path.basename(f) for f in glob.glob('ailurus/support/*') if '.' not in os.path.basename(f)],
-                    'ailurus.publickey': [os.path.basename(f) for f in glob.glob('ailurus/publickey/*')], },
+      package_data={'ailurus.support': [os.path.basename(f) for f in glob.glob('ailurus/support/*') if '.' not in os.path.basename(f)],},
       data_files = [
         ('share/man/man1/', ['ailurus.1']),
         ('share/applications/', ['ailurus.desktop']),
