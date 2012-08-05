@@ -219,13 +219,6 @@ class Config:
         try: return cls.get_int('last_synced_data_version')
         except: return 0
     @classmethod
-    def set_query_before_exit(cls, value):
-        cls.set_bool('query_before_exit', value)
-    @classmethod
-    def get_query_before_exit(cls):
-        try:       return cls.get_bool('query_before_exit')
-        except:    return True
-    @classmethod
     def wget_set_timeout(cls, timeout):
         assert isinstance(timeout, int) and timeout>0, timeout
         cls.set_int('wget_timeout', timeout)

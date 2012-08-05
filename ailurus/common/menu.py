@@ -24,12 +24,7 @@ from libu import *
 from support.checkupdate import *
 
 def __preferences():
-    menu_query_before_exit = gtk.CheckMenuItem(_('Query before exit'))
-    menu_query_before_exit.set_active(Config.get_query_before_exit())
-    menu_query_before_exit.connect('toggled', 
-            lambda w: Config.set_query_before_exit(w.get_active()))
-
-    return [ menu_query_before_exit ]
+    return []
 
 def right_label(text):
     font = pango.FontDescription('Georgia')
