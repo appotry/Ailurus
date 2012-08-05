@@ -1719,18 +1719,6 @@ def useBASH():
     import os
     return os.environ['SHELL'] == '/bin/bash'
 
-def get_ailurus_version():
-    import os
-    path = A+'/version'
-    with open(path) as f:
-        return f.read().strip()
-    
-def get_ailurus_release_date():
-    import os, time
-    path = A+'/version'
-    info = os.stat(path)
-    return time.strftime('%Y-%m-%d', time.gmtime(info.st_mtime))
-
 def now(): # return current time in seconds
     import time
     return long(time.time())
@@ -1830,12 +1818,6 @@ class Snapshot:
         for p in paths:
             ret.append(cls.read(p))
         return ret
-
-try:
-    AILURUS_VERSION = get_ailurus_version()
-    AILURUS_RELEASE_DATE = get_ailurus_release_date()
-except: # raise exception in python console because __file__ is not defined
-    print_traceback()
 
 Config.init()
 

@@ -296,7 +296,7 @@ def do_apt_source_syntax_error(value):
 
 def exception_happened(etype, value, tb):
     import traceback, StringIO, os, sys, platform, gtk, gnomekeyring
-    from lib import AILURUS_VERSION, D, AccessDeniedError, APTSourceSyntaxError, report_bug
+    from lib import D, AccessDeniedError, APTSourceSyntaxError, report_bug
 
     if etype == KeyboardInterrupt: return
     if etype == AccessDeniedError: return do_access_denied_error()
@@ -310,7 +310,6 @@ def exception_happened(etype, value, tb):
     print >>msg, etype, ':', value
     print >>msg, platform.dist()
     print >>msg, os.uname()
-    print >>msg, 'Ailurus version:', AILURUS_VERSION
 
     title_box = gtk.HBox(False, 5)
     title = label_left_align(_('A bug appears. Would you please tell Ailurus developers? Thank you!') + 

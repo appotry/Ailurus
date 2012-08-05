@@ -28,7 +28,6 @@ def show_about_dialog():
     gtk.about_dialog_set_url_hook( lambda dialog, link: 1 )
     about = gtk.AboutDialog()
     about.set_name('Ailurus')
-    about.set_version(AILURUS_VERSION)
     about.set_website_label( _('Project homepage') )
     about.set_website('http://ailurus.googlecode.com/')
     about.set_authors( [
@@ -63,7 +62,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Ailurus; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.''')
-    about.vbox.pack_start( gtk.Label( _('\nThis version is released at %s.') % AILURUS_RELEASE_DATE), False)
     about.vbox.show_all()
     about.run()
     about.destroy()
