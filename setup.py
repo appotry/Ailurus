@@ -1,12 +1,7 @@
 #!/usr/bin/env python
 import os, sys, glob
 from distutils.core import setup
-try:
-    from DistUtilsExtra.command import *
-except ImportError:
-    print 'Cannot install Ailurus :('
-    print 'Would you please install package "python-distutils-extra" first?'
-    sys.exit()
+from DistUtilsExtra.command import *
 
 setup(name = 'ailurus',
       description = 'a tool for changing hidden GNOME configuration',
@@ -22,8 +17,6 @@ setup(name = 'ailurus',
       data_files = [
         ('share/man/man1/', ['ailurus.1']),
         ('share/applications/', ['ailurus.desktop']),
-        
-        ('share/ailurus/support/', [ e for e in glob.glob('support/*') if os.path.isfile(e)] ),
       ],
       scripts = ['bin/ailurus'],
       cmdclass = { 'build' :  build_extra.build_extra,
