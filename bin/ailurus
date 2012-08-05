@@ -1,10 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-import os
-if os.geteuid() == 0:
-    print 'It is not recommended to start Ailurus as root.'
-
-import os, sys, ailurus 
-path = os.path.dirname(os.path.abspath(ailurus.__file__))
-os.chdir(path)
-os.execv('/usr/bin/env', ['/usr/bin/env', 'python', 'main.py'] + sys.argv[1:])
+import os, ailurus 
+os.chdir(os.path.dirname(os.path.abspath(ailurus.__file__)))
+os.execv('/usr/bin/env', ['/usr/bin/env', 'python', 'main.py'])
