@@ -32,8 +32,6 @@ setup(name = 'ailurus',
         
         ('share/dbus-1/system-services/', ['support/dbus/com.googlecode.ailurus.service']),
         ('/etc/dbus-1/system.d/', ['support/dbus/com.googlecode.ailurus.conf']),
-        ('share/PolicyKit/policy/', ['support/policykit0/com.googlecode.ailurus.policy']),
-        ('share/polkit-1/actions/', ['support/policykit1/com.googlecode.ailurus.policy']),
         ('share/ailurus/support/', [ e for e in glob.glob('support/*') if os.path.isfile(e)] ),
         ('share/ailurus/support/', ['support/dbus/com.googlecode.ailurus.service', 'support/dbus/com.googlecode.ailurus.conf']),
       ],

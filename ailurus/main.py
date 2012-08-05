@@ -121,31 +121,6 @@ def check_required_packages():
 #        fedora_missing.append('wget')
 #        archlinux_missing.append('wget')
         
-    try: # detect policykit version 0.9.x
-        import dbus
-        obj = dbus.SystemBus().get_object('org.freedesktop.PolicyKit', '/')
-        obj = dbus.Interface(obj, 'org.freedesktop.PolicyKit')
-        has_policykit_0 = True
-    except ImportError:
-        has_policykit_0 = True # We cannot detect PolicyKit if we haven't dbus.
-    except:
-        has_policykit_0 = False
-    try: # detect policykit version 1.x
-        import dbus
-        obj = dbus.SystemBus().get_object('org.freedesktop.PolicyKit1', '/org/freedesktop/PolicyKit1/Authority')
-        obj = dbus.Interface(obj, 'org.freedesktop.PolicyKit1.Authority')
-        has_policykit_1 = True
-    except ImportError:
-        has_policykit_1 = True # We cannot detect PolicyKit if we haven't dbus.
-    except:
-        has_policykit_1 = False
-    if not has_policykit_0 and not has_policykit_1:
-        debian_missing.append('policykit-1-gnome (or polkit-kde-1)')
-        ubuntu_missing.append('policykit-gnome (or policykit-kde or policykit-1-gnome)') # FIXME: It is not good to list all these packages. Should be more precise.
-        # FIXME: policykit-1-kde does not exist in Ubuntu.
-        fedora_missing.append('polkit-gnome (or polkit-kde)')
-        archlinux_missing.append('polkit-gnome (or polkit-kde)')
-
     error = (
              (DEBIAN and debian_missing)
              or ((UBUNTU or UBUNTU_DERIV) and ubuntu_missing)
@@ -192,70 +167,6 @@ def check_home_dir_permission():
     dialog.set_markup(msg.getvalue())
     dialog.run()
     dialog.destroy()
-
-def check_dbus_daemon_status():
-    if not with_same_content('/etc/dbus-1/system.d/com.googlecode.ailurus.conf', '/usr/share/ailurus/support/com.googlecode.ailurus.conf'):
-        correct_conf_files = False
-    elif not with_same_content('/usr/share/dbus-1/system-services/com.googlecode.ailurus.service', '/usr/share/ailurus/support/com.googlecode.ailurus.service'):
-        correct_conf_files = False
-    else:
-        correct_conf_files = True
-
-    try:
-        running_version = get_dbus_daemon_version()
-    except:
-        print_traceback()
-        running_version = 0
-    from daemon import version as current_version
-    same_version = (current_version == running_version)
-    
-    daemon_current = A+'/daemon.py'
-    daemon_installed = '<None>'
-    try:
-        import ailurus
-    except:
-        same_daemon = False
-    else:
-        daemon_installed = os.path.dirname(os.path.abspath(ailurus.__file__))+'/daemon.py'
-        same_daemon = with_same_content(daemon_current, daemon_installed)
-    
-    if correct_conf_files and same_version and same_daemon: return
-    def show_text_dialog(msg, icon=gtk.MESSAGE_ERROR):
-        dialog = gtk.MessageDialog(type=icon, buttons=gtk.BUTTONS_OK)
-        dialog.set_title('Ailurus')
-        dialog.set_markup(msg)
-        dialog.run()
-        dialog.destroy()
-    import StringIO
-    message = StringIO.StringIO()
-    print >>message, _('Error happened. You cannot install any software by Ailurus. :(')
-    print >>message, ''
-    if not correct_conf_files:
-        print >>message, _('System configuration file should be updated.')
-        print >>message, _('Please run these commands using <b>su</b> or <b>sudo</b>:')
-        print >>message, ''
-        print >>message, '<span color="blue">', 'cp /usr/share/ailurus/support/com.googlecode.ailurus.conf /etc/dbus-1/system.d/com.googlecode.ailurus.conf', '</span>'
-        print >>message, '<span color="blue">', 'cp /usr/share/ailurus/support/com.googlecode.ailurus.service /usr/share/dbus-1/system-services/com.googlecode.ailurus.service', '</span>'
-        print >>message, ''
-        show_text_dialog(message.getvalue())
-    elif not same_daemon:
-        print >>message, _('Please re-install Ailurus.')
-        print >>message, _('Because file contents are different:')
-        print >>message, '<span color="blue">', daemon_current, '</span>'
-        print >>message, '<span color="blue">', daemon_installed, '</span>'
-        show_text_dialog(message.getvalue())
-    elif not same_version:
-        print >>message, _('We need to restart Ailurus daemon.')
-        print >>message, _('Old version is %s.') % running_version, _('New version is %s') % current_version
-        print >>message, ''
-        print >>message, _('Press this button to restart daemon. Require authentication.')
-        show_text_dialog(message.getvalue())
-        try:
-            restart_dbus_daemon()
-            show_text_dialog(_('Ailurus daemon successfully restarted. Ailurus will work fine.'), icon=gtk.MESSAGE_INFO)
-        except:
-            show_text_dialog(_("Cannot restart Ailurus daemon. Please restart your computer."))
-            print_traceback()
 
 def wait_firefox_to_create_profile():
     if os.path.exists('/usr/bin/firefox'):
@@ -535,7 +446,6 @@ with TimeStat(_('start up')):
     detect_proxy_env()
     check_home_dir_permission()
     check_required_packages()
-    check_dbus_daemon_status()
     
     while gtk.events_pending(): gtk.main_iteration()
     main_view = MainView()

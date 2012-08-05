@@ -521,11 +521,7 @@ def get_authentication_method():
     return ret
 
 def authenticate():
-    if get_authentication_method() == 0:
-        import dbus, os
-        bus = dbus.SessionBus()
-        policykit = bus.get_object('org.freedesktop.PolicyKit.AuthenticationAgent', '/')
-        policykit.ObtainAuthorization('com.googlecode.ailurus', dbus.UInt32(0), dbus.UInt32(os.getpid()))
+    pass
 
 def spawn_as_root(command):
     is_string_not_empty(command)
