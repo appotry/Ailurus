@@ -52,17 +52,6 @@ class Terminal:
         # This idea comes from jhbuild/frontends/gtkui.py
         # I wish to thank Project jhbuild!
         env = {}
-        if Config.get_use_proxy():
-            try: 
-                proxy_string = get_proxy_string()
-                assert proxy_string
-            except: pass
-            else:
-                env = os.environ.copy()
-                env.update({'http_proxy':proxy_string,
-                            'https_proxy':proxy_string,
-                            'ftp_proxy':proxy_string,
-                            })
         msg = StringIO.StringIO()
         print >>msg, '\x1b[1;33m', _('Run command:'), string, '\x1b[m', '\r'
         gtk.gdk.threads_enter()

@@ -73,16 +73,6 @@ class Window:
         # I wish to thank Project jhbuild!
         env = os.environ.copy()
         self.populate_path(env) # because PATH of normal user does not contain 'sbin' on Debian
-        if Config.get_use_proxy():
-            try: 
-                proxy_string = get_proxy_string()
-                assert proxy_string
-            except: pass
-            else:
-                env.update({'http_proxy':proxy_string,
-                            'https_proxy':proxy_string,
-                            'ftp_proxy':proxy_string,
-                            })
         msg = StringIO.StringIO()
         print >>msg, '\x1b[1;33m' + _('Run command:'), ' '.join(argv), '\x1b[m', '\r'
         self.terminal.feed(msg.getvalue())

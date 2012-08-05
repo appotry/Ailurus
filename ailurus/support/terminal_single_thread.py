@@ -48,17 +48,6 @@ class Terminal:
             if a[0]=='~': argv[i]=os.path.expanduser(a)
         print '\x1b[1;33m', _('Run command:'), string, '\x1b[m'
         env = {}
-        if Config.get_use_proxy():
-            try:
-                proxy_string = get_proxy_string()
-                assert proxy_string
-            except: pass
-            else:
-                env = os.environ.copy()
-                env.update({'http_proxy':proxy_string,
-                            'https_proxy':proxy_string,
-                            'ftp_proxy':proxy_string,
-                            })
         pid = self.terminal.fork_command(command=argv[0],
                                          argv=argv,
                                          directory=os.getcwd(),

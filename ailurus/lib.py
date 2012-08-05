@@ -219,20 +219,6 @@ class Config:
         try: return cls.get_int('last_synced_data_version')
         except: return 0
     @classmethod
-    def set_use_proxy(cls, value):
-        cls.set_bool('use_proxy', value)
-    @classmethod
-    def get_use_proxy(cls):
-        try: return cls.get_bool('use_proxy')
-        except: return False
-    @classmethod
-    def set_proxy_string_id_in_keyring(cls, value):
-        cls.set_long('proxy_string_id_in_keyring', value)
-    @classmethod
-    def get_proxy_string_id_in_keyring(cls):
-        # do not wrap it in try..except
-        return cls.get_long('proxy_string_id_in_keyring')
-    @classmethod
     def set_query_before_exit(cls, value):
         cls.set_bool('query_before_exit', value)
     @classmethod
@@ -364,49 +350,8 @@ class Config:
         except: 
             return False
 
-def set_proxy_string(proxy_string):
-    import gnomekeyring
-    keyring = gnomekeyring.get_default_keyring_sync()
-    id = gnomekeyring.item_create_sync(keyring,
-                                       gnomekeyring.ITEM_GENERIC_SECRET,
-                                       'ailurus proxy string',
-                                       {'appname':'ailurus'},
-                                       proxy_string,
-                                       True, # update_if_exists
-                                      )
-    Config.set_proxy_string_id_in_keyring(id)
-
 class UserDeniedError(Exception):
     'User has denied keyring authentication'
-
-def get_proxy_string():
-    "Return '', non-empty string or raise exception"
-    if hasattr(get_proxy_string, 'denied'): # user has denied access before
-        raise UserDeniedError
-    
-    try:    id = Config.get_proxy_string_id_in_keyring()
-    except: return '' # not exist
-    
-    import gnomekeyring
-    keyring = gnomekeyring.get_default_keyring_sync()
-    try:
-        proxy_string = gnomekeyring.item_get_info_sync(keyring, id).get_secret()
-        return proxy_string
-    except gnomekeyring.DeniedError: # user denied authentication
-        get_proxy_string.denied = True
-        raise UserDeniedError
-
-def enable_urllib2_proxy():
-    string = get_proxy_string()
-    assert string
-    import urllib2
-    proxy_support = urllib2.ProxyHandler({'http':string}) # FIXME: please support https, ftp, rstp
-    opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler)
-    urllib2.install_opener(opener)
-
-def disable_urllib2_proxy():
-    import urllib2
-    urllib2.install_opener(None)
 
 def install_locale():
     import gettext
@@ -479,17 +424,6 @@ def run(command, ignore_error=False):
         print '\x1b[1;33m', _('Run command:'), command, '\x1b[m'
         import os, subprocess
         env = None
-        if Config.get_use_proxy():
-            try:
-                proxy_string = get_proxy_string()
-                assert proxy_string
-            except: pass
-            else:
-                env = os.environ.copy()
-                env.update({'http_proxy':proxy_string,
-                            'https_proxy':proxy_string,
-                            'ftp_proxy':proxy_string,
-                            })
         task = subprocess.Popen(command, env=env, shell=True)
         task.wait()
         if task.returncode and ignore_error == False:
