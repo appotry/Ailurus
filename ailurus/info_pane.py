@@ -17,7 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 from __future__ import with_statement
-import gtk, sys, os
+import gtk
 from lib import *
 from libu import *
 
@@ -41,7 +41,7 @@ class InfoPane(gtk.VBox):
         
         gtk.VBox.__init__(self, False, 10)
         
-        self.treestore = gtk.TreeStore(gtk.gdk.Pixbuf, str, str)
+        self.treestore = gtk.TreeStore(str, str)
         self.treeview = treeview = gtk.TreeView(self.treestore)
         column = gtk.TreeViewColumn()
         treeview.append_column(column)
@@ -49,9 +49,9 @@ class InfoPane(gtk.VBox):
         text_render = gtk.CellRendererText()
         value_render = gtk.CellRendererText()
         column.pack_start(text_render, False)
-        column.add_attribute(text_render, 'text', 1)
+        column.add_attribute(text_render, 'text', 0)
         column.pack_start(value_render, False)
-        column.add_attribute(value_render, 'text', 2)
+        column.add_attribute(value_render, 'text', 1)
         
         scrollwindow = gtk.ScrolledWindow ()
         scrollwindow.add (treeview)
@@ -60,14 +60,14 @@ class InfoPane(gtk.VBox):
         
         self.pack_start(scrollwindow)
 
-        subtree_root = self.treestore.append(None, [None, self.hardware_subtree_text, None])
+        subtree_root = self.treestore.append(None, [self.hardware_subtree_text, None])
         for func in self.hardware_functions:
             for row in func.result:
-                self.treestore.append(subtree_root, [None, row[0], row[1]])
+                self.treestore.append(subtree_root, [row[0], row[1]])
                 
-        subtree_root = self.treestore.append(None, [None, self.os_subtree_text, None])
+        subtree_root = self.treestore.append(None, [self.os_subtree_text, None])
         for func in self.os_functions:
             for row in func.result:
-                self.treestore.append(subtree_root, [None, row[0], row[1]])
+                self.treestore.append(subtree_root, [row[0], row[1]])
 
         self.treeview.expand_all()
