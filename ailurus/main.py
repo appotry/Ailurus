@@ -69,29 +69,6 @@ def create_menu_from(menuitems):
     menu.show_all()
     return menu
 
-class DefaultPaneMenuItem(gtk.CheckMenuItem):
-    def __init__(self, text, value, group):
-        'text is displayed. value is saved in Config. group consists of all menu items'
-        assert isinstance(text, str)
-        assert isinstance(value, str)
-        assert isinstance(group, list)
-        for obj in group:
-            assert isinstance(obj, gtk.CheckMenuItem)
-        self.text = text.replace('\n', '')
-        self.value = value
-        self.group = group
-        gtk.CheckMenuItem.__init__(self, self.text)
-        self.set_draw_as_radio(True)
-        self.set_active(Config.get_default_pane() == value)
-        self.connect('toggled', lambda w: self.toggled())
-    def toggled(self):
-        if self.get_active():
-            Config.set_default_pane(self.value)
-            for obj in self.group:
-                if obj != self:
-                    obj.set_active(False)
-        self.set_active(Config.get_default_pane() == self.value)
-
 class MainView:
     def add_other_button(self):
         item = toolitem(_('Others'), 'button_release_event', 
@@ -105,7 +82,7 @@ class MainView:
             item = toolitem(text, 'clicked', self.activate_pane, key)
             self.toolbar.insert(item, 0)
         
-        self.activate_pane(None, Config.get_default_pane())
+        self.activate_pane(None, 'InfoPane')
 
     def __show_popupmenu_on_toolbaritem(self, widget, event, menu):
         if event.type == gtk.gdk.BUTTON_RELEASE and event.button == 1:
@@ -141,14 +118,6 @@ class MainView:
                 self.menu_preference.show_all()
         self.toggle_area.add(pane_loader.get_pane())
         self.toggle_area.show_all()
-
-    def lock(self):
-        self.stop_delete_event = True
-        self.toolbar.set_sensitive(False)
-    
-    def unlock(self):
-        self.stop_delete_event = False
-        self.toolbar.set_sensitive(True)
 
     def terminate_program(self, *w):
         if self.stop_delete_event:
@@ -189,27 +158,19 @@ class MainView:
         window.add(vbox)
 
         from system_setting_pane import SystemSettingPane
-#        from clean_up_pane import CleanUpPane
+        from clean_up_pane import CleanUpPane
         from info_pane import InfoPane
-#        from computer_doctor_pane import ComputerDoctorPane
-#        if UBUNTU or UBUNTU_DERIV:
-#            from ubuntu.repos_config_pane import ReposConfigPane
-#        if FEDORA:
-#            from fedora.repos_edit_pane import FedoraReposEditPane
+        from computer_doctor_pane import ComputerDoctorPane
 
-#        self.register(ComputerDoctorPane, load_cure_objs)
-#        self.register(CleanUpPane)
-#        if BACKEND:
-#            from snapshot_pane import SnapshotPane
-#            self.register(SnapshotPane)
-#        if UBUNTU or UBUNTU_DERIV:
-#            self.register(ReposConfigPane)
-#        if FEDORA:
-#            self.register(FedoraReposEditPane)
+        self.register(ComputerDoctorPane, load_cure_objs)
+        self.register(CleanUpPane)
+        if BACKEND:
+            from snapshot_pane import SnapshotPane
+            self.register(SnapshotPane)
         self.register(SystemSettingPane, load_setting)
         self.register(InfoPane, load_info)
         
-        self.add_other_button()
+#        self.add_other_button()
         self.add_pane_buttons_in_toolbar()
         self.window.show_all()
         

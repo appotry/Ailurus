@@ -34,61 +34,6 @@ def row(text, value, icon = None, tooltip = None): # only used in hardwareinfo.p
     assert icon is None # do not display icon anymore
     return (text, value, icon, tooltip)
 
-class I:
-    this_is_an_installer = True
-    this_is_a_repository = False
-    category = 'others'
-    detail = ''
-    how_to_install = ''
-    download_url = ''
-    cache_installed = showed_in_toggle = None # boolean
-    logo_pixbuf = None # gtk.gdk.Pixbuf
-    use_default_icon = None # boolean
-    installing_error = [] # list
-    def self_check(self):
-        'check errors in source code'
-    def fill(self):
-        'fill self.detail, self.how_to_install'
-    def install(self):
-        raise NotImplementedError
-    def installed(self):
-        raise NotImplementedError
-    def remove(self):
-        raise NotImplementedError
-    def add_temp_repository(self):
-        'Add repository before installing me'
-    def clean_temp_repository(self):
-        'Remove repository after installing me'
-    def clean_installing_error(self):
-        self.installing_error = []
-    def has_installing_error(self):
-        return bool(self.installing_error)
-    def add_installing_error(self, error):
-        assert isinstance(error, tuple) and len(error) == 3
-        import types
-        assert isinstance(error[0], types.TypeType)
-        assert isinstance(error[1], types.ObjectType)
-        assert isinstance(error[2], types.ObjectType)
-        self.installing_error.append(error)
-    def print_installing_error(self, stream):
-        import traceback
-        print >>stream, self.__doc__
-        for exc in self.installing_error:
-            traceback.print_exception(exc[0], exc[1], exc[2], file=stream)
-        print >>stream
-    def fail_by_download_error(self):
-        for error in self.installing_error:
-            if error[0] == CannotDownloadError:
-                return True
-        return False
-    def fail_by_user_cancel(self):
-        for error in self.installing_error:
-            if error[0] == UserCancelInstallation:
-                return True
-        return False
-    def visible(self):
-        return True
-
 class C:
     this_is_a_cure = True
     MUST_FIX, SUGGESTION = range(2)
@@ -102,11 +47,6 @@ class C:
 class Config:
     import os
     config_dir = os.path.expanduser('~/.config/ailurus/')
-    @classmethod
-    def check_permission(cls):
-        cls.make_config_dir()
-        f = open(cls.config_dir + 'this_file_can_be_safely_removed', 'w')
-        f.close()
     @classmethod
     def make_config_dir(cls):
         import os
@@ -178,89 +118,6 @@ class Config:
         value = str(value)
         return value=='True' or value=='true'
     @classmethod
-    def get_custom_appobj_counter_value(cls):
-        try: return cls.get_int('custom_app_count')
-        except: return 0
-    @classmethod
-    def increase_customapp_counter_value(cls):
-        value = cls.get_custom_appobj_counter_value()
-        value += 1
-        cls.set_int('custom_app_count', value)
-    @classmethod
-    def set_do_query_before_install(cls, value):
-        cls.set_bool('do_query_before_install', value)
-    @classmethod
-    def get_do_query_before_install(cls):
-        try: return cls.get_bool('do_query_before_install')
-        except: return True
-    @classmethod
-    def set_login_window_background(cls, value):
-        'just a cache. value may be wrong. cache the gconf value "/desktop/gnome/background/picture_filename" of user "gdm".'
-        cls.set_string('login_window_background', value)
-    @classmethod
-    def get_login_window_background(cls):
-        try: return cls.get_string('login_window_background')
-        except: return None # please do not return ''. 
-    @classmethod
-    def set_contact(cls, value):
-        cls.set_string('contact', value)
-    @classmethod
-    def get_contact(cls):
-        try:
-            return cls.get_string('contact')
-        except:
-            import os
-            return os.environ['USER']
-    @classmethod
-    def set_last_synced_data_version(cls, value):
-        cls.set_int('last_synced_data_version', value)
-    @classmethod
-    def get_last_synced_data_version(cls):
-        try: return cls.get_int('last_synced_data_version')
-        except: return 0
-    @classmethod
-    def wget_set_timeout(cls, timeout):
-        assert isinstance(timeout, int) and timeout>0, timeout
-        cls.set_int('wget_timeout', timeout)
-    @classmethod
-    def wget_get_timeout(cls):
-        try:       value = cls.get_int('wget_timeout')
-        except: value = 20
-        return value
-    @classmethod
-    def wget_set_triesnum(cls, triesnum):
-        assert isinstance(triesnum, int) and triesnum>0, triesnum
-        cls.set_int('wget_triesnum', triesnum)
-    @classmethod
-    def wget_get_triesnum(cls):
-        try:       value = cls.get_int('wget_triesnum')
-        except: value = 3
-        return value
-    @classmethod
-    def set_default_pane(cls, value):
-        cls.set_string('default_pane', value)
-    @classmethod
-    def get_default_pane(cls):
-        try: value = cls.get_string('default_pane')
-        except: value = 'SystemSettingPane'
-        return value
-    @classmethod
-    def get_locale(cls):
-        import locale
-        try:
-            value = locale.getdefaultlocale()[0]
-            if value: return value # language code and encoding may be None if their values cannot be determined.
-            else: return 'en_US'
-        except ValueError: # may raise exception: "unknown locale"
-            print_traceback()
-            return 'en_US'
-    @classmethod
-    def is_Chinese_locale(cls):
-        return cls.get_locale().startswith('zh')
-    @classmethod
-    def is_Poland_locale(cls):
-        return cls.get_locale().startswith('pl')
-    @classmethod
     def is_Ubuntu(cls):
         import os
         if not os.path.exists('/etc/lsb-release'): 
@@ -316,32 +173,6 @@ class Config:
         'return "5.*"'
         import platform
         return platform.dist()[1]
-    @classmethod
-    def is_GNOME(cls):
-        if cls.is_XFCE(): return False
-        try:
-            get_output('pgrep -u $USER gnome-panel')
-            return True
-        except:
-            return False
-    @classmethod
-    def is_KDE(cls):
-        try:
-            get_output('pgrep -u $USER kdeinit')
-            return True
-        except:
-            try:
-                get_output('pgrep -u $USER kdeinit4')
-                return True
-            except: pass
-        return False
-    @classmethod
-    def is_XFCE(cls):
-        try:  
-            get_output('pgrep -u $USER xfce4-session')
-            return True
-        except: 
-            return False
 
 class UserDeniedError(Exception):
     'User has denied keyring authentication'
@@ -349,56 +180,6 @@ class UserDeniedError(Exception):
 def install_locale():
     import gettext
     gettext.translation('ailurus', '/usr/share/locale', fallback=True).install(names=['ngettext'])
-
-def is_legal_license(license):
-    return license in [GPL, LGPL, EPL, MPL, BSD, MIT, CDDL, APL, AL] 
-
-def DUAL_LICENSE(A, B):
-    assert is_legal_license(A) and is_legal_license(B)
-    return _('Dual-licensed under %(A)s and %(B)s') % {'A':A, 'B':B}
-
-def TRI_LICENSE(A, B, C):
-    assert is_legal_license(A) and is_legal_license(B) and is_legal_license(C)
-    return _('Tri-licensed under %(A)s, %(B)s and %(C)s') % {'A':A, 'B':B, 'C':C}
-
-class ResponseTime:
-    map = {}
-    changed = False
-    @classmethod
-    def load(cls):
-        import os
-        try:
-            path = Config.config_dir + 'response_time_3'
-            if not os.path.exists(path): return
-            with open(path) as f:
-                lines = f.readlines()
-            for i in range(0, len(lines), 2):
-                url = lines[i].strip()
-                time = float(lines[i+1].strip())
-                cls.map[url] = time
-        except IOError:
-            print_traceback()
-    @classmethod
-    def save(cls):
-        if not cls.changed: return
-        try:
-            path = Config.config_dir + 'response_time_3'
-            with open(path, 'w') as f:
-                for key, value in cls.map.items():
-                    print >>f, key
-                    print >>f, value
-        except IOError:
-            print_traceback()
-    @classmethod
-    def get(cls, url):
-        is_string_not_empty(url)
-        return cls.map[url]
-    @classmethod
-    def set(cls, url, value):
-        is_string_not_empty(url)
-        assert isinstance(value, (int,float)) and value > 0
-        cls.map[url] = value
-        cls.changed = True
 
 class CommandFailError(Exception):
     'Fail to execute a command'
@@ -434,10 +215,6 @@ def daemon():
 def get_dbus_daemon_version():
     ret = daemon().get_version(dbus_interface='com.googlecode.ailurus.Interface')
     return ret    
-
-def restart_dbus_daemon():
-    authenticate()
-    daemon().exit(dbus_interface='com.googlecode.ailurus.Interface')
 
 def get_authentication_method():
     ret = daemon().get_check_permission_method(dbus_interface='com.googlecode.ailurus.Interface')
@@ -765,21 +542,11 @@ class APT:
         cls.apt_get_update()
         cls.cache_changed()
         run_as_root_in_terminal('apt-get install %s' % ' '.join(packages))
-#        print '\x1b[1;32m', _('Installing packages:'), ' '.join(packages), '\x1b[m'
-#        try:
-#            daemon().apt_command('install', ','.join(packages),
-#                                 packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
-#        except dbus.exceptions.DBusException, e:
-#            if e.get_dbus_name() == 'com.googlecode.ailurus.CannotDownloadError':
-#                raise CannotDownloadError(*packages)
     @classmethod
     def remove(cls, *packages):
         is_pkg_list(packages)
         cls.cache_changed()
         run_as_root_in_terminal('apt-get remove %s' % ' '.join(packages))
-#        print '\x1b[1;31m', _('Removing packages:'), ' '.join(packages), '\x1b[m'
-#        daemon().apt_command('remove', ','.join(packages),
-#                             packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
     @classmethod
     def neet_to_run_apt_get_update(cls):
         cls.apt_get_update_is_called = False
@@ -787,7 +554,6 @@ class APT:
     def apt_get_update(cls):
         if cls.apt_get_update_is_called == False:
             run_as_root_in_terminal('apt-get update', ignore_error = True)
-#            daemon().apt_command('update', '', packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
             cls.apt_get_update_is_called = True
             cls.cache_changed()
     @classmethod
@@ -795,9 +561,6 @@ class APT:
         cls.cache_changed()
         for package in packages:
             run_as_root('gdebi-gtk "%s"' % package) # FIXME
-#            run_as_root_in_terminal('dpkg -i "%s"' % package)
-#            daemon().apt_command('install_local', package,
-#                                 packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
     @classmethod
     def is_cache_lockable(cls):
         return None
@@ -941,647 +704,16 @@ class CannotDownloadError(Exception):
 class UserCancelInstallation(Exception):
     pass
 
-def download(url, filename):
-    import os
-    is_string_not_empty(url)
-    assert url[0]!='-'
-    is_string_not_empty(filename)
-    assert filename[0]!='-'
-    timeout = Config.wget_get_timeout()
-    tries = Config.wget_get_triesnum()
-    try:
-        run("wget --timeout=%(timeout)s --tries=%(tries)s '%(url)s' -O '%(filename)s'"
-            %{'timeout':timeout, 'tries':tries, 'url':url, 'filename':filename} )
-    except:
-        if os.path.exists(filename): os.unlink(filename)
-        raise CannotDownloadError(url)
-    
-def reset_dir():
-    import os, sys
-    os.chdir(A)
-
-class APTSource2:
-    re_pattern_server = None
-    re_pattern_url = None
-    @classmethod
-    def all_conf_files(cls):
-        import glob, os
-        ret = glob.glob('/etc/apt/sources.list.d/*.list')
-        if os.path.exists('/etc/apt/sources.list'):
-            ret.append('/etc/apt/sources.list')
-        return ret
-    @classmethod
-    def iter_all_lines(cls):
-        for file in cls.all_conf_files():
-            f = open(file)
-            for line in f:
-                if not line.endswith('\n'): line += '\n'
-                yield line
-            f.close()
-    @classmethod
-    def all_lines(cls):
-        return [line for line in cls.iter_all_lines()]
-    @classmethod
-    def all_lines_contain(cls, snip):
-        snip = cls.remove_comment(snip)
-        for line in cls.iter_all_lines():
-            if snip in line: return True
-        return False
-    @classmethod
-    def all_lines_contain_all_of(cls, many_snips):
-        for snip in many_snips:
-            if not cls.all_lines_contain(snip): return False
-        return True
-    @classmethod
-    def add_lines_to_file(cls, lines, file_path = '/etc/apt/sources.list'):
-        assert isinstance(lines, list)
-        assert isinstance(file_path, str)
-        
-        with TempOwn(file_path):
-            with open(file_path) as f:
-                contents = f.readlines()
-            if len(contents) and not contents[-1].endswith('\n'):
-                contents.append('\n')
-            contents.extend(lines)
-            with open(file_path, 'w') as f:
-                f.writelines(contents)
-    @classmethod
-    def remove_snips_from(cls, snips, file_path):
-        assert isinstance(snips, list)
-        assert isinstance(file_path, str)
-        
-        with open(file_path) as f:
-            contents = f.readlines()
-        changed = False
-        for i, line in enumerate(contents):
-            line = cls.remove_comment(line)
-            for snip in snips:
-                snip = cls.remove_comment(snip)
-                if snip in cls.remove_comment(line):
-                    contents[i] = ''
-                    changed = True
-                    break
-        if changed:
-            with TempOwn(file_path):
-                with open(file_path, 'w') as f:
-                    f.writelines(contents)
-    @classmethod
-    def remove_snips_from_all_files(cls, snips):
-        assert isinstance(snips, list)
-        for file_path in cls.all_conf_files():
-            cls.remove_snips_from(snips, file_path)
-    @classmethod
-    def remove_comment(cls, line):
-        return line.split('#', 1)[0].strip()
-    @classmethod
-    def is_official_line(cls, line):
-        line = cls.remove_comment(line)
-        for snip in ['-backports', '-proposed', '-security', '-updates']:
-            snip = VERSION + snip
-            if snip in line: return True
-        return False
-    @classmethod
-    def get_server_from_line(cls, line):
-        line = cls.remove_comment(line)
-        import re
-        if cls.re_pattern_server is None:
-            cls.re_pattern_server = re.compile(r'^deb(-src)? [a-z]+://([^/]+)/.*$')
-        match = cls.re_pattern_server.match(line)
-        if match: return match.group(2)
-        else:     return None
-    @classmethod
-    def get_url_from_line(cls, line):
-        line = cls.remove_comment(line)
-        import re
-        if cls.re_pattern_url is None:
-            cls.re_pattern_url = re.compile(r'^deb(-src)? (\S+) .*$')
-        match = cls.re_pattern_url.match(line)
-        if match: return match.group(2)
-        else:     return None
-    @classmethod
-    def official_servers(cls):
-        ret = set()
-        for line in cls.iter_all_lines():
-            if cls.is_official_line(line):
-                server = cls.get_server_from_line(line)
-                ret.add(server)
-        return ret
-    @classmethod
-    def official_urls(cls):
-        ret = set()
-        for line in cls.iter_all_lines():
-            if cls.is_official_line(line):
-                url = cls.get_url_from_line(line)
-                ret.add(url)
-        return ret
-    @classmethod
-    def third_party_urls(cls):
-        offi_urls = cls.official_urls()
-        ret = set()
-        for line in cls.iter_all_lines():
-            url = cls.get_url_from_line(line)
-            if url and url not in offi_urls: ret.add(url)
-        return ret
-    @classmethod
-    def all_urls(cls):
-        ret = set()
-        for line in cls.iter_all_lines():
-            url = cls.get_url_from_line(line)
-            if url: ret.add(url)
-        return ret
-    @classmethod
-    def this_line_contain(cls, line, snip):
-        return snip in cls.remove_comment(line)
-    @classmethod
-    def this_line_contain_any_of(cls, line, snip_set):
-        for snip in snip_set:
-            if cls.this_line_contain(line, snip):
-                return True
-        return False
-    @classmethod
-    def remove_official_servers(cls):
-        offi_servers = cls.official_servers()
-        for file in cls.all_conf_files():
-            with open(file) as f:
-                contents = f.readlines()
-            changed = False
-            for i, line in enumerate(contents):
-                if cls.this_line_contain_any_of(line, offi_servers):
-                    contents[i] = ''
-                    changed = True
-            if changed:
-                with TempOwn(file):
-                    with open(file, 'w') as f:
-                        f.writelines(contents)
-    @classmethod
-    def add_official_url(cls, url):
-        with TempOwn('/etc/apt/sources.list'):
-            with open('/etc/apt/sources.list') as f:
-                contents = f.readlines()
-            if len(contents) and not contents[-1].endswith('\n'):
-                contents.append('\n')
-            contents.append('deb %(url)s %(version)s main restricted universe multiverse\n'
-                            'deb %(url)s %(version)s-backports restricted universe multiverse\n'
-                            'deb %(url)s %(version)s-proposed main restricted universe multiverse\n'
-                            'deb %(url)s %(version)s-security main restricted universe multiverse\n'
-                            'deb %(url)s %(version)s-updates main restricted universe multiverse\n'
-                            'deb-src %(url)s %(version)s main restricted universe multiverse\n'
-                            'deb-src %(url)s %(version)s-backports main restricted universe multiverse\n'
-                            'deb-src %(url)s %(version)s-proposed main restricted universe multiverse\n'
-                            'deb-src %(url)s %(version)s-security main restricted universe multiverse\n'
-                            'deb-src %(url)s %(version)s-updates main restricted universe multiverse\n'
-                            % {'url':url, 'version':VERSION})
-            with open('/etc/apt/sources.list', 'w') as f:
-                f.writelines(contents)
-
-import threading
-class PingThread(threading.Thread):
-    def __init__(self, url, server, result):
-        is_string_not_empty(url)
-        is_string_not_empty(server)
-        assert isinstance(result, list)
-        
-        threading.Thread.__init__(self)
-        self.url = url
-        self.server = server
-        self.result = result
-        import time
-        self.start_time = time.time()
-    def elapsed_time(self):
-        import time
-        return time.time() - self.start_time
-    def run(self):
-        try:
-            time = get_response_time(self.url)
-            self.result.append([self.server, time])
-        except:
-            self.result.append([self.server, 'unreachable'])
-
-def open_web_page(page):
-    is_string_not_empty(page)
-    notify( _('Opening web page'), page)
-    KillWhenExit.add('xdg-open "%s"'%page)
-
 def report_bug(*w):
     page = 'http://code.google.com/p/ailurus/issues/entry'
     notify( _('Opening web page'), page)
     KillWhenExit.add('xdg-open %s'%page)
 
 import os
-class firefox:
-    support = False # do not use this class if support is False
-    preference_dir = None # form: $HOME/.mozilla/firefox/5y7bqw54.default/
-    extensions_dir = None # form: preference_dir + 'extensions/'
-    prefs_js_path = None # form: preference_dir + 'prefs.js'
-    pattern1 = None # regexp
-    pattern2 = None # regexp
-    prefs_js_line_pattern = None
-    key2value = {} # key is native python constant. value is native python constant.
-    key2line = {} # key is native python constant. line is the line in prefs.js
-    @classmethod
-    def init(cls):
-        'may raise exception'
-        ini_file = os.path.expanduser('~/.mozilla/firefox/profiles.ini')
-        if not os.path.exists(ini_file):
-            print '[x] Firefox profiles.ini missing'
-            return
-        with open(ini_file) as f:
-            lines = f.readlines()
-        for i, line in enumerate(lines):
-            if line == 'Name=default\n': break
-        else:
-            raise Exception('"Name=default" not found')
-        lines = lines[i+1:]
-        for line in lines:
-            if line.startswith('Path='):
-                dir_name = line.split('=', 1)[1].strip()
-                break
-        else:
-            raise Exception('"Path=..." not found')
-        cls.preference_dir = os.path.expanduser('~/.mozilla/firefox/') + dir_name + '/'
-        assert os.path.exists(cls.preference_dir), cls.preference_dir
-        cls.extensions_dir = cls.preference_dir + 'extensions/'
-        if not os.path.exists(cls.extensions_dir): os.mkdir(cls.extensions_dir)
-        cls.prefs_js_path = cls.preference_dir + 'prefs.js'
-        if not os.path.exists(cls.prefs_js_path): # touch file
-            with open(cls.prefs_js_path, 'w') as f: pass
-        import re
-        cls.pattern1 = re.compile('em:name="(.+)"')
-        cls.pattern2 = re.compile('<em:name>(.+)</em:name>')
-        cls.prefs_js_line_pattern = re.compile(r'''^user_pref\( # begin
-            (['"][^'"]+['"]) # key
-            ,\s
-            (.+) # value
-            \); # end ''', re.VERBOSE)
-        cls.load_user_prefs()
-        cls.support = True
-    @classmethod
-    def is_extension_archive(cls, file_path):
-        assert isinstance(file_path, str) and file_path
-        assert file_path.endswith('.xpi') or file_path.endswith('.jar')
-    @classmethod
-    def install_extension_archive(cls, file_path):
-        cls.is_extension_archive(file_path)
-        run('cp "%s" "%s"' % (file_path, cls.extensions_dir))
-    @classmethod
-    def extension_archive_exists(cls, file_path):
-        cls.is_extension_archive(file_path)
-        return os.path.exists(cls.extensions_dir + file_path)
-    @classmethod
-    def remove_extension_archive(cls, file_path):
-        cls.is_extension_archive(file_path)
-        print '\x1b[1;33m', _('Run command:'), 'rm -f %s%s' % (cls.extensions_dir, file_path), '\x1b[m'
-        os.unlink(cls.extensions_dir + file_path)
-    @classmethod
-    def extension_is_installed(cls, extension_name):
-        assert isinstance(extension_name, (str, unicode)) and extension_name
-        import glob
-        dirs = glob.glob(cls.extensions_dir + '*')
-        ret = []
-        for dir in dirs:
-            if extension_name == cls.get_extension_name_in(dir):
-                return True
-        return False
-    @classmethod
-    def all_installed_extensions(cls):
-        import glob
-        dirs = glob.glob(cls.extensions_dir + '*')
-        ret = []
-        for dir in dirs:
-            ret.append(cls.get_extension_name_in(dir))
-        return ret
-    @classmethod
-    def get_extension_name_in(cls, dir):
-        assert isinstance(dir, str) and dir
-        rdf_file = '%s/install.rdf' % dir
-        if not os.path.exists(rdf_file): return None
-        with open(rdf_file) as f:
-            content = f.read()
-        return cls.guess_name_from_content_method1(content) or cls.guess_name_from_content_method2(content)  
-    @classmethod
-    def guess_name_from_content_method1(cls, content):
-        try:    return cls.pattern1.search(content).group(1)
-        except: return None
-    @classmethod
-    def guess_name_from_content_method2(cls, content):
-        try:    return cls.pattern2.search(content).group(1)
-        except: return None
-    @classmethod
-    def all_user_pref_lines(cls, content):
-        assert isinstance(content, (str, unicode))
-        lines = content.splitlines()
-        ret = []
-        for line in lines:
-            if line.startswith('user_pref(') and line.endswith(');'):
-                ret.append(line)
-        return ret
-    @classmethod
-    def get_key_value_from(cls, user_pref_line): # may raise exception
-        'return (key, value). both of them are native python constant.'
-        assert isinstance(user_pref_line, (str, unicode))
-        match = cls.prefs_js_line_pattern.match(user_pref_line)
-        assert match, user_pref_line
-        key = match.group(1)
-        key = eval(key)
-        value = match.group(2)
-        true = True # javascript boolean
-        false = False # javascript boolean
-        value = eval(value)
-        return key, value
-    @classmethod
-    def load_user_prefs(cls):
-        cls.key2value.clear()
-        with open(cls.prefs_js_path) as f:
-            content = f.read()
-        lines = cls.all_user_pref_lines(content)
-        for line in lines:
-            try:
-                key, value = cls.get_key_value_from(line)
-                cls.key2value[key] = value
-                cls.key2line[key] = line
-            except:
-                print_traceback()
-    @classmethod
-    def get_pref(cls, key):
-        'key should be native python string. return native python constant'
-        assert isinstance(key, (str, unicode))
-        return cls.key2value[key]
-    @classmethod
-    def set_pref(cls, key, value):
-        'value should be native python variable'
-        cls.key2value[key] = value
-        repr_key = '"%s"' % key
-        repr_value = repr(value)
-        if value == True: repr_value = 'true'
-        elif value == False: repr_value = 'false'
-        cls.key2line[key] = 'user_pref(%s, %s);' % (repr_key, repr_value)
-    @classmethod
-    def remove_pref(cls, key):
-        try: del cls.key2value[key]
-        except KeyError: pass
-    @classmethod
-    def save_user_prefs(cls):
-        keys = cls.key2value.keys()
-        keys.sort()
-        with open(cls.prefs_js_path, 'w') as f:
-            for key in keys:
-                line = cls.key2line[key]
-                print >>f, line
-
-def delay_notify_firefox_restart(show_notify=False):
-    assert isinstance(show_notify, bool)
-    if not show_notify:
-        delay_notify_firefox_restart.should_show = True
-    else:
-        if getattr(delay_notify_firefox_restart, 'should_show', False):
-            delay_notify_firefox_restart.should_show = False
-            try:
-                string = get_output('ps -a -u $USER | grep firefox', True)
-                if string:
-                    notify(_('Please restart Firefox'), _('Please restart Firefox to complete installation.'))
-                else:
-                    KillWhenExit.add('firefox')
-            except:
-                print_traceback()
-
-def sha1(path):
-    is_string_not_empty(path)
-    import os
-    assert os.path.exists(path)
-    import hashlib
-    obj = hashlib.sha1()
-    f = open(path)
-    while True:
-        block = f.read(4096)
-        if len(block)==0: break
-        obj.update(block)
-    f.close()
-    return obj.hexdigest()
-
-class R:
-    pingtime_cache = {}
-    @classmethod
-    def get_speed(cls, url):
-        assert url and isinstance(url, str)
-        import re
-        match = re.match('^\w+://([^/]+)/.+$', url)
-        assert match, url
-        try:
-            server = match.group(1)
-            if server in cls.pingtime_cache:
-                Time = cls.pingtime_cache[server]
-            else:
-                Time = get_response_time(url)
-                print _('Response time of server %(name)s is %(time).1f ms.') % {'name':server, 'time':Time}
-        except:
-            print _('Server %s does not respond.')%server
-            Time = 10000.0
-        finally:
-            cls.pingtime_cache[server] = Time
-            return Time
-    @staticmethod
-    def compare(u1, u2):
-        s1 = R.get_speed(u1)
-        s2 = R.get_speed(u2)
-        return cmp(s1, s2)
-    def sort(self):
-        if self.sorted: return
-        self.sorted = True
-        
-        if isinstance(self.url, str): 
-            self.sorted_url = [self.url]
-        elif isinstance(self.url, list):
-            if len(self.url)>1:
-                self.url.sort(R.compare)
-            self.sorted_url = self.url
-        else:
-            raise Exception
-    def delete_duplicate(self, List):
-        ret = []
-        servers = set()
-        for url in List:
-            import re
-            match = re.search('://([^/]+)/', url)
-            server = match.group(1)
-            if not server in servers:
-                ret.append(url)
-                servers.add(server)
-        return ret
-    def __init__(self, url_list, size=None, hash=None, filename=None):
-        #check url
-        assert url_list
-        assert isinstance(url_list, (str,list))
-        if isinstance(url_list, str): 
-            url_list = [ url_list ]
-        for e in url_list:
-            assert isinstance(e, str), e
-            assert e.startswith('http://') or e.startswith('https://') or e.startswith('ftp://')
-        self.url = self.delete_duplicate(url_list)
-
-        #check size
-        if size!=None:
-            assert size>0
-            assert isinstance(size, int) or isinstance(size, long), size
-        self.size = size
-        #check hash
-        if hash:
-            assert isinstance(hash, str), hash
-            assert len(hash)==40, hash
-        self.hash = hash
-
-        if filename:
-            self.filename = filename
-        else:
-            if isinstance(url_list, str): u = url_list
-            elif isinstance(url_list, list): u = url_list[0]
-            import re
-            self.filename = re.match('^.+/(.+)$', u).group(1)
-            
-        self.sorted = False
-    def can_download(self):
-        import urllib2
-        for url in self.url:
-            try:
-                print url
-                f = urllib2.urlopen(url)
-                return True
-            except:
-                pass
-        return False
-    def check(self, path):
-        if self.size:
-            import os
-            filesize=os.path.getsize(path)
-            if filesize!=self.size: 
-                raise CommandFailError('File is broken. Expected file length is %s, but real length is %s.'%(self.size, filesize) )
-        if self.hash:
-            print _('Checking file integrity ...'),
-            filehash = sha1(path)
-            if filehash!=self.hash: 
-                raise CommandFailError('File is broken. Expected hash is %s, but real hash is %s.'%(self.hash, filehash) )
-            print _('Good.')
-    def download(self):
-        self.sort()
-        dest = '/tmp/'+self.filename
-        import os, sys
-        assert isinstance(self.sorted_url, list)
-        for i, url in enumerate(self.sorted_url):
-            print '\x1b[1;36m', _('Using mirror %(i)s. There are a total of %(total)s mirrors.') % {'i' : i+1, 'total' : len(self.sorted_url)}, '\x1b[m'
-            assert isinstance(url, str)
-            try:
-                download(url, dest)
-                self.check(dest)
-                return dest
-            except:
-                print_traceback()
-        
-        raise CannotDownloadError(self.url)
-
-class ETCEnvironment:
-    def __init__(self):
-        self.keys = []
-        self.values = {}
-        f = open('/etc/environment')
-        for line in f:
-            items = line.split('=',1)
-            if len(items)<2: continue
-            key = items[0].strip()
-            if not key in self.keys:
-                self.keys.append(key)
-            value = items[1].strip()
-            if value[0]==value[-1]=='\'' or value[0]==value[-1]=='\"': value = value[1:-1]
-            self.values[key] = value.split(':')
-    def add(self, key, *values):
-        assert key and isinstance(key, str),    key
-        
-        values = list(values)
-        assert values
-        for v in values:
-            assert v and isinstance(v, str),    v
-            assert not ':' in v,     v
-        
-        if not key in self.keys:
-            self.keys.append(key)
-            self.values[key] = values
-        else:
-            self.values[key] = values+self.values[key]
-    def remove(self, key, *values):
-        assert key and isinstance(key, str),    key
-        for v in values:
-            assert v and isinstance(v, str),    v
-            assert not ':' in v,     v
-
-        if not key in self.keys: return
-        if not values: 
-            # delete it directly
-            try:    self.keys.remove(key)
-            except: pass
-            try:    del self.values[key]
-            except: pass
-        else:
-            List = self.values[key]
-            self.values[key] = [e for e in List if not e in values]
-    def save(self):
-        with TempOwn('/etc/environment'):
-            f = open('/etc/environment', 'w')
-            for key in self.keys:
-                if not self.values[key]: continue
-                f.write(key)
-                f.write('=')
-                f.write('\"')
-                f.write(':'.join(self.values[key]))
-                f.write('\"')
-                f.write('\n')
-
-class Chdir:
-    def __init__(self,path):
-        is_string_not_empty(path)
-        if path[0]=='-':
-            raise ValueError
-        import os
-        if not os.path.exists(path):
-            raise ValueError
-        
-        self.oldpath = os.getcwd()
-        os.chdir(path)
-    def __enter__(self):
-        return None
-    def __exit__(self, type, value, traceback):
-        import os
-        os.chdir(self.oldpath)
-
-def create_file(path, content):
-    with TempOwn(path):
-        with open(path, 'w') as f:
-            f.write(content)
 
 def print_traceback():
     import sys, traceback
     traceback.print_exc(file = sys.stderr)
-
-def window_manager_name():
-    """Returns window manager name"""
-    # Thanks to Whise (Helder Fraga), we have this elegant function!
-    # This function is from Screenlets/sensors.py
-    # GPLv3
-    import gtk
-    root = gtk.gdk.get_default_root_window()
-    try:
-        ident = root.property_get("_NET_SUPPORTING_WM_CHECK", "WINDOW")[2]
-        _WM_NAME_WIN = gtk.gdk.window_foreign_new(long(ident[0]))
-    except TypeError, exc:
-        _WM_NAME_WIN = ""
-
-    name = ""
-    win = _WM_NAME_WIN
-    if (win != None):
-        try:
-            name = win.property_get("_NET_WM_NAME")[2]
-        except TypeError, exc:
-            pass
-        except AttributeError: #'str' object has no attribute 'property_get'
-            pass
-    return name
 
 class FedoraReposSection:
     def _set(self, lines):
@@ -1715,10 +847,6 @@ def fedora_installation_command(package_names):
 def archlinux_installation_command(package_names):
     return 'pacman -S ' + package_names
 
-def useBASH():
-    import os
-    return os.environ['SHELL'] == '/bin/bash'
-
 def now(): # return current time in seconds
     import time
     return long(time.time())
@@ -1823,25 +951,8 @@ Config.init()
 
 install_locale()
 
-GPL = _('GNU General Public License')
-LGPL = _('GNU Lesser General Public License')
-EPL = _('Eclipse Public License')
-MPL = _('Mozilla Public License')
-BSD = _('Berkeley Software Distribution License')
-MIT = _('MIT License')
-CDDL = _('Common Development and Distribution License')
-APL = _('Aptana Public License')
-AL = _('Artistic License')
-
 import atexit
-atexit.register(ResponseTime.save)
 atexit.register(KillWhenExit.kill_all)
-try:
-    firefox.init()
-    if firefox.support:
-        atexit.register(firefox.save_user_prefs)
-except:
-    print_traceback()
 
 try:
     import pynotify
@@ -1888,33 +999,5 @@ else:
     VERSION = ''
     BACKEND = None
     installation_command_backend = None
-
-# GNOME = False
-# KDE = False
-# XFCE = False
-# Thank you, GShutdown Team!
-# This code is from gshutdown/src/values.c
-# GPLv2
-# WINDOW_MANAGER = window_manager_name()
-# if WINDOW_MANAGER == "Metacity":
-#     GNOME = True
-# elif WINDOW_MANAGER == "KWin":
-#     KDE = True
-# elif WINDOW_MANAGER == "Xfwm4":
-#     XFCE = True
-# else:
-#     print 'Window Manager is not recognized:', WINDOW_MANAGER
-    # These functions are less effective, but they work.
-#     GNOME = Config.is_GNOME()
-#     KDE = Config.is_KDE()
-#     XFCE = Config.is_XFCE()
-# if GNOME:
-#     DESKTOP = 'gnome'
-# elif KDE:
-#     DESKTOP = 'kde'
-# elif XFCE:
-#     DESKTOP = 'xfce'
-# else:
-#     DESKTOP = ''
 
 DESKTOP = 'gnome'
