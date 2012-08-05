@@ -94,29 +94,6 @@ def left_label(text):
     box.pack_start(ret, True, True, 6)
     return box
 
-def url_button(url):
-    import gtk, pango
-    def func(w, url): open_web_page(url)
-    def enter(w, e): 
-        try: w.get_window().set_cursor(gtk.gdk.Cursor(gtk.gdk.HAND2))
-        except AttributeError: pass
-    def leave(w, e): 
-        try: w.get_window().set_cursor(gtk.gdk.Cursor(gtk.gdk.LEFT_PTR))
-        except AttributeError: pass
-    label = gtk.Label()
-    label.set_markup("<span color='blue'><u>%s</u></span>"%url)
-    font = pango.FontDescription('Georgia')
-    label.modify_font(font)
-    button = gtk.Button()
-    button.connect('clicked', func, url)
-    button.connect('enter-notify-event', enter)
-    button.connect('leave-notify-event', leave)
-    button.set_relief(gtk.RELIEF_NONE)
-    button.add(label)
-    align = gtk.Alignment(0, 0.5)
-    align.add(button)
-    return align
-
 def copy_text_to_clipboard(store):
     assert isinstance(store, gtk.ListStore)
 

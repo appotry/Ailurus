@@ -20,27 +20,6 @@ from __future__ import with_statement
 from lib import *
 from libu import *
 
-def url_button(url):
-    import gtk
-    def func(w, url): open_web_page(url)
-    def enter(w, e): 
-        try: w.get_window().set_cursor(gtk.gdk.Cursor(gtk.gdk.HAND2))
-        except AttributeError: pass
-    def leave(w, e): 
-        try: w.get_window().set_cursor(gtk.gdk.Cursor(gtk.gdk.LEFT_PTR))
-        except AttributeError: pass
-    label = gtk.Label()
-    label.set_markup("<span color='blue'><u>%s</u></span>"%url)
-    button = gtk.Button()
-    button.connect('clicked', func, url)
-    button.connect('enter-notify-event', enter)
-    button.connect('leave-notify-event', leave)
-    button.set_relief(gtk.RELIEF_NONE)
-    button.add(label)
-    align = gtk.Alignment(0, 0.5)
-    align.add(button)
-    return align
-
 def version_to_tuple(string):
     return tuple(string.split('.'))
 
