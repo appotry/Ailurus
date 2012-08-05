@@ -20,9 +20,6 @@ from __future__ import with_statement
 import sys, os
 from lib import *
 
-def __default_shell():
-    return [row(_('Default shell:'), os.environ['SHELL'])]
-
 def __kernel():
     ret = []
     try: ret.append( row(_('Kernel version:'), get_output('uname -r')) )
@@ -79,15 +76,6 @@ def __pygtk():
          print_traceback()
          return []
     
-def __user():
-    try: 
-        import os
-        string = '%s (UID: %s, GID: %s)'%(os.environ['USER'], os.getuid(), os.getgid() )
-        return [row(_('Current user:'), string)]
-    except: 
-        print_traceback()
-        return []
-
 def __opengl():
     ret = []
     try:
@@ -130,7 +118,7 @@ def __os_version():
         return [] 
 
 def get():
-    return [ __user, __kernel, __default_shell, __xorg,
+    return [ __kernel, __xorg,
              __opengl, __gcc, __java, __python, __gtk, __pygtk,  __firefox, __os_version ]
 
 if __name__ == '__main__':
