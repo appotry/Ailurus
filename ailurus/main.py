@@ -23,130 +23,6 @@ from lib import *
 from libu import *
 from loader import *
 
-def detect_running_instances():
-    string = get_output('pgrep -u $USER ailurus', True)
-    if string!='':
-        notify(_('Warning!'), 
-           _('Another instance of Ailurus is running. '
-              'It is not recommended to run multiple instance concurrently.') )
-
-def change_task_name():
-    import ctypes
-    libc = ctypes.CDLL('libc.so.6')
-    libc.prctl(15, 'ailurus', 0, 0, 0)
-
-def set_default_window_icon():
-    pass
-
-def with_same_content(file1, file2):
-    import os
-    if not os.path.exists(file1) or not os.path.exists(file2):
-        return False
-    with open(file1) as f:
-        content1 = f.read()
-    with open(file2) as f:
-        content2 = f.read()
-    return content1 == content2
-
-def check_required_packages():
-    debian_missing = []
-    ubuntu_missing = []
-    fedora_missing = []
-    archlinux_missing = []
-
-    try: import pynotify
-    except: 
-        debian_missing.append('python-notify')
-        ubuntu_missing.append('python-notify')
-        fedora_missing.append('notify-python')
-        archlinux_missing.append('python-notify')
-#    try: import vte
-#    except: 
-#        debian_missing.append('python-vte')
-#        ubuntu_missing.append('python-vte')
-#        fedora_missing.append('vte')
-#        archlinux_missing.append('vte')
-    try: import apt
-    except: 
-        debian_missing.append('python-apt')
-        ubuntu_missing.append('python-apt')
-    try: import rpm
-    except: 
-        fedora_missing.append('rpm-python')
-    try: import gnomekeyring
-    except:
-        debian_missing.append('python-gnomekeyring')
-        ubuntu_missing.append('python-gnomekeyring')
-        fedora_missing.append('gnome-python2-gnomekeyring')
-        archlinux_missing.append('python-gnomekeyring') # I am not sure. python-gnomekeyring is on AUR. get nothing from pacman -Ss python*keyring 
-#    if not os.path.exists('/usr/bin/unzip'):
-#        debian_missing.append('unzip')
-#        ubuntu_missing.append('unzip')
-#        fedora_missing.append('unzip')
-#        archlinux_missing.append('unzip')
-#    if not os.path.exists('/usr/bin/wget'):
-#        debian_missing.append('wget')
-#        ubuntu_missing.append('wget')
-#        fedora_missing.append('wget')
-#        archlinux_missing.append('wget')
-        
-    error = (
-             (DEBIAN and debian_missing)
-             or ((UBUNTU or UBUNTU_DERIV) and ubuntu_missing)
-             or (FEDORA and fedora_missing)
-             or (ARCHLINUX and archlinux_missing)
-            )
-    if error:
-        import StringIO
-        message = StringIO.StringIO()
-        print >>message, _('Necessary packages are not installed. Ailurus cannot work.')
-        print >>message, ''
-        print >>message, _('Please install these packages:')
-        print >>message, ''
-        if DEBIAN:
-            print >>message, '<span color="blue">', ', '.join(debian_missing), '</span>'
-        elif UBUNTU or UBUNTU_DERIV:
-            print >>message, '<span color="blue">', ', '.join(ubuntu_missing), '</span>'
-        elif FEDORA:
-            print >>message, '<span color="blue">', ', '.join(fedora_missing), '</span>'
-        elif ARCHLINUX:
-            print >>message, '<span color="blue">', ', '.join(archlinux_missing), '</span>'
-        dialog = gtk.MessageDialog(type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
-        dialog.set_title('Ailurus ' + AILURUS_VERSION)
-        dialog.set_markup(message.getvalue())
-        dialog.run()
-        dialog.destroy()
-
-def check_home_dir_permission():
-    try: Config.check_permission()
-    except: pass
-    else: return
-
-    import StringIO
-    msg = StringIO.StringIO()
-    print >>msg, _('Your home folder is not owned by yourself.\n'
-                   'Please run the following command to fix the error.')
-    user = os.environ['USER']
-    home = os.environ['HOME']
-    command = 'sudo chown -R %s:%s %s' % (user, user, home)
-    print >>msg, '<span color="blue">%s</span>' % command,
-    
-    dialog = gtk.MessageDialog(type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_OK)
-    dialog.set_title(_('Fatal error'))
-    dialog.set_markup(msg.getvalue())
-    dialog.run()
-    dialog.destroy()
-
-def wait_firefox_to_create_profile():
-    if os.path.exists('/usr/bin/firefox'):
-        propath = os.path.expanduser('~/.mozilla/firefox/profiles.ini')
-        if not os.path.exists(propath):
-            KillWhenExit.add('firefox -no-remote')
-            import time
-            start = time.time()
-            while not os.path.exists(propath) and time.time() - start < 6:
-                time.sleep(0.1)
-
 sys.excepthook = exception_happened
 
 class toolitem(gtk.ToolItem):
@@ -170,7 +46,6 @@ class toolitem(gtk.ToolItem):
 
 class PaneLoader:
     def __init__(self, main_view, pane_class, content_function = None):
-        import gobject
         assert isinstance(pane_class, gobject.GObjectMeta)
         assert callable(content_function) or content_function is None
         self.main_view = main_view
@@ -232,9 +107,6 @@ class MainView:
             self.toolbar.insert(item, 0)
         
         self.activate_pane(None, Config.get_default_pane())
-
-    def get_item_icon_size(self):
-        return min( int(self.last_x / 20), 48)
 
     def __show_popupmenu_on_toolbaritem(self, widget, event, menu):
         if event.type == gtk.gdk.BUTTON_RELEASE and event.button == 1:
@@ -344,11 +216,6 @@ class MainView:
         
 with TimeStat(_('start up')):
     sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
-    change_task_name()
-    set_default_window_icon()
-    check_home_dir_permission()
-    check_required_packages()
-    
     while gtk.events_pending(): gtk.main_iteration()
     main_view = MainView()
 
