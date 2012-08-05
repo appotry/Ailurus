@@ -51,17 +51,6 @@ def load_setting():
                             if o.visible(): ret.append(o)
     return ret
 
-def load_preferences_menuitems():
-    import types
-    for module in [common, desktop, distribution]:
-        assert isinstance(module, types.ModuleType) or module == None
-    
-    ret = []
-    for module in [common, desktop, distribution]:
-        if module and hasattr(module, 'menu') and hasattr(module.menu, 'get_preferences_menu'):
-            ret.extend(module.menu.get_preferences_menu())
-    return ret
-
 def load_others_menuitems():
     import types
     ret = []

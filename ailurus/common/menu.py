@@ -17,55 +17,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 from __future__ import with_statement
-import sys, os
-import gtk, pango
+import gtk
 from lib import *
 from libu import *
 from support.checkupdate import *
 
-def __preferences():
-    return []
-
-def right_label(text):
-    font = pango.FontDescription('Georgia')
-    ret = gtk.Label(text)
-    ret.modify_font(font)
-    ret.modify_fg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#667766"))
-    ret.set_alignment(1, 0)
-    ret.set_justify(gtk.JUSTIFY_RIGHT)
-    return ret
-
-def left_label(text):
-    font = pango.FontDescription('Georgia')
-    ret = gtk.Label(text)
-    ret.modify_font(font)
-    ret.set_alignment(0, 0.5)
-    ret.set_justify(gtk.JUSTIFY_LEFT)
-    ret.set_selectable(True)
-    box = gtk.HBox()
-    box.pack_start(ret, True, True, 6)
-    return box
-
-def copy_text_to_clipboard(store):
-    assert isinstance(store, gtk.ListStore)
-
-    import StringIO
-    text = StringIO.StringIO()
-    for row in store:
-        key = row[0]
-        value = row[1]
-        print >>text, key
-        print >>text, '\t', value
-    copy_to_clipboard(text.getvalue())
-
-def __others():
+def get_others_menu():
     about = gtk.MenuItem( _('About') )
     about.connect('activate', lambda *w: show_about_dialog())
     
     return [about]
-   
-def get_preferences_menu():
-    return __preferences()
-
-def get_others_menu():
-    return __others()

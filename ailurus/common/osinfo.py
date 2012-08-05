@@ -98,14 +98,13 @@ def __opengl():
 
     except: 
         print_traceback()
-        print >>sys.stderr, 'Command failed: glxinfo'
     return ret
 
 def __os_version():
     try:
         import platform
         name, version = platform.dist()[0:2]
-        return [row(_('%s version:') % name, version)]
+        return [row(_('OS version:'), '%s %s' % (name, version))]
     except:
         print_traceback()
         return [] 
@@ -113,6 +112,3 @@ def __os_version():
 def get():
     return [ __kernel, __xorg,
              __opengl, __gcc, __java, __python, __gtk, __pygtk, __os_version ]
-
-if __name__ == '__main__':
-    print get()
