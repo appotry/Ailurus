@@ -502,10 +502,7 @@ def packed_env_string():
     return repr(env)
 
 def daemon():
-    import dbus
-    bus = dbus.SystemBus()
-    obj = bus.get_object('com.googlecode.ailurus', '/')
-    return obj
+    return None
 
 def get_dbus_daemon_version():
     ret = daemon().get_version(dbus_interface='com.googlecode.ailurus.Interface')
@@ -529,26 +526,15 @@ def spawn_as_root(command):
     authenticate()
     daemon().spawn(command, packed_env_string(), dbus_interface='com.googlecode.ailurus.Interface')
 
-def drop_priviledge():
-    daemon().drop_priviledge(dbus_interface='com.googlecode.ailurus.Interface')
-    
 class AccessDeniedError(Exception):
     'User press cancel button in policykit window'
 
 def run_as_root(cmd, ignore_error=False):
-    import dbus
     is_string_not_empty(cmd)
     assert isinstance(ignore_error, bool)
     
     print '\x1b[1;33m', _('Run command:'), cmd, '\x1b[m'
     authenticate()
-    try:
-        daemon().run(cmd, packed_env_string(), timeout=36000, dbus_interface='com.googlecode.ailurus.Interface')
-    except dbus.exceptions.DBusException, e:
-        if e.get_dbus_name() == 'com.googlecode.ailurus.AccessDeniedError': raise AccessDeniedError(*e.args)
-        elif e.get_dbus_name() == 'com.googlecode.ailurus.CommandFailError':
-            if not ignore_error: raise CommandFailError(cmd)
-        else: raise
 
 def is_string_not_empty(string):
     if type(string)!=str and type(string)!=unicode: raise TypeError(string)
@@ -694,27 +680,9 @@ def is_pkg_list(packages):
         if ' ' in package: raise ValueError
 
 def run_as_root_in_terminal(command, ignore_error=False):
-    import dbus
     is_string_not_empty(command)
     print '\x1b[1;33m', _('Run command:'), command, '\x1b[m'
-
     string = 'python "%s/support/term.py" %s' % (A, command)
-
-    authenticate()
-    try:
-        daemon().run(string, packed_env_string(), timeout=36000, dbus_interface='com.googlecode.ailurus.Interface')
-    except dbus.exceptions.DBusException, e:
-        if e.get_dbus_name() == 'com.googlecode.ailurus.AccessDeniedError': raise AccessDeniedError(*e.args)
-        elif e.get_dbus_name() == 'com.googlecode.ailurus.CommandFailError':
-            if not ignore_error:
-                if os.path.exists('/tmp/ailurus_subprocess_dump'): 
-                    dump = open('/tmp/ailurus_subprocess_dump').read()
-                    open('/tmp/ailurus_subprocess_dump', 'w').write('')
-                else: dump = None
-                
-                if dump: raise CommandFailError(command, dump)
-                else: raise CommandFailError(command)
-        else: raise
 
 class RPM:
     fresh_cache = False
@@ -870,7 +838,6 @@ class APT:
         return package_name in cls.apt_cache
     @classmethod
     def install(cls, *packages):
-        import dbus
         is_pkg_list(packages)
         cls.apt_get_update()
         cls.cache_changed()
@@ -910,12 +877,7 @@ class APT:
 #                                 packed_env_string(), timeout=3600, dbus_interface='com.googlecode.ailurus.Interface')
     @classmethod
     def is_cache_lockable(cls):
-        import dbus
-        try:
-            daemon().is_apt_cache_lockable(dbus_interface='com.googlecode.ailurus.Interface')
-        except dbus.exceptions.DBusException, e:
-            if e.get_dbus_name() == 'com.googlecode.ailurus.CannotLockAptCacheError':
-                raise CannotLockAptCacheError(e.get_dbus_message())
+        return None
 
 class CannotLockAptCacheError(Exception):
     'Cannot lock apt cache'
@@ -2039,7 +2001,6 @@ AL = _('Artistic License')
 import atexit
 atexit.register(ResponseTime.save)
 atexit.register(KillWhenExit.kill_all)
-atexit.register(drop_priviledge)
 try:
     firefox.init()
     if firefox.support:

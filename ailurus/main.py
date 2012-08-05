@@ -98,12 +98,6 @@ def check_required_packages():
     try: import rpm
     except: 
         fedora_missing.append('rpm-python')
-    try: import dbus
-    except: 
-        debian_missing.append('python-dbus')
-        ubuntu_missing.append('python-dbus')
-        fedora_missing.append('dbus-python')
-        archlinux_missing.append('dbus-python')
     try: import gnomekeyring
     except:
         debian_missing.append('python-gnomekeyring')
