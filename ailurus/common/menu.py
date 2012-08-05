@@ -117,59 +117,6 @@ def url_button(url):
     align.add(button)
     return align
 
-def show_contribution_to_ailurus():
-    titlelabel = gtk.Label()
-    titlelabel.set_markup(_('Contributing to <i>Ailurus</i>'))
-    titlelabel.modify_font(pango.FontDescription('Georgia 20'))
-    
-    table = gtk.Table()
-    
-    table.set_border_width(15)
-    table.set_col_spacings(20)
-    table.set_row_spacings(15)
-    
-    table.attach(titlelabel, 0, 2, 0, 1, gtk.FILL, gtk.FILL)
-    
-    table.attach(right_label(_('Project homepage:')), 0, 1, 1, 2, gtk.FILL, gtk.FILL)
-    table.attach(url_button('http://ailurus.googlecode.com/'), 1, 2, 1, 2, gtk.FILL, gtk.FILL)
-    
-    table.attach(right_label(_('Code repository:')), 0, 1, 3, 4, gtk.FILL, gtk.FILL)
-    table.attach(url_button('http://github.com/homerxing/Ailurus'), 1, 2, 3, 4, gtk.FILL, gtk.FILL)
-    
-    table.attach(right_label(_('Bug Tracker:')), 0, 1, 4, 5, gtk.FILL, gtk.FILL)
-    table.attach(url_button('http://code.google.com/p/ailurus/issues/list'), 1, 2, 4, 5, gtk.FILL, gtk.FILL)
-    
-    table.attach(right_label(_('How to submit' '\n' 'patches:')), 0, 1, 5, 6, gtk.FILL, gtk.FILL)
-    text = left_label(_('Send me patches on github. No mailing list (yet?) but feel \n'
-                      'free to email me about possible features or whatever: \n'
-                      'homer.xing@gmail.com'))
-    text2 = left_label(_('How to use github? Please read:'))
-    box = gtk.VBox(False, 0)
-    box.pack_start(text, False)
-    box.pack_start(gtk.Label(), False)
-    box.pack_start(text2, False)
-    box.pack_start(url_button('http://wiki.github.com/homerxing/Ailurus/join-ailurus-development'))
-    table.attach(box, 1, 2, 5, 6, gtk.FILL, gtk.FILL)
-    
-    table.attach(right_label(_('Maintainer of this' '\n' 'metadata page:')), 0, 1, 6, 7, gtk.FILL, gtk.FILL)
-    table.attach(left_label('Homer Xing'), 1, 2, 6, 7, gtk.FILL, gtk.FILL)
-    
-    table.attach(right_label(_('Last modified:')), 0, 1, 7, 8, gtk.FILL, gtk.FILL)
-    table.attach(left_label('2010-4-17'), 1, 2, 7, 8, gtk.FILL, gtk.FILL)
-    
-    dialog = gtk.Dialog(title = _('Contributing to Ailurus'),
-                        flags = gtk.DIALOG_NO_SEPARATOR, 
-                        buttons = (gtk.STOCK_OK, gtk.RESPONSE_OK))
-    dialog.vbox.pack_start(table)
-    dialog.vbox.show_all()
-    dialog.run()
-    dialog.destroy()
-
-def refresh_static_store(store):
-    store.clear()
-    for key, value in TimeStat.result.items():
-        store.append([key, '%.3f s' % value])
-
 def copy_text_to_clipboard(store):
     assert isinstance(store, gtk.ListStore)
 
@@ -182,82 +129,11 @@ def copy_text_to_clipboard(store):
         print >>text, '\t', value
     copy_to_clipboard(text.getvalue())
 
-def show_statistics():
-    store = gtk.ListStore(str, str)
-    refresh_static_store(store)
-    render_1 = gtk.CellRendererText()
-    render_2 = gtk.CellRendererText()
-    column = gtk.TreeViewColumn()
-    column.set_title(_('name'))
-    column.pack_start(render_1, False)
-    column.add_attribute(render_1, 'text', 0)
-    column.set_sort_column_id(0)
-    column.set_sort_order(gtk.SORT_ASCENDING)
-    column2 = gtk.TreeViewColumn()
-    column2.set_title(_('value'))
-    column2.pack_start(render_2)
-    column2.add_attribute(render_2, 'text', 1)
-    column2.set_sort_column_id(1)
-    view = gtk.TreeView(gtk.TreeModelSort(store))
-    view.append_column(column)
-    view.append_column(column2)
-    view.set_rules_hint(True)
-    button_refresh = gtk.Button(stock=gtk.STOCK_REFRESH)
-    button_close = gtk.Button(stock=gtk.STOCK_CLOSE)
-    button_copy = gtk.Button(_('Copy text to clipboard'))
-    button_box = gtk.HBox(False)
-    button_box.pack_end(button_close, False)
-    button_box.pack_end(button_refresh, False)
-    button_box.pack_end(button_copy, False)
-    vbox = gtk.VBox(False, 5)
-    vbox.pack_start(view)
-    vbox.pack_start(button_box, False)
-    vbox.set_border_width(3)
-    window = gtk.Window()
-    window.set_title( _('Statistical data') )
-    window.set_position(gtk.WIN_POS_CENTER)
-    window.add(vbox)
-    window.show_all()
-    button_copy.connect('clicked', lambda w: copy_text_to_clipboard(store))
-    button_refresh.connect('clicked', lambda w: refresh_static_store(store))
-    button_close.connect('clicked', lambda w: window.destroy())
-
 def __others():
-    help_contribute = gtk.MenuItem(_('Contributing to Ailurus'))
-    help_contribute.connect('activate', lambda w: show_contribution_to_ailurus())
-    
-    help_update = gtk.MenuItem(_('Check for updates')) 
-    def callback(*w):
-        while gtk.events_pending(): gtk.main_iteration()
-        import thread
-        thread.start_new_thread(check_update, ())
-    help_update.connect('activate', callback)
-
-    help_propose_suggestion = gtk.MenuItem(_('Propose suggestion'))
-    help_propose_suggestion.connect('activate', lambda w: report_bug())
-
-    help_report_bug = gtk.MenuItem(_('Report bugs'))
-    help_report_bug.connect('activate', 
-        lambda w: report_bug() )
-    
-    help_translate = image_stock_menuitem(gtk.STOCK_CONVERT, _('Translate this application'))
-    help_translate.connect('activate', 
-        lambda w: open_web_page('https://translations.launchpad.net/ailurus/trunk' ) )
-    
     about = gtk.MenuItem( _('About') )
     about.connect('activate', lambda *w: show_about_dialog())
     
-#    changelog = gtk.MenuItem( _('Read changelog') )
-#    changelog.connect('activate', lambda *w: show_changelog())
-    
-    statistics = gtk.MenuItem( _('Statistical data') )
-    statistics.connect('activate', lambda *w: show_statistics())
-    
-    return [ 
-#             changelog, 
-             help_contribute, help_update, 
-             help_propose_suggestion, 
-             help_report_bug, help_translate, about, statistics, ]
+    return [about]
    
 def get_preferences_menu():
     return __preferences()

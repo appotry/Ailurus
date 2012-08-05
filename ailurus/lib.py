@@ -212,22 +212,6 @@ class Config:
             import os
             return os.environ['USER']
     @classmethod
-    def set_last_check_update_time_to_now(cls):
-        import time
-        value = long(time.time()) # the time as a floating point number expressed in seconds since the epoch, in UTC
-        cls.set_long('last_check_update_time', value)
-    @classmethod
-    def get_last_check_update_time(cls):
-        try: return cls.get_long('last_check_update_time')
-        except: return 0
-    @classmethod
-    def is_long_enough_since_last_check_update(cls):
-        import time
-        last_check_time = cls.get_last_check_update_time()
-        now = time.time() # the time as a floating point number expressed in seconds since the epoch, in UTC
-        one_day = 3600 * 24
-        return now - last_check_time > one_day * 14
-    @classmethod
     def set_last_synced_data_version(cls, value):
         cls.set_int('last_synced_data_version', value)
     @classmethod
