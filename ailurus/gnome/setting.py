@@ -593,28 +593,6 @@ class login_sound(Set):
     title = _('Change GNOME login sound')
     category = ['login_window', 'sound']
 
-class shortcut_setting(Set):
-    @classmethod
-    def f(cls):
-        l1 = gtk.Label(_('Command line'))
-        l2 = gtk.Label(_('Shortcut key'))
-        hbox = gtk.HBox(False, 0)
-        hbox.pack_start(l1, False, False, 60)
-        hbox.pack_start(gtk.Label(), True)
-        hbox.pack_start(l2, False, False, 60)
-        table = gtk.Table()
-        table.set_col_spacings(5)
-        table.attach(hbox, 0, 2, 0, 1, gtk.FILL|gtk.EXPAND, gtk.FILL)
-        for number in range(1, 13):
-            o = label_left_align(_('%2d:' % number))
-            table.attach(o, 0, 1, number, number+1, gtk.FILL, gtk.FILL)
-            o = GConfShortcutKeyEntry('command_%d' % number)
-            table.attach(o, 1, 2, number, number+1, gtk.FILL|gtk.EXPAND, gtk.FILL)
-        return table
-    
-    title = _('Shortcut key')
-    category = 'shortcut'
-
 class compression_strategy(Set):
     @classmethod
     def f(cls):
