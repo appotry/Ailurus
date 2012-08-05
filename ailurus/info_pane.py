@@ -62,11 +62,6 @@ class InfoPane(gtk.VBox):
         
         gtk.VBox.__init__(self, False, 10)
         
-#        button = image_stock_button(gtk.STOCK_PRINT, _('Print all information'))
-#        button.connect('clicked', lambda w: self.print_all_information())
-#        align_button = gtk.Alignment(0, 0.5)
-#        align_button.add(button)
-        
         self.treestore = gtk.TreeStore(gtk.gdk.Pixbuf, str, str)
         self.treeview = treeview = gtk.TreeView(self.treestore)
         column = gtk.TreeViewColumn()
@@ -85,25 +80,6 @@ class InfoPane(gtk.VBox):
         scrollwindow.set_shadow_type (gtk.SHADOW_IN)
         
         self.pack_start(scrollwindow)
-#        self.pack_start(align_button, False)
-        
-        self.refresh()
-
-        import gobject
-        gobject.timeout_add(5000, self.refresh)
-    
-    def refresh(self):
-        for func in self.hardware_functions:
-            if hasattr(func, 'please_refresh_me'):
-                func.result = func()
-                if func.result is None:
-                    func.result = []
-
-        for func in self.os_functions:
-            if hasattr(func, 'please_refresh_me'):
-                func.result = func()
-                if func.result is None:
-                    func.result = []
 
         self.treestore.clear()
         
@@ -118,5 +94,3 @@ class InfoPane(gtk.VBox):
                 self.treestore.append(subtree_root, [None, row[0], row[1]])
 
         self.treeview.expand_all()
-
-        return True

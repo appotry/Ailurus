@@ -23,12 +23,6 @@ from lib import *
 def __default_shell():
     return [row(_('Default shell:'), os.environ['SHELL'])]
 
-def __host_name():
-    __host_name.please_refresh_me = True
-    try: return [row(_('Host name:'), get_output('hostname'))]
-    except: print_traceback()
-    return []
-
 def __kernel():
     ret = []
     try: ret.append( row(_('Kernel version:'), get_output('uname -r')) )
@@ -85,30 +79,6 @@ def __pygtk():
          print_traceback()
          return []
     
-def __uptime():
-    __uptime.please_refresh_me = True
-    try:
-        with open('/proc/uptime') as f:
-            string = f.read().split('.')[0]
-        seconds = int(string)
-        minutes = seconds/60
-        hours = minutes/60
-        days = hours/24
-        minutes %= 60
-        hours %= 24
-        import StringIO
-        text = StringIO.StringIO()
-        if days:
-            print >>text, days, ngettext('day', 'days', days),
-        if hours:
-            print >>text, hours, ngettext('hour', 'hours', hours),
-        if minutes:
-            print >>text, minutes, ngettext('minute', 'minutes', minutes),
-        return [row(_('Uptime:'), text.getvalue())]
-    except:
-        print_traceback()
-        return []
-
 def __user():
     try: 
         import os
@@ -160,7 +130,7 @@ def __os_version():
         return [] 
 
 def get():
-    return [ __host_name, __user, __uptime, __kernel, __default_shell, __xorg,
+    return [ __user, __kernel, __default_shell, __xorg,
              __opengl, __gcc, __java, __python, __gtk, __pygtk,  __firefox, __os_version ]
 
 if __name__ == '__main__':

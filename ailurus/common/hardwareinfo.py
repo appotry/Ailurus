@@ -145,27 +145,6 @@ def __cpu():
 
     return ret
 
-def __cpu_temp():
-    __cpu_temp.please_refresh_me = True
-    try:
-        import glob
-        pathlist = glob.glob('/proc/acpi/thermal_zone/*')
-        tempfile = None
-        for path in pathlist:
-            tempfile = path+'/temperature'
-            import os
-            if os.path.exists(tempfile):
-                break
-        else: 
-            return []
-        with open(tempfile) as f:
-            for line in f:
-                v = line.split(':')
-            return [row(_('CPU temperature'), v[-1].strip())]
-    except:
-        print_traceback()
-        return []
-
 def __mem():
     try:
         with open('/proc/meminfo') as f:
@@ -218,48 +197,6 @@ def __pci():
         print_traceback()
     return ret
 
-def __battery_state():
-    __battery_state.please_refresh_me = True
-    try:
-        with open('/proc/acpi/battery/BAT0/state') as f:
-            for line in f:
-                v = line.split(':')
-                if v[0] == 'charging state':
-                    v = v[1].strip()
-                    if v=='charged': v=_('charged')
-                    elif v=='charging': v=_('charging')
-                    elif v=='discharging': v=_('discharging')
-                    else: raise RuntimeError(v)
-                    return [row(_('Battery charging state:'), v)]
-    except:
-        print_traceback()
-        return []
-
-def __battery_remaining_capacity():
-    __battery_remaining_capacity.please_refresh_me = True
-    try:
-        with open('/proc/acpi/battery/BAT0/state') as f:
-            for line in f:
-                v = line.split(':')
-                if v[0] == 'remaining capacity':
-                    return [row(_('Battery remaining capacity:'), v[1].strip())]
-    except:
-        print_traceback()
-        return []
-
-def __battery_capacity():
-    __battery_capacity.please_refresh_me = True
-    try:
-        with open('/proc/acpi/battery/BAT0/info') as f:
-            for line in f:
-                v = line.split(':')
-                if v[0] == 'last full capacity':
-                    return[row(_('Battery full capacity:'), v[1].strip())]
-    except:
-        print_traceback()
-        return []
-
 def get():
-    return [ __motherboard, __bios, __cpu, __cpu_temp,
-             __mem, __swap, __pci, __battery_state, 
-             __battery_remaining_capacity, __battery_capacity ]
+    return [ __motherboard, __bios, __cpu,
+             __mem, __swap, __pci, ] 
