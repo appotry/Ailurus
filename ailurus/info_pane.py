@@ -24,27 +24,6 @@ from libu import *
 class InfoPane(gtk.VBox):
     text = _('Information')
 
-    def print_all_information(self):
-        import StringIO
-        f = StringIO.StringIO()
-        
-        root = self.treestore.get_iter_first()
-        while root:
-            value1 = self.treestore.get_value(root, 1)
-            print >>f, value1
-            
-            child = self.treestore.iter_children(root)
-            while child:
-                value1 = self.treestore.get_value(child, 1)
-                value2 = self.treestore.get_value(child, 2)
-                print >>f, '  ', value1
-                print >>f, '    ', value2
-                child = self.treestore.iter_next(child)
-                
-            root = self.treestore.iter_next(root)
-
-        show_text_window(_('Information'), f.getvalue())
-
     def __init__(self, main_view, infos):
         assert isinstance(infos, tuple) and len(infos) == 2
         assert isinstance(infos[0], list)
@@ -81,8 +60,6 @@ class InfoPane(gtk.VBox):
         
         self.pack_start(scrollwindow)
 
-        self.treestore.clear()
-        
         subtree_root = self.treestore.append(None, [None, self.hardware_subtree_text, None])
         for func in self.hardware_functions:
             for row in func.result:
