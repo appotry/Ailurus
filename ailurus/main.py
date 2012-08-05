@@ -56,8 +56,7 @@ class PaneLoader:
         if self.pane_object is None:
             if self.content_function: arg = [self.content_function()] # has argument
             else: arg = [] # no argument
-            with TimeStat(self.pane_class.__name__):
-                self.pane_object = self.pane_class(self.main_view, *arg)
+            self.pane_object = self.pane_class(self.main_view, *arg)
         return self.pane_object
     def need_to_load(self):
         return self.pane_object is None
@@ -214,10 +213,9 @@ class MainView:
         self.add_pane_buttons_in_toolbar()
         self.window.show_all()
         
-with TimeStat(_('start up')):
-    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
-    while gtk.events_pending(): gtk.main_iteration()
-    main_view = MainView()
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+while gtk.events_pending(): gtk.main_iteration()
+main_view = MainView()
 
 gtk.gdk.threads_init()
 gtk.gdk.threads_enter()
