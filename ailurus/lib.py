@@ -1706,23 +1706,6 @@ class FedoraReposFile:
         assert not section in self.sections
         self.sections.append(section)
 
-def add_linuxskill(linux_skill, how_to_contact_the_submitter=None):
-    assert isinstance(linux_skill, (str, unicode)) and linux_skill
-    assert how_to_contact_the_submitter is None or isinstance(how_to_contact_the_submitter, (str, unicode))
-
-    import httplib, urllib
-    params = {'linux_skill': linux_skill}
-    if how_to_contact_the_submitter:
-        params['how_to_contact_the_submitter'] = how_to_contact_the_submitter
-    params = urllib.urlencode(params)
-    headers = {'Content-type': 'application/x-www-form-urlencoded',
-               'Accept': 'text/plain'}
-    connection = httplib.HTTPConnection('we-like-ailurus.appspot.com')
-    connection.request('POST', '/add_linuxskill', params)
-    response = connection.getresponse()
-    assert response.status == 200, response.status
-    connection.close()
-
 def debian_installation_command(package_names):
     return 'apt-get install ' + package_names
 
