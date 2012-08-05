@@ -9,5 +9,5 @@ Homepage: http://ailurus.googlecode.com/
 
 Package: ailurus
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, python, python-gtk2, python-notify, python-vte, python-apt, python-gobject, python-dbus, procps, unzip, policykit-1-gnome | polkit-kde-1, python-gnomekeyring
+Depends: ${shlibs:Depends}, ${misc:Depends}, python, python-gtk2, python-notify, python-vte, python-apt, python-gobject, procps
 Description: a tool for changing hidden GNOME configuration

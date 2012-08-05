@@ -253,25 +253,6 @@ def do_access_denied_error():
     window.add(vbox)
     window.show_all()
 
-def do_gnomekeyring_cancelled_error():
-    import gtk
-    message = _('Operation is canceled because you refused authentication.\n'
-                'Proxy string is saved in system GNOME keyring service.\n'
-                'Ailurus does not know your secret at all.')
-    label = gtk.Label(message)
-    label.set_alignment(0, 0.5)
-    button_close = image_stock_button(gtk.STOCK_CLOSE, _('Close'))
-    button_close.connect('clicked', lambda w: window.destroy())
-    vbox = gtk.VBox(False, 5)
-    vbox.pack_start(label, False)
-    vbox.pack_start(right_align(button_close), False)
-    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.set_title(_('Operation is canceled'))
-    window.set_border_width(10)
-    window.set_position(gtk.WIN_POS_CENTER)
-    window.add(vbox)
-    window.show_all()
-
 def do_apt_source_syntax_error(value):
     import gtk, StringIO
     msg = StringIO.StringIO()
@@ -295,13 +276,12 @@ def do_apt_source_syntax_error(value):
     sys.exit()
 
 def exception_happened(etype, value, tb):
-    import traceback, StringIO, os, sys, platform, gtk, gnomekeyring
+    import traceback, StringIO, os, sys, platform, gtk
     from lib import D, AccessDeniedError, APTSourceSyntaxError, report_bug
 
     if etype == KeyboardInterrupt: return
     if etype == AccessDeniedError: return do_access_denied_error()
     if etype == APTSourceSyntaxError: return do_apt_source_syntax_error(value)
-    if etype == gnomekeyring.CancelledError: return do_gnomekeyring_cancelled_error()
     
     traceback.print_tb(tb, file=sys.stderr)
     sys.stderr.flush()

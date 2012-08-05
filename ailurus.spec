@@ -15,7 +15,7 @@ BuildRequires:	python2-devel python-distutils-extra intltool
 BuildRequires:	desktop-file-utils
 BuildArch:		noarch
 # The automatic dependency consists of python and rpmlib only. It is insufficient.
-Requires:		polkit pygtk2 notify-python vte rpm-python pygobject2 dbus-python wget unzip gnome-python2-gnomekeyring
+Requires:		pygtk2 notify-python vte rpm-python pygobject2
 
 %description
 Ailurus is a tool for changing hidden GNOME configuration.
@@ -33,8 +33,6 @@ desktop-file-install \
 	--dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
 	${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}.desktop
 %find_lang %{name} --with-gnome
-rm -f $RPM_BUILD_ROOT%{_datadir}/PolicyKit/policy/com.googlecode.ailurus.policy
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -57,10 +55,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_datadir}/applications/ailurus.desktop
 %{_datadir}/ailurus/
 %{_datadir}/icons/hicolor/*/apps/ailurus.png
-%{_datadir}/dbus-1/system-services/com.googlecode.ailurus.service
-%{_datadir}/polkit-1/actions/com.googlecode.ailurus.policy
 %{_mandir}/man1/ailurus.1*
-%{_sysconfdir}/dbus-1/system.d/com.googlecode.ailurus.conf
 %{python_sitelib}/ailurus/
 %{python_sitelib}/ailurus*.egg-info
 
