@@ -219,30 +219,9 @@ class DefaultPaneMenuItem(gtk.CheckMenuItem):
         self.set_active(Config.get_default_pane() == self.value)
 
 class MainView:
-    def create_default_pane_menu(self):
-        'Create a menu, to select default pane.'
-        menuitems = []
-        reversed_order = self.ordered_key[:]
-        reversed_order.reverse()
-        for key in reversed_order:
-            pane = self.contents[key]
-            assert hasattr(pane, 'pane_class') # pane is a PaneLoader object
-            assert hasattr(pane.pane_class, 'text')
-            item = DefaultPaneMenuItem(pane.pane_class.text, pane.pane_class.__name__, menuitems)
-            menuitems.append(item)
-        return create_menu_from(menuitems)
-    
-    def add_study_button_preference_button_other_button(self):
+    def add_other_button(self):
         item = toolitem(_('Others'), 'button_release_event', 
                         self.__show_popupmenu_on_toolbaritem, create_menu_from(load_others_menuitems()))
-        self.toolbar.insert(item, 0)
-        self.menu_preference = create_menu_from(load_preferences_menuitems())
-        default_pane_item = gtk.MenuItem(_('Default pane'))
-        default_pane_item.set_submenu(self.create_default_pane_menu())
-        self.menu_preference.append(default_pane_item)
-        self.menu_preference.show_all()
-        item = toolitem(_('Preferences'), 'button_release_event', 
-                        self.__show_popupmenu_on_toolbaritem, self.menu_preference)
         self.toolbar.insert(item, 0)
 
     def add_pane_buttons_in_toolbar(self):
@@ -365,7 +344,7 @@ class MainView:
         self.register(SystemSettingPane, load_setting)
         self.register(InfoPane, load_info)
         
-        self.add_study_button_preference_button_other_button()
+        self.add_other_button()
         self.add_pane_buttons_in_toolbar()
         self.window.show_all()
         
