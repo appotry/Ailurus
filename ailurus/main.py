@@ -283,9 +283,6 @@ class MainView:
         if self.stop_delete_event:
             return True
         
-        from support.windowpos import WindowPos
-        WindowPos.save(self.window,'main')
-
         gtk.main_quit()
         sys.exit()
 
@@ -320,9 +317,6 @@ class MainView:
         window.connect("delete_event", self.terminate_program)
         window.add(vbox)
 
-        from support.windowpos import WindowPos
-        WindowPos.load(window,'main')
-        
         from system_setting_pane import SystemSettingPane
 #        from clean_up_pane import CleanUpPane
         from info_pane import InfoPane
