@@ -247,7 +247,6 @@ class Set:
               (None, _('Update'), 'update', ),
               (None, _('Restriction'), 'restriction', ),
               (None, _('Shortcut key'), 'shortcut', ),
-              (None, _('Configure Firefox'), 'firefox', ),
               (None, _('Login window'), 'login_window', ),
               (None, _('Compression'), 'compression', ),
               (None, _('GEdit'), 'gedit', ),

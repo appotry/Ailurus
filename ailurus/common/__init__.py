@@ -20,4 +20,3 @@ import cure
 import hardwareinfo
 import menu
 import osinfo
-import setting
