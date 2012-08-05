@@ -101,13 +101,6 @@ def __opengl():
         print >>sys.stderr, 'Command failed: glxinfo'
     return ret
 
-def __firefox():
-    try:
-        return [row(_('Firefox version:'), 
-          get_output('firefox -version').split(',')[0])]
-    except: print_traceback()
-    return []
-
 def __os_version():
     try:
         import platform
@@ -119,7 +112,7 @@ def __os_version():
 
 def get():
     return [ __kernel, __xorg,
-             __opengl, __gcc, __java, __python, __gtk, __pygtk,  __firefox, __os_version ]
+             __opengl, __gcc, __java, __python, __gtk, __pygtk, __os_version ]
 
 if __name__ == '__main__':
     print get()
