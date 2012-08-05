@@ -38,7 +38,6 @@ class Window:
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_NEVER)
         scroll.add_with_viewport(terminal)
         self.window = window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        gtk.window_set_default_icon_from_file(D+'suyun_icons/ailurus.png')
         window.set_title(_('Ailurus terminal'))
         window.set_position(gtk.WIN_POS_CENTER)
         window.add(scroll)

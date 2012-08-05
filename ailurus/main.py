@@ -61,7 +61,7 @@ def change_task_name():
     libc.prctl(15, 'ailurus', 0, 0, 0)
 
 def set_default_window_icon():
-    gtk.window_set_default_icon_from_file(D+'suyun_icons/ailurus.png')
+    pass
 
 def with_same_content(file1, file2):
     import os

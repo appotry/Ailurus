@@ -48,7 +48,6 @@ def show_about_dialog():
     import gtk
     gtk.about_dialog_set_url_hook( lambda dialog, link: 1 )
     about = gtk.AboutDialog()
-    about.set_logo(gtk.gdk.pixbuf_new_from_file(D+'suyun_icons/ailurus.png'))
     about.set_name('Ailurus')
     about.set_version(AILURUS_VERSION)
     about.set_website_label( _('Project homepage') )
@@ -89,9 +88,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Ailurus; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-All images in directory "data/suyun_icons" are released under the GPL License.
-Their copyright are holded by SU Yun.
 
 All images in directory "data/sona_icons" are released under the GPL License. 
 Their copyright are holded by Andrea Soragna.''')

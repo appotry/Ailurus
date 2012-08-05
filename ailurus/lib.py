@@ -577,12 +577,11 @@ def notify(title, content):
         import pynotify
         if not hasattr(notify,'ailurus_notify'):
             notify.ailurus_notify = pynotify.Notification(' ',' ')
-        icon = D+'suyun_icons/ailurus.png'
         if title == notify.ailurus_notify.get_property('summary'):
-            notify.ailurus_notify = pynotify.Notification(title, content, icon)
+            notify.ailurus_notify = pynotify.Notification(title, content)
             notify.ailurus_notify.set_hint_string("x-canonical-append", "")
         else:
-            notify.ailurus_notify.update(title, content, icon)
+            notify.ailurus_notify.update(title, content)
                
         notify.ailurus_notify.set_timeout(10000)
         notify.ailurus_notify.show()
