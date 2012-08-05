@@ -25,7 +25,6 @@ from libu import *
 # TODO: Shall we display commented line in treeview?
 
 class ReposConfigPane(gtk.VBox):
-    icon = D+'sora_icons/m_repository_configure.png'
     text = _('Edit\nRepository')
     
     def __init__(self, main_view):

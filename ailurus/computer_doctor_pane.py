@@ -23,7 +23,6 @@ from lib import *
 from libu import *
 
 class ComputerDoctorPane(gtk.VBox):
-    icon = D+'sora_icons/m_computer_doctor.png'
     text = _('Computer\nDoctor')
     
     def render_text_func(self, column, cell, model, iter):

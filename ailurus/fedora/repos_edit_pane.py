@@ -263,7 +263,6 @@ class _section_content_box(gtk.VBox):
             self.emit('section_changed', self.current_section)
 
 class FedoraReposEditPane(gtk.VBox):
-    icon = D+'sora_icons/m_repository_configure.png'
     text = _('Repositories')
 
     def add_custom_section(self):

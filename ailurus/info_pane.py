@@ -22,7 +22,6 @@ from lib import *
 from libu import *
 
 class InfoPane(gtk.VBox):
-    icon = D+'sora_icons/m_hardware.png'
     text = _('Information')
 
     def print_all_information(self):

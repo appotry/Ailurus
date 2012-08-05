@@ -26,7 +26,6 @@ from lib import *
 from libu import *
 
 class CleanUpPane(gtk.VBox):
-    icon = D+'sora_icons/m_clean_up.png'
     text = _('Clean up')
     
     def __init__(self, main_view):

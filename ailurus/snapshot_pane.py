@@ -279,7 +279,6 @@ class _diff_list(gtk.VBox):
                 model.append([name, value])
 
 class SnapshotPane(gtk.VBox):
-    icon = D+'sora_icons/m_snapshot.png'
     text = _('Snapshots')
     
     def apply_change(self):

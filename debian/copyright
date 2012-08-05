@@ -26,11 +26,3 @@ License version 2 can be found in `/usr/share/common-licenses/GPL-2'.
 Files: debian/*
 Copyright: 2010, Aron Xu <happyaron.xu@gmail.com>
 License: GPL-2+
-
-Files: data/suyun_icons/*.png
-Copyright: 2010, SU Yun
-License: GPL-2+
-
-Files: data/sora_icons/*.png
-Copyright: 2010, Andrea Soragna
-License: GPL-2+

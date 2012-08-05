@@ -67,11 +67,7 @@ def show_about_dialog():
           'Ray Chen <chenrano2002@gmail.com>',
            ] )
     about.set_translator_credits(_('translator-credits'))
-    about.set_artists( [
-          'SU Yun',
-          'M. Umut Pulat    http://12m3.deviantart.com/', 
-          'Andrea Soragna   http://sora-meliae.deviantart.com/',
-          'Paul Davey       http://mattahan.deviantart.com/',] )
+    about.set_artists( ['SU Yun',] )
     about.set_copyright(_(u"Copyright (C)") + ' Homer Xing <homer.xing@gmail.com>')
     about.set_wrap_license(False)
     about.set_license('''
@@ -87,10 +83,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Ailurus; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-All images in directory "data/sona_icons" are released under the GPL License. 
-Their copyright are holded by Andrea Soragna.''')
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.''')
     about.vbox.pack_start( gtk.Label( _('\nThis version is released at %s.') % AILURUS_RELEASE_DATE), False)
     about.vbox.show_all()
     about.run()

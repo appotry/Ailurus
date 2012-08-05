@@ -175,39 +175,20 @@ def wait_firefox_to_create_profile():
 sys.excepthook = exception_happened
 
 class toolitem(gtk.ToolItem):
-    def __load_image(self):
-        pixbuf = get_pixbuf(self.icon, self.image_size, self.image_size)
-        image = gtk.image_new_from_pixbuf(pixbuf)
-        child = self.align_image.get_child()
-        if child:
-            self.align_image.remove(child)
-        self.align_image.add(image)
-        self.align_image.set_size_request(3*self.image_size/2, -1)
-        self.align_image.show_all()
-    
-    def __init__(self, icon, text, signal_name, callback, *callback_args):
+    def __init__(self, text, signal_name, callback, *callback_args):
         gtk.ToolItem.__init__(self)
         
-        is_string_not_empty(icon)
         is_string_not_empty(text)
         is_string_not_empty(signal_name)
         assert callable(callback)
         
-        self.image_size = 40;
-        self.icon = icon
-        self.align_image = align_image = gtk.Alignment(0.5, 0.5)
-        self.__load_image()
         label = gtk.Label()
         label.set_markup('<small>%s</small>' % text)
         self.text = text = label
-        import pango
         text.set_alignment(0.5, 0.5)
         text.set_justify(gtk.JUSTIFY_CENTER)
-        vbox = vbox = gtk.VBox(False, 5)
-        vbox.pack_end(text)
-        vbox.pack_end(align_image)
         button = gtk.Button()
-        button.add(vbox)
+        button.add(label)
         button.set_relief(gtk.RELIEF_NONE)
         button.connect(signal_name, callback, *callback_args)
         self.add(button)
@@ -277,7 +258,7 @@ class MainView:
         return create_menu_from(menuitems)
     
     def add_study_button_preference_button_other_button(self):
-        item = toolitem(D+'sora_icons/m_others.png', _('Others'), 'button_release_event', 
+        item = toolitem(_('Others'), 'button_release_event', 
                         self.__show_popupmenu_on_toolbaritem, create_menu_from(load_others_menuitems()))
         self.toolbar.insert(item, 0)
         self.menu_preference = create_menu_from(load_preferences_menuitems())
@@ -285,16 +266,15 @@ class MainView:
         default_pane_item.set_submenu(self.create_default_pane_menu())
         self.menu_preference.append(default_pane_item)
         self.menu_preference.show_all()
-        item = toolitem(D+'sora_icons/m_preference.png', _('Preferences'), 'button_release_event', 
+        item = toolitem(_('Preferences'), 'button_release_event', 
                         self.__show_popupmenu_on_toolbaritem, self.menu_preference)
         self.toolbar.insert(item, 0)
 
     def add_pane_buttons_in_toolbar(self):
         for key in self.ordered_key:
             pane_loader = self.contents[key]
-            icon = pane_loader.pane_class.icon
             text = pane_loader.pane_class.text
-            item = toolitem(icon, text, 'clicked', self.activate_pane, key)
+            item = toolitem(text, 'clicked', self.activate_pane, key)
             self.toolbar.insert(item, 0)
         
         self.activate_pane(None, Config.get_default_pane())
