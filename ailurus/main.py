@@ -157,20 +157,8 @@ class MainView:
         window.connect("delete_event", self.terminate_program)
         window.add(vbox)
 
-        from system_setting_pane import SystemSettingPane
-        from clean_up_pane import CleanUpPane
-        from info_pane import InfoPane
-        from computer_doctor_pane import ComputerDoctorPane
-
-        self.register(ComputerDoctorPane, load_cure_objs)
-        self.register(CleanUpPane)
-        if BACKEND:
-            from snapshot_pane import SnapshotPane
-            self.register(SnapshotPane)
-        self.register(SystemSettingPane, load_setting)
-        self.register(InfoPane, load_info)
-        
-#        self.add_other_button()
+        from snapshot_pane import SnapshotPane
+        self.register(SnapshotPane)
         self.add_pane_buttons_in_toolbar()
         self.window.show_all()
         
