@@ -16,165 +16,6 @@
 
 from __future__ import with_statement
 
-def get_ailurus_path():
-    import os
-    return os.path.dirname(os.path.abspath(__file__))
-
-try:
-    A = get_ailurus_path()
-except: # raise exception in python console because __file__ is not defined
-    import os
-    A = os.path.expanduser('~/workspace/Ailurus/ailurus/')
-    assert os.path.exists(A), 'Please put ailurus code in $HOME/workspace/Ailurus/'
-D = A + '/icons/'
-
-def row(text, value, icon = None, tooltip = None): # only used in hardwareinfo.py and osinfo.py
-    assert icon is None # do not display icon anymore
-    return (text, value, icon, tooltip)
-
-class C:
-    this_is_a_cure = True
-    MUST_FIX, SUGGESTION = range(2)
-    type = SUGGESTION
-    detail = ''
-    def exists(self):
-        raise NotImplementedError
-    def cure(self):
-        raise NotImplementedError
-    
-class Config:
-    import os
-    config_dir = os.path.expanduser('~/.config/ailurus/')
-    @classmethod
-    def make_config_dir(cls):
-        import os
-        dir = os.path.expanduser('~/.config/ailurus/')
-        if not os.path.exists(dir): # make directory
-            os.makedirs(dir)
-    @classmethod
-    def init(cls):
-        assert not hasattr(cls, 'inited')
-        cls.inited = True
-        # create parser object
-        import ConfigParser, os
-        cls.parser = ConfigParser.RawConfigParser()
-        # read configuration file if it exists
-        cls.make_config_dir()
-        path = cls.config_dir + 'conf'
-        if os.path.exists(path):
-            cls.parser.read(path)
-    @classmethod
-    def save(cls):
-        cls.make_config_dir()
-        try:
-            with open(cls.config_dir + 'conf' , 'w') as f:
-                cls.parser.write(f)
-        except:
-            print_traceback()
-    @classmethod
-    def set_string(cls, key, value):
-        assert isinstance(key, str) and key
-        assert isinstance(value, (str,unicode))  and value
-        cls.parser.set('DEFAULT', key, value)
-        cls.save()
-    @classmethod
-    def get_string(cls, key):
-        assert isinstance(key, str) and key
-        return cls.parser.get('DEFAULT', key)
-    @classmethod
-    def set_int(cls, key, value):
-        assert isinstance(key, str) and key
-        assert isinstance(value, int), type(value)
-        cls.parser.set('DEFAULT', key, value)
-        cls.save()
-    @classmethod
-    def get_int(cls, key):
-        assert isinstance(key, str) and key
-        value = cls.parser.get('DEFAULT', key)
-        return int(value)
-    @classmethod
-    def set_long(cls, key, value):
-        assert isinstance(key, str) and key
-        assert isinstance(value, long), type(value)
-        cls.parser.set('DEFAULT', key, value)
-        cls.save()
-    @classmethod
-    def get_long(cls, key):
-        assert isinstance(key, str) and key
-        value = cls.parser.get('DEFAULT', key)
-        return long(value)
-    @classmethod
-    def set_bool(cls, key, value):
-        assert isinstance(key, str) and key
-        assert isinstance(value, bool)
-        cls.parser.set('DEFAULT', key, value)
-        cls.save()
-    @classmethod
-    def get_bool(cls, key):
-        assert isinstance(key, str) and key
-        value = cls.parser.get('DEFAULT', key)
-        value = str(value)
-        return value=='True' or value=='true'
-    @classmethod
-    def is_Ubuntu(cls):
-        import os
-        if not os.path.exists('/etc/lsb-release'): 
-            return False
-        with open('/etc/lsb-release') as f:
-            c = f.read()
-        return 'Ubuntu' in c
-    @classmethod
-    def get_Ubuntu_version(cls):
-        '''return 'hardy', 'intrepid', 'jaunty', 'karmic', 'lucid' ...'''
-        with open('/etc/lsb-release') as f:
-            lines = f.readlines()
-        for line in lines:
-            if line.startswith('DISTRIB_CODENAME='):
-                return line.split('=')[1].strip()
-    @classmethod
-    def get_all_Ubuntu_versions(cls):
-        return ['hardy', 'intrepid', 'jaunty', 'karmic', 'lucid', 'maverick']
-    @classmethod
-    def is_Mint(cls):
-        import os
-        if not os.path.exists('/etc/lsb-release'): return False
-        with open('/etc/lsb-release') as f:
-            c = f.read()
-        return 'LinuxMint' in c
-    @classmethod
-    def get_Mint_version(cls):
-        with open('/etc/lsb-release') as f:
-            lines = f.readlines()
-        for line in lines:
-            if line.startswith('DISTRIB_RELEASE='):
-                a = line.split('=')[1].strip()
-        return a
-    @classmethod
-    def is_Fedora(cls):
-        import os
-        return os.path.exists('/etc/fedora-release')
-    @classmethod
-    def get_Fedora_version(cls):
-        with open('/etc/fedora-release') as f:
-            c = f.read()
-        return c.split()[2].strip()
-    @classmethod
-    def is_ArchLinux(cls): # There is no get_arch_version, since ArchLinux has no version.
-        import os
-        return os.path.exists('/etc/arch-release')
-    @classmethod
-    def is_Debian(cls):
-        import platform
-        return platform.dist()[0] == 'debian'
-    @classmethod
-    def get_Debian_version(cls):
-        'return "5.*"'
-        import platform
-        return platform.dist()[1]
-
-class UserDeniedError(Exception):
-    'User has denied keyring authentication'
-
 def install_locale():
     import gettext
     gettext.translation('ailurus', '/usr/share/locale', fallback=True).install(names=['ngettext'])
@@ -293,85 +134,6 @@ def notify(title, content):
 def is32():
     import os
     return os.uname()[-1] != 'x86_64'
-
-def file_contain(path, *lines):
-    'Return True if the file contains all the lines'
-    is_string_not_empty(path)
-    if not len(lines): raise ValueError
-    for line in lines:
-        is_string_not_empty(line)
-    import os
-    if os.path.exists(path):
-        with open(path, 'r') as f:
-            contents = f.readlines()
-        for line in lines:
-            if line[-1]!='\n': line+='\n'
-            if not line in contents: return False
-        return True
-    return False
-
-def file_insert(path, *args):
-    'Insert lines into file. The format of args is "position, line, position, line..."'
-    is_string_not_empty(path)
-    if not len(args): raise ValueError
-    for i in range(0, len(args), 2):
-        if type(args[i])!=int: raise TypeError
-        is_string_not_empty(args[i+1])
-    
-    import os
-    if not os.path.exists(path):
-        run('touch %s'%path)
-    with open(path, "r") as f:
-        contents = f.readlines()
-    for i in range(0, len(args), 2):
-        line = args[i]
-        string = args[i+1]
-        if string[-1]!='\n': string+='\n'
-        contents.insert(line, string)
-    with open(path, "w") as f:
-        f.writelines(contents)
-
-def file_append(path, *lines):
-    is_string_not_empty(path)
-    if not len(lines): raise ValueError
-    for line in lines:
-        is_string_not_empty(line)
-    with open(path, 'a') as f:
-        for line in lines:
-            if line[-1]!='\n': line+='\n'
-            f.write(line)
-
-def file_remove(path, *lines):
-    is_string_not_empty(path)
-    if not len(lines): raise ValueError
-    for line in lines:
-        is_string_not_empty(line)
-    with open(path, "r") as f:
-        contents = f.readlines()
-    for line in lines:
-        if line[-1]!='\n': line+='\n'
-        try: 
-            contents.remove(line)
-        except ValueError: pass
-    with open(path, "w") as f:
-        f.writelines(contents)
-
-def free_space(path):
-    is_string_not_empty(path)
-    assert path[0]=='/'
-    import os, statvfs
-    e = os.statvfs(path)
-    return e[statvfs.F_BAVAIL] * e[statvfs.F_BSIZE]
-
-def own_by_user(*paths):
-    if not len(paths): raise ValueError
-    for path in paths:
-        is_string_not_empty(path)
-        if path[0]=='-': raise ValueError
-    for path in paths:
-        import os
-        if os.stat(path).st_uid != os.getuid():
-            run_as_root('chown $USER:$USER "%s"'%path)
 
 def is_pkg_list(packages):
     if not len(packages): raise ValueError
@@ -675,37 +437,11 @@ def derive_time(time):
         return _('%.1f minutes') % ( time/_1m )
     return _('%d seconds') % time
 
-class KillWhenExit:
-    task_list = []
-    @classmethod
-    def add(cls, task):
-        import subprocess
-        if not isinstance(task, (str, unicode, subprocess.Popen)): raise TypeError
-        if isinstance(task, (str, unicode)):
-            assert task!=''
-            print '\x1b[1;33m', _('Run command:'), task, '\x1b[m' 
-            task=subprocess.Popen(task, shell=True)
-        cls.task_list.append(task)
-    @classmethod
-    def kill_all(cls):
-        for task in cls.task_list:
-            try:
-                import os, signal
-                os.kill(task.pid, signal.SIGTERM)
-            except:
-                print_traceback()
-        cls.task_list = []
-
 class CannotDownloadError(Exception):
     pass
 
 class UserCancelInstallation(Exception):
     pass
-
-def report_bug(*w):
-    page = 'http://code.google.com/p/ailurus/issues/entry'
-    notify( _('Opening web page'), page)
-    KillWhenExit.add('xdg-open %s'%page)
 
 import os
 
@@ -836,15 +572,6 @@ class FedoraReposFile:
         assert not section in self.sections
         self.sections.append(section)
 
-def debian_installation_command(package_names):
-    return 'apt-get install ' + package_names
-
-def fedora_installation_command(package_names):
-    return 'yum install ' + package_names
-
-def archlinux_installation_command(package_names):
-    return 'pacman -S ' + package_names
-
 def now(): # return current time in seconds
     import time
     return long(time.time())
@@ -945,12 +672,7 @@ class Snapshot:
             ret.append(cls.read(p))
         return ret
 
-Config.init()
-
 install_locale()
-
-import atexit
-atexit.register(KillWhenExit.kill_all)
 
 try:
     import pynotify
@@ -968,34 +690,28 @@ if UBUNTU:
     DISTRIBUTION = 'ubuntu'
     VERSION = Config.get_Ubuntu_version()
     BACKEND = APT
-    installation_command_backend = debian_installation_command
 elif MINT:
     DISTRIBUTION = 'ubuntu'
     UBUNTU_DERIV = True
     VERSION = Config.get_Mint_version() # VERSION is in ['5', '6', '7', '8', '9', '10']
     VERSION = ['hardy', 'intrepid', 'jaunty', 'karmic', 'lucid', 'maverick'][int(VERSION)-5]
     BACKEND = APT
-    installation_command_backend = debian_installation_command
 elif FEDORA:
     DISTRIBUTION = 'fedora'
     VERSION = Config.get_Fedora_version()
     BACKEND = RPM
-    installation_command_backend = fedora_installation_command
 elif ARCHLINUX:
     DISTRIBUTION = 'archlinux'
     VERSION = '' # ArchLinux has no version -_-b
     BACKEND = PACMAN
-    installation_command_backend = archlinux_installation_command
 elif DEBIAN:
     DISTRIBUTION = 'debian'
     VERSION = Config.get_Debian_version()
     BACKEND = APT
-    installation_command_backend = debian_installation_command
 else:
     # This Linux distribution is not supported. :(
     DISTRIBUTION = ''
     VERSION = ''
     BACKEND = None
-    installation_command_backend = None
 
 DESKTOP = 'gnome'

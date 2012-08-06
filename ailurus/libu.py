@@ -132,23 +132,6 @@ def image_file_menuitem(label, image_file_name, size):
     item.get_child().set_text(label)
     return item
     
-def title_menuitem(string):
-    import gtk
-    l = gtk.Label()
-    l.set_markup('<span size="large"><b>%s</b></span>'%string)
-    box = gtk.HBox(False, 3)
-    box.pack_start(l, False, False)
-    item = gtk.MenuItem()
-    item.add(box)
-#    item.select()
-    def dummy(*w):
-        return True
-    item.connect('enter-notify-event', dummy)
-    item.connect('leave-notify-event', dummy)
-    item.connect('button-press-event', dummy)
-    item.connect('button-release-event', dummy)
-    return item
-
 def left_align(widget):
     import gtk
     align = gtk.Alignment(0, 0.5)
