@@ -24,12 +24,7 @@ class _snapshot_store(gtk.ListStore):
     def __init__(self):
         gtk.ListStore.__init__(self, gobject.TYPE_PYOBJECT) # date & comment
         self.set_sort_func(1000, self.sort_by_time)
-        self.reload()
-    
-    def reload(self):
-        self.clear()
-        ss = Snapshot.all_snapshots()
-        for s in ss:
+        for s in Snapshot.all_snapshots():
             self.append([s])
 
     def sort_by_time(self, model, iter1, iter2):
@@ -41,18 +36,6 @@ class _snapshot_store(gtk.ListStore):
     def create_snapshot_now(self):
         s = Snapshot.new_snapshot()
         self.append([s])
-
-    def remove(self, snapshot):
-        assert isinstance(snapshot, Snapshot)
-        iter = self.get_iter_first()
-        while iter:
-            if self.get_value(iter, 0) == snapshot:
-                gtk.ListStore.remove(self, iter)
-                snapshot.remove()
-                return
-            else:
-                iter = self.iter_next(iter)
-        raise Exception # program bug!
 
 class _snapshot_list(gtk.VBox):
     __gsignals__ = {
@@ -67,25 +50,25 @@ class _snapshot_list(gtk.VBox):
         self.sorted_store.set_sort_column_id(1000, gtk.SORT_DESCENDING)
         
         r_time = gtk.CellRendererText()
-        r_comment = gtk.CellRendererText()
-        r_comment.set_property('editable', True)
-        r_comment.connect('edited', self.r_comment_edited)
         c_date = gtk.TreeViewColumn()
         c_date.set_title(_('Date'))
         c_date.pack_start(r_time, False)
         c_date.set_cell_data_func(r_time, self.r_time_cell_function)
         c_date.set_sort_column_id(1000)
+
+        r_comment = gtk.CellRendererText()
         c_comment = gtk.TreeViewColumn()
         c_comment.set_title(_('Comment'))
         c_comment.pack_start(r_comment)
         c_comment.set_cell_data_func(r_comment, self.r_comment_cell_function)
+
         view = self.view = gtk.TreeView(self.sorted_store)
         view.set_rules_hint(True)
         view.append_column(c_date)
         view.append_column(c_comment)
         view.get_selection().set_mode(gtk.SELECTION_SINGLE)
         view.get_selection().connect('changed', self.row_selected, view)
-        view.set_tooltip_text(_('Double click to edit comment'))
+
         scroll = gtk.ScrolledWindow()
         scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         scroll.set_shadow_type(gtk.SHADOW_ETCHED_IN)
@@ -93,57 +76,33 @@ class _snapshot_list(gtk.VBox):
         scroll.set_size_request(300, -1)
         
         gtk.VBox.__init__(self, False, 5)
-        self.pack_start(gtk.Label(_('snapshots')), False)
+        self.pack_start(gtk.Label(_('Existed snapshots')), False)
         self.pack_start(scroll)
-
-    def r_comment_edited(self, render, path, new_text):
-        snapshot = self.sorted_store[path][0]
-        snapshot.set_comment(new_text)
-        self.view.queue_draw()
 
     def row_selected(self, selection, treeview):
         store, iter = selection.get_selected()
         if iter == None:
             self.emit('snapshot_selected', None)
         else:
-            sn = store.get_value(iter, 0)
-            self.emit('snapshot_selected', sn)
+            s = store.get_value(iter, 0)
+            self.emit('snapshot_selected', s)
     
     def r_time_cell_function(self, column, cell, model, iter):
-        sn = model.get_value(iter, 0)
-        if sn != None:
-            assert isinstance(sn, Snapshot)
-            cell.set_property('text', time_string(sn.time()))
+        s = model.get_value(iter, 0)
+        if s:
+            cell.set_property('text', time_string(s.time()))
 
     def r_comment_cell_function(self, column, cell, model, iter):
-        sn = model.get_value(iter, 0)
-        if sn != None:
-            assert isinstance(sn, Snapshot)
-            cell.set_property('text', sn.comment())
-
-    def agree_delete(self):
-        d = gtk.MessageDialog(type=gtk.MESSAGE_QUESTION,
-                              buttons=gtk.BUTTONS_YES_NO,
-                              message_format=_('Are you sure to delete the snapshot?'))
-        d.set_default_response(gtk.RESPONSE_YES)
-        response = d.run()
-        d.destroy()
-        return response == gtk.RESPONSE_YES
-    
-    def remove_selected(self):
-        selection = self.view.get_selection()
-        model, iter = selection.get_selected()
-        if iter and self.agree_delete():
-            snapshot = model.get_value(iter, 0)
-            assert isinstance(snapshot, Snapshot)
-            self.store.remove(snapshot)
+        s = model.get_value(iter, 0)
+        if s:
+            cell.set_property('text', s.comment())
 
 class _diff_list(gtk.VBox):
     def r_status1_cell_func(self, column, cell, model, iter):
         installed = model.get_value(iter, 1)
         if installed:
             cell.set_property('text', _('was installed'))
-            cell.set_property('foreground', 'blue')
+            cell.set_property('foreground', 'green')
         else:
             cell.set_property('text', _('was removed'))
             cell.set_property('foreground', 'red')
@@ -155,7 +114,7 @@ class _diff_list(gtk.VBox):
             cell.set_property('foreground', 'red')
         else:
             cell.set_property('text', _('will be installed'))
-            cell.set_property('foreground', 'blue')
+            cell.set_property('foreground', 'green')
 
     def get_todo(self):
         return self.store2
@@ -164,7 +123,7 @@ class _diff_list(gtk.VBox):
         self.store2.clear()
 
     def __init__(self):
-        from support.multidragview import MultiDragTreeView
+        from multidragview import MultiDragTreeView
         
         self.store1 = gtk.ListStore(str, bool) #package name, currently installed?
         self.store2 = gtk.ListStore(str, bool) #package name, action
@@ -277,25 +236,21 @@ class _diff_list(gtk.VBox):
                 model.append([name, value])
 
 class SnapshotPane(gtk.VBox):
-    text = _('Snapshots')
-    
     def apply_change(self):
         to_remove = []
         to_install = []
         for r in self.diff_list.get_todo():
-            if r[1]: to_remove.append(r[0])
-            else: to_install.append(r[0])
-        try:
-            if to_install: BACKEND.install(*to_install)
-        except: print_traceback()
-        try:
-            if to_remove: BACKEND.remove(*to_remove)
-        except: print_traceback()
+            if r[1]: 
+                to_remove.append(r[0])
+            else: 
+                to_install.append(r[0])
+        if to_install: 
+            BACKEND.install(*to_install)
+        if to_remove: 
+            BACKEND.remove(*to_remove)
         self.diff_list.clear_todo()
     
-    def __init__(self, main_view):
-        BACKEND.refresh_cache()
-        
+    def __init__(self):
         gtk.VBox.__init__(self, False, 5)
 
         self.store = _snapshot_store()
@@ -306,17 +261,13 @@ class SnapshotPane(gtk.VBox):
         paned.pack1(self.snapshot_list)
         paned.pack2(self.diff_list)
         
-        b_add = image_stock_button(gtk.STOCK_ADD, _('Create a snapshot'))
+        b_add = gtk.Button(_('Record current installed software'))
         b_add.connect('clicked', lambda *w: self.store.create_snapshot_now())
-        b_delete = stock_image_only_button(gtk.STOCK_DELETE)
-        b_delete.set_tooltip_text(_('Delete selected snapshot'))
-        b_delete.connect('clicked', lambda *w: self.snapshot_list.remove_selected())
-        b_apply = image_stock_button(gtk.STOCK_APPLY, _('Apply'))
+        b_apply = gtk.Button(_('Revert back to a past snapshot'))
         b_apply.connect('clicked', lambda *w: self.apply_change())
         b_box = gtk.HBox(False, 10)
         b_box.pack_start(b_add, False)
-        b_box.pack_start(b_delete, False)
-        b_box.pack_start(b_apply, False)
+        b_box.pack_end(b_apply, False)
         
         self.pack_start(paned)
         self.pack_start(b_box, False)

@@ -3,8 +3,6 @@
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation
-#
-# $Id$
 
 import gobject
 import gtk
@@ -76,7 +74,7 @@ class MultiDragTreeView(gtk.TreeView):
                 bgc = gtk.gdk.GC(final)
                 bgc.copy(self.style.base_gc[gtk.STATE_NORMAL])
                 final.draw_rectangle(bgc, True, 1, count_y, w-2, h-2)
-                more = _("and %d more...") % (len(paths) - MAX + 1)
+                more = "and %d more..." % (len(paths) - MAX + 1)
                 layout = self.create_pango_layout(more)
                 attrs = pango.AttrList()
                 attrs.insert(pango.AttrStyle(pango.STYLE_ITALIC, 0, len(more)))
@@ -84,11 +82,8 @@ class MultiDragTreeView(gtk.TreeView):
                 layout.set_width(pango.SCALE * (w - 2))
                 lw, lh = layout.get_pixel_size()
                 final.draw_layout(gc, (w-lw)//2, count_y + (h-lh)//2, layout)
-
-
             final.draw_rectangle(gc, False, 0, 0, width-1, height-1)
             self.drag_source_set_icon(final.get_colormap(), final)
         else:
             gobject.idle_add(ctx.drag_abort, gtk.get_current_event_time())
             self.drag_source_set_icon_stock(gtk.STOCK_MISSING_IMAGE)
-

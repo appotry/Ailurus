@@ -15,6 +15,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
 from __future__ import with_statement
+import os
 
 def install_locale():
     import gettext
@@ -81,12 +82,10 @@ def time_string(time):
     return datetime.datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M')
 
 class Snapshot:
-    def __init__(self, _dict):
-        assert isinstance(_dict, dict) and \
-               'time' in _dict and \
-               'comment' in _dict and \
-               'pkgs' in _dict
-        self.dict = _dict
+    path = os.path.expanduser('~/.ailurus/')
+
+    def __init__(self, d):
+        self.dict = d
     
     def remove(self):
         os.unlink(self.path())
@@ -96,13 +95,10 @@ class Snapshot:
         dict = {}
         dict['time'] = now()
         dict['comment'] = ''
-        dict['pkgs'] = BACKEND.get_installed_pkgs_set() # set
+        dict['pkgs'] = BACKEND.get_installed_pkgs_set()
         s = Snapshot(dict)
         s.write()
         return s
-    
-    def path(self):
-        return Config.config_dir + 'snapshot_%d' % self.time()
     
     def time(self):
         return self.dict['time']
@@ -111,12 +107,12 @@ class Snapshot:
         return self.dict['comment']
 
     def set_comment(self, new_comment):
-        assert isinstance(new_comment, str)
         self.dict['comment'] = new_comment.replace('\n', ' ').strip()
         self.write()
     
     def write(self):
-        with open(self.path(), 'w') as f:
+        p = cls.path + 'snapshot_%d' % self.time()
+        with open(p, 'w') as f:
             for k,v in self.dict.items():
                 if k == 'pkgs':
                     v = ','.join(list(v))
@@ -124,22 +120,19 @@ class Snapshot:
     
     @classmethod
     def read(cls, path):
-        with open(path) as f:
-            lines = f.readlines()
-        lines = [l.strip() for l in lines]
-        lines = [l for l in lines if l]
         dict = {}
-        for line in lines:
+        for line in open(path):
+            line = line.strip()
             k, v = line.split('=', 1)
             if k == 'pkgs':
-                if v: v = set(v.split(','))
-                else: v = set()
-            elif k == 'time': v = long(v)
+                v = set(v.split(','))
+            elif k == 'time': 
+                v = long(v)
             dict[k] = v
         return Snapshot(dict)
 
     def difference(self):
-        current = BACKEND.get_installed_pkgs_set()
+        current = BACKEND.installed
         self_pkgs = self.dict['pkgs']
         new_installed = current.difference(self_pkgs)
         new_removed = self_pkgs.difference(current)
@@ -149,24 +142,22 @@ class Snapshot:
     def list_snapshots(cls):
         ret = []
         import glob
-        paths = glob.glob(Config.config_dir + 'snapshot_*')
+        paths = glob.glob(cls.path + 's_*')
         for p in paths:
             filename = os.path.basename(p)
-            assert filename.startswith('snapshot_')
-            time = long(filename[9:])
+            time = filename[2:]
             ret.append(time)
         return ret
     
     @classmethod
     def get_snapshot_at(cls, time):
-        path = Config.config_dir + 'snapshot_%s' % time
-        return cls.read(path)
+        return cls.read(cls.path + 's_%s' % time)
     
     @classmethod
     def all_snapshots(cls):
         ret = []
         import glob
-        paths = glob.glob(Config.config_dir + 'snapshot_*')
+        paths = glob.glob(cls.path + 's_*')
         for p in paths:
             ret.append(cls.read(p))
         return ret
