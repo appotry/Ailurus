@@ -20,11 +20,11 @@ def install_locale():
     import gettext
     gettext.translation('ailurus', '/usr/share/locale', fallback=True).install(names=['ngettext'])
 
-def run(command):
-    string = 'python "%s/support/term.py" %s' % (A, command)
+def run(cmd):
+    string = 'python "%s/support/term.py" %s' % (A, cmd)
 
 def run_as_root(cmd):
-    string = 'sudo python "%s/support/term.py" %s' % (A, command)
+    string = 'python "%s/support/term.py" sudo %s' % (A, cmd)
 
 def is_string_not_empty(string):
     if type(string)!=str and type(string)!=unicode: raise TypeError(string)
@@ -35,91 +35,38 @@ def is32():
     return os.uname()[-1] != 'x86_64'
 
 class RPM:
-    fresh_cache = False
-    __set1 = set() # __set1 consists of all installed software
-    __set2 = set() # __set2 = __set1 + all available software
-    @classmethod
-    def cache_changed(cls):
-        cls.fresh_cache = False
-    @classmethod
-    def refresh_cache(cls):
-        if cls.fresh_cache: return
-        cls.fresh_cache = True
-        cls.__set1 = set()
-        cls.__set2 = set()
-        import subprocess, os
-
-        path = A+'/support/dump_rpm_installed.py'
-        task = subprocess.Popen(['python', path],
-            stdout=subprocess.PIPE,
-            )
-        for line in task.stdout:
-            cls.__set1.add(line.strip())
-        task.wait()
     @classmethod
     def get_installed_pkgs_set(cls):
-        cls.refresh_cache()
-        return set(cls.__set1)
+        cls.installed = set()
+        import rpm
+        ts = rpm.TransactionSet()
+        mi = ts.dbMatch()
+        for h in mi:
+            v = h[rpm.RPMTAG_NAME]
+            cls.installed.add(v)
+        return cls.installed
 
 class APT:
-    fresh_cache = False
-    apt_get_update_is_called = False
-    apt_cache = None # instance of apt.cache.Cache
-    @classmethod
-    def cache_changed(cls):
-        cls.fresh_cache = False
-    @classmethod
-    def refresh_cache(cls):
-        if cls.fresh_cache: return
-        import apt
-        try:
-            cls.apt_cache = apt.cache.Cache()
-            assert cls.apt_cache != None # TODO: how to cope with this error?
-        except SystemError, e: # syntax error in source config
-            raise APTSourceSyntaxError(*e.args)
-        else:
-            cls.fresh_cache = True
     @classmethod
     def get_installed_pkgs_set(cls):
-        cls.refresh_cache()
-        ret = set()
+        cls.installed = set()
+        import apt
+        cls.apt_cache = apt.cache.Cache()
         for pkg in cls.apt_cache:
             if pkg.isInstalled:
-                ret.add(pkg.name)
-        return ret
-    @classmethod
-    def installed(cls, package_name):
-        cls.refresh_cache()
-        if not package_name in cls.apt_cache:
-            return False
-        p = cls.apt_cache[package_name]
-        if hasattr(p, 'is_installed'):
-            return p.is_installed # recommended attribute 
-        else:
-            return p.isInstalled # deprecated attribute
+                cls.installed.add(pkg.name)
+        return cls.installed
 
 class PACMAN:
     @classmethod
-    def cache_changed(cls):
-        cls.fresh_cache = False
-    @classmethod
-    def refresh_cache(cls):
-        if cls.fresh_cache: return
-        cls.fresh_cache = True
-        cls.__pkgs = set()
+    def get_installed_pkgs_set(cls):
+        cls.installed = set()
         import subprocess, os
-        task = subprocess.Popen(['pacman', '-Q'],
-            stdout=subprocess.PIPE,
-            )
+        task = subprocess.Popen(['pacman', '-Q'], stdout=subprocess.PIPE)
         for line in task.stdout:
             cls.__pkgs.add(line.split()[0])
         task.wait()
-    @classmethod
-    def get_installed_pkgs_set(cls):
-        cls.refresh_cache()
-        return set(cls.__pkgs)
-
-import os
+        return cls.installed
 
 def print_traceback():
     import sys, traceback
@@ -149,7 +96,6 @@ class Snapshot:
         dict = {}
         dict['time'] = now()
         dict['comment'] = ''
-        BACKEND.cache_changed() # if the system is changed outside ...
         dict['pkgs'] = BACKEND.get_installed_pkgs_set() # set
         s = Snapshot(dict)
         s.write()
