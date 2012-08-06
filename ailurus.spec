@@ -6,7 +6,7 @@
 Name:			ailurus
 Version: 10.10.5
 Release:		1%{?dist}
-Summary:		A tool for changing hidden GNOME configuration
+Summary:		A tool for recording installed software, recovering system later
 Group:			Applications/System
 License:		GPLv2+
 URL:			http://ailurus.googlecode.com/

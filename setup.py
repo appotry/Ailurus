@@ -4,15 +4,14 @@ from distutils.core import setup
 from DistUtilsExtra.command import *
 
 setup(name = 'ailurus',
-      description = 'a tool for changing hidden GNOME configuration',
+      description = 'recording installed software, recovering system later',
       version = '12.08',
       maintainer = 'Homer Xing',
       maintainer_email = 'homer.xing@gmail.com',
       url = 'http://ailurus.googlecode.com/',
       license = 'GPLv2+',
       platforms = ['linux'],
-      packages = ['ailurus', 'ailurus.common', 'ailurus.gnome', 
-                  'ailurus.fedora', 'ailurus.ubuntu', 'ailurus.support',],
+      packages = ['ailurus', 'ailurus.support',],
       package_data={'ailurus.support': [os.path.basename(f) for f in glob.glob('ailurus/support/*') if '.' not in os.path.basename(f)],},
       data_files = [
         ('share/man/man1/', ['ailurus.1']),

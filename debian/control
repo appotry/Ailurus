@@ -10,4 +10,4 @@ Homepage: http://ailurus.googlecode.com/
 Package: ailurus
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, python, python-gtk2, python-notify, python-vte, python-apt, python-gobject, procps
-Description: a tool for changing hidden GNOME configuration
+Description: a tool for recording installed software, recovering system later
