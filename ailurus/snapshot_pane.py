@@ -297,9 +297,6 @@ class SnapshotPane(gtk.VBox):
         BACKEND.refresh_cache()
         
         gtk.VBox.__init__(self, False, 5)
-        self.pack_start(long_text_label(
-            _('Ailurus helps you keep track of what software you have installed/removed. '
-              'If you often try to use new software, you do not have to worry about messing up your system now.')), False )
 
         self.store = _snapshot_store()
         self.snapshot_list = _snapshot_list(self.store)
