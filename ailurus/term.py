@@ -34,7 +34,7 @@ class W:
         sys.exit()
 
     def run(self, argv):
-        msg = ' '.join(argv) + '\n'
+        msg = ' '.join(argv) + '\r\n'
         self.terminal.feed(msg)
 
         env = os.environ.copy()
