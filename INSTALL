@@ -1,11 +1,5 @@
-  Installing
-  ------------
+For Fedora:
+  $ python setup.py install
 
-    Perform the following command as root:
-    
-      $ python setup.py install
-
-  Running
-  -----------
-
-	Run "ailurus" in a terminal.
+For Ubuntu:
+  $ python setup.py install --install-layout=deb
