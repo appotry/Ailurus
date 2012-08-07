@@ -14,30 +14,18 @@
 # along with Ailurus; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 
-from __future__ import with_statement
-import os
+import os, gettext, subprocess, pickle, glob, platform, time, datetime
+import term
 
-def install_locale():
-    import gettext
-    gettext.translation('ailurus', '/usr/share/locale', fallback=True).install(names=['ngettext'])
+gettext.translation('ailurus', '/usr/share/locale', fallback=True).install(names=['ngettext'])
 
 def run(cmd):
-    string = 'python "%s/support/term.py" %s' % (A, cmd)
-
-def run_as_root(cmd):
-    string = 'python "%s/support/term.py" sudo %s' % (A, cmd)
-
-def is_string_not_empty(string):
-    if type(string)!=str and type(string)!=unicode: raise TypeError(string)
-    if string=='': raise ValueError
-
-def is32():
-    import os
-    return os.uname()[-1] != 'x86_64'
+    s = 'python %s %s' % (term.__file__, cmd)
+    subprocess.call(s.split())
 
 class RPM:
     @classmethod
-    def get_installed_pkgs_set(cls):
+    def load(cls):
         cls.installed = set()
         import rpm
         ts = rpm.TransactionSet()
@@ -45,121 +33,77 @@ class RPM:
         for h in mi:
             v = h[rpm.RPMTAG_NAME]
             cls.installed.add(v)
-        return cls.installed
+
+    @classmethod
+    def change(cls, to_install, to_remove):
+        if to_install:
+            run('sudo yum install %s' % to_install)
+        if to_remove:
+            run('sudo yum remove %s' % to_remove)
 
 class APT:
     @classmethod
-    def get_installed_pkgs_set(cls):
+    def load(cls):
         cls.installed = set()
         import apt
         cls.apt_cache = apt.cache.Cache()
         for pkg in cls.apt_cache:
             if pkg.isInstalled:
                 cls.installed.add(pkg.name)
-        return cls.installed
 
-class PACMAN:
     @classmethod
-    def get_installed_pkgs_set(cls):
-        cls.installed = set()
-        import subprocess, os
-        task = subprocess.Popen(['pacman', '-Q'], stdout=subprocess.PIPE)
-        for line in task.stdout:
-            cls.__pkgs.add(line.split()[0])
-        task.wait()
-        return cls.installed
+    def change(cls, to_install, to_remove):
+        if to_install:
+            run('sudo apt-get install %s' % to_install)
+        if to_remove:
+            run('sudo apt-get remove %s' % to_remove)
 
-def print_traceback():
-    import sys, traceback
-    traceback.print_exc(file = sys.stderr)
+d = platform.linux_distribution()[0]
+if d in ('Debian', 'Ubuntu'):
+    backend = APT
+elif d in ('Fedora'):
+    backend = RPM
 
 def now(): # return current time in seconds
-    import time
     return long(time.time())
 
 def time_string(time):
-    import datetime
-    return datetime.datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M')
+    return datetime.datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')
 
 class Snapshot:
     path = os.path.expanduser('~/.ailurus/')
+    try: os.mkdir(path)
+    except: pass
 
     def __init__(self, d):
-        self.dict = d
+        self.d = d
+        self.filename = self.path + 's_%d' % self.d['time']
     
-    def remove(self):
-        os.unlink(self.path())
-    
+    def time(self):
+        return self.d['time']
+
     @classmethod
-    def new_snapshot(cls):
-        dict = {}
-        dict['time'] = now()
-        dict['comment'] = ''
-        dict['pkgs'] = BACKEND.get_installed_pkgs_set()
-        s = Snapshot(dict)
+    def new(cls, time, pkgs):
+        s = Snapshot({'time': time, 'pkgs': pkgs})
         s.write()
         return s
     
-    def time(self):
-        return self.dict['time']
-
-    def comment(self):
-        return self.dict['comment']
-
-    def set_comment(self, new_comment):
-        self.dict['comment'] = new_comment.replace('\n', ' ').strip()
-        self.write()
-    
     def write(self):
-        p = cls.path + 'snapshot_%d' % self.time()
-        with open(p, 'w') as f:
-            for k,v in self.dict.items():
-                if k == 'pkgs':
-                    v = ','.join(list(v))
-                print >>f, '%s=%s' % (k,v)
+        with open(self.filename, 'w') as f:
+            pickle.dump(self.d, f)
     
     @classmethod
-    def read(cls, path):
-        dict = {}
-        for line in open(path):
-            line = line.strip()
-            k, v = line.split('=', 1)
-            if k == 'pkgs':
-                v = set(v.split(','))
-            elif k == 'time': 
-                v = long(v)
-            dict[k] = v
-        return Snapshot(dict)
+    def load(cls, path):
+        with open(path) as f:
+            d = pickle.load(f)
+        return Snapshot(d)
 
-    def difference(self):
-        current = BACKEND.installed
-        self_pkgs = self.dict['pkgs']
-        new_installed = current.difference(self_pkgs)
-        new_removed = self_pkgs.difference(current)
-        return new_installed, new_removed
-    
-    @classmethod
-    def list_snapshots(cls):
-        ret = []
-        import glob
-        paths = glob.glob(cls.path + 's_*')
-        for p in paths:
-            filename = os.path.basename(p)
-            time = filename[2:]
-            ret.append(time)
-        return ret
-    
-    @classmethod
-    def get_snapshot_at(cls, time):
-        return cls.read(cls.path + 's_%s' % time)
+    def diff(self, current):
+        past = self.d['pkgs']
+        installed = current.difference(past)
+        removed = past.difference(current)
+        return installed, removed
     
     @classmethod
     def all_snapshots(cls):
-        ret = []
-        import glob
-        paths = glob.glob(cls.path + 's_*')
-        for p in paths:
-            ret.append(cls.read(p))
-        return ret
-
-install_locale()
+        return [cls.load(p) for p in glob.glob(cls.path + 's_*')]

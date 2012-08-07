@@ -1,8 +1,8 @@
-2012-8-5 Homer Hsing <homer.hsing@gmail.com>
+2012-08-05 Homer Hsing <homer.hsing@gmail.com>
 
     * Simplify Ailurus
 
-2010-11-2 MA Yue <velly.empire@gmail.com>
+2010-11-02 MA Yue <velly.empire@gmail.com>
 
     * Fix a bug in window titlebar setting
 
@@ -14,30 +14,30 @@
     * Add Brasero
     * Add OpenFetion
 
-2010-10-29 Homer Xing <homer.xing@gmail.com>
+2010-10-29 Homer Hsing <homer.hsing@gmail.com>
 
 	* Dynamic loading setting function. Faster now 
 
-2010-10-23 Homer Xing <homer.xing@gmail.com>
+2010-10-23 Homer Hsing <homer.hsing@gmail.com>
 
     * Add Fedora repository template
     * Put section name in a separate text entry
     * New feature: remove unused Linux kernel for Fedora
 
-2010-10-15 Homer Xing <homer.xing@gmail.com>
+2010-10-15 Homer Hsing <homer.hsing@gmail.com>
 
     * Append custom repository. Remove chosen repository.
     * Use radio buttons in clean up pane.
 
-2010-10-10 Homer Xing <homer.xing@gmail.com>
+2010-10-10 Homer Hsing <homer.hsing@gmail.com>
 
     * Support multiple snapshots in one day
 
-2010-10-09 Homer Xing <homer.xing@gmail.com>
+2010-10-09 Homer Hsing <homer.hsing@gmail.com>
 
     * Support Fedora repositories editing
 
-2010-10-08 Homer Xing <homer.xing@gmail.com>
+2010-10-08 Homer Hsing <homer.hsing@gmail.com>
 
 	* If user reply "yes" to "no warranty" dialog, do not display that dialog any more.
 	* No error message from info pane
@@ -46,13 +46,13 @@
 	* Use custom window titlebar layout in setting pane
 	* Directly display login icon path & "start-here" icon path
 
-2010-10-03 Homer Xing <homer.xing@gmail.com>
+2010-10-03 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix issue 1026. If source config is wrong, then exit program. Otherwise, "if not package_name in cls.apt_cache" raises exception.
     * Fix issue 1027. No message dialog after icons pack completely downloaded.
     * Fix issue 1089. Dict <-> String have wrong conversation.
 
-2010-09-23 Homer Xing <homer.xing@gmail.com>
+2010-09-23 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix bug 635716 - window_manager_name: AttributeError: 'str' object has no attribute 'property_get'
     * Fix bug 632969 - AssertionError: line.endswith('\n') @ FedoraReposSection
@@ -61,7 +61,7 @@
 	* Use new version:
 		Electric, Nscript, Pydev, Geogebra, SweetHome
 
-2010-07-28 Homer Xing <homer.xing@gmail.com>
+2010-07-28 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix bug about SweetHome3D installing path, issue 1020.
     * Fix bug about RemasterSys installing, issue 1023.
@@ -82,7 +82,7 @@
 	* Allow user to change package-icon
 	* Allow user to add/remove package to/from Favourite
 
-2010-07-27 Homer Xing <homer.xing@gmail.com>
+2010-07-27 Homer Hsing <homer.hsing@gmail.com>
 
     * Terminal window grabs focus.
     * Add KDevelop, an IDE similar to Visual Studio.
@@ -101,11 +101,11 @@
     * Add Kstars, planetarium software.
     * Add Handbrake, video transformer.
 
-2010-07-26 Homer Xing <homer.xing@gmail.com>
+2010-07-26 Homer Hsing <homer.hsing@gmail.com>
 
     * Use a proxy server if http_proxy environment variable is set
 
-2010-07-25 Homer Xing <homer.xing@gmail.com>
+2010-07-25 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve behaviour of agreement dialog.
       When the user select "I agree." and press "No", then still show dialog next time.
@@ -122,7 +122,7 @@
     * Suggest to remove ubuntu-docs package to free 270M disk space.
     * Improve code. Do not use string replacement for $version. Use VERSION inline.
 
-2010-07-23 Homer Xing <homer.xing@gmail.com>
+2010-07-23 Homer Hsing <homer.hsing@gmail.com>
 
     * Prompt to do synchronization if new icon pack is available.
     * Add Gajim and PSI, two GTalk clients. Issue 979.
@@ -131,7 +131,7 @@
 
     * Add 31 applications icons
 
-2010-07-22 Homer Xing <homer.xing@gmail.com>
+2010-07-22 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix issue 986. for row in func.result: 'NoneType' object is not iterable
     * Add wxmaxima, a Computer Algebra System.
@@ -145,7 +145,7 @@
     * Fix depencency error (if any) before installing.
     * Fix issue 692, broken link error.
 
-2010-07-21 Homer Xing <homer.xing@gmail.com>
+2010-07-21 Homer Hsing <homer.hsing@gmail.com>
 
     * Add a new tip: view the IP address outside the local network
     * Do not raise error if any software item raise error from installed()
@@ -155,7 +155,7 @@
     * Re-write InfoPane to get rid of "rows[index]" bug. Issue 689.
     * Fix trailing \n missing error. Issue 949.
 
-2010-07-20 Homer Xing <homer.xing@gmail.com>
+2010-07-20 Homer Hsing <homer.hsing@gmail.com>
 
     * Raise CannotDownloadError from download(), rather than raise CommandFailError.
     * Raise CannotDownloadError from R.download().
@@ -167,7 +167,7 @@
     * Completely remove app_obj.sane attribute.
     * Do not treat UserCancelInstallation as bug.
 
-2010-07-19 Homer Xing <homer.xing@gmail.com>
+2010-07-19 Homer Hsing <homer.hsing@gmail.com>
 
     * Also install qcad-data when install qcad.
     * Update url of sweethome
@@ -190,7 +190,7 @@
     * Add interfaces to upload skills and suggestions.
     * Delay sending message if the server can not be connected
 
-2010-07-10 Homer Xing <homer.xing@gmail.com>
+2010-07-10 Homer Hsing <homer.hsing@gmail.com>
 
     * Install repository signing key from local directory.
       Therefore we can enable repository even if the key server is offline.
@@ -201,7 +201,7 @@
     * Stat source code loading time. Display stat data by "others->stat data".
       Therefore developers can do more optimization.
 
-2010-07-09 Homer Xing <homer.xing@gmail.com>
+2010-07-09 Homer Hsing <homer.hsing@gmail.com>
 
     * Remove excessive icons.
     * Delete unused variables in "with" statements.
@@ -217,7 +217,7 @@
 
     * Fix Issue 729: load panel failed when there is no selinx on Fedora
 
-2010-06-29 Homer Xing <homer.xing@gmail.com>
+2010-06-29 Homer Hsing <homer.hsing@gmail.com>
 
     * Display lock path if failed to lock.
     * Create lock directory if necessary.
@@ -225,18 +225,18 @@
     * Do not install Realplayer. It cannot be removed by yum.
     * Fedora server response time may exceed 10 seconds. 
 
-2010-06-27 Homer Xing <homer.xing@gmail.com>
+2010-06-27 Homer Hsing <homer.hsing@gmail.com>
 
     * Try to lock apt cache before install software
 
-2010-06-23 Homer Xing <homer.xing@gmail.com>
+2010-06-23 Homer Hsing <homer.hsing@gmail.com>
 
     * Display size of swap partitions
     * Example proxy string is selectable
     * Hide bios & motherboard item if value is empty
     * Return to original software list immediately after successfully install software
 
-2010-06-19 Homer Xing <homer.xing@gmail.com>
+2010-06-19 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve clean up pane. Reduce space cost.
     * If the server has not been detected, then show nothing.
@@ -246,7 +246,7 @@
 
     * Add a lot of applications icons
 
-2010-06-18 Homer Xing <homer.xing@gmail.com>
+2010-06-18 Homer Hsing <homer.hsing@gmail.com>
 
     * Add youtube-dl, download youtube video software, in "Applications->File sharing" category
     * Add unetbootin, create bootable USB flash disk, in "Applications->Other" category
@@ -257,11 +257,11 @@
     * Improve software installation speed
     * Display detailed information if software is from Launchpad or external repository
 
-2010-06-17 Homer Xing <homer.xing@gmail.com>
+2010-06-17 Homer Hsing <homer.hsing@gmail.com>
 
     * Change login window background.
 
-2010-06-16 Homer Xing <homer.xing@gmail.com>
+2010-06-16 Homer Hsing <homer.hsing@gmail.com>
 
     * Synchronize latest application data from web
     * Automatically check new version
@@ -271,7 +271,7 @@
 
     * Add Adobe AIR
 
-2010-06-15 Homer Xing <homer.xing@gmail.com>
+2010-06-15 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve processing for AccessDeniedError
     * Show a horizontal separator on main-view
@@ -301,17 +301,17 @@
 
     * Always download latest Firefox extensions
 
-2010-06-08 Homer Xing <homer.xing@gmail.com>
+2010-06-08 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve RPM backend efficiency
 
-2010-06-07 Homer Xing <homer.xing@gmail.com>
+2010-06-07 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix bug: newline appears in menuitems of default pane
     * Pretty changelog rendering
     * Hide empty category
 
-2010-06-05 Homer Xing <homer.xing@gmail.com>
+2010-06-05 Homer Hsing <homer.hsing@gmail.com>
 
     * Add software items for Archlinux
 
@@ -320,7 +320,7 @@
     * Add support for installing software on Archlinux
     * Fix bugs in class PACMAN
 
-2010-06-04 Homer Xing <homer.xing@gmail.com>
+2010-06-04 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve architecture. Do not need to manually update AILURUS_VERSION.
     * Add dbus daemon version. Check dbus daemon status by reading version.
@@ -337,13 +337,13 @@
 
     * Add Flashblock, Ease Link and WebMail Notifier
 
-2010-06-02 Homer Xing <homer.xing@gmail.com>
+2010-06-02 Homer Hsing <homer.hsing@gmail.com>
 
     * Do not interrupt installation process if download() failed
     * Fix bug: TempOwn fails if directory does not exist
     * Handle the situation such that information function returns []
 
-2010-06-01 Homer Xing <homer.xing@gmail.com>
+2010-06-01 Homer Hsing <homer.hsing@gmail.com>
 
     * Move stardict dictionaries into computer doctor pane
     * Move gcompris voice, childsplay voice into computer doctor pane
@@ -354,7 +354,7 @@
     * Move app's __doc__ and detail to support/strings.py.
     * Fix bug: In clean_up_pane, TextView under 'Reclaim memory' button is editable. 
 
-2010-05-31 Homer Xing <homer.xing@gmail.com>
+2010-05-31 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve desktop environment detection.
 
@@ -362,7 +362,7 @@
 
     * Add the Screensaver Panel
 
-2010-05-30 Homer Xing <homer.xing@gmail.com>
+2010-05-30 Homer Hsing <homer.hsing@gmail.com>
 
     * Add a preference menuitem to choose default pane.
     * Re-enable Oracle repository.
@@ -393,7 +393,7 @@
     * Add compression strategy setting
     * Add some GEdit setting
     
-2010-05-29 Homer Xing <homer.xing@gmail.com>
+2010-05-29 Homer Hsing <homer.hsing@gmail.com>
 
     * Move OpenJDK to native_apps
     * Merge Generic_Genome_Browser
@@ -401,7 +401,7 @@
     * Put UbuntuAutoRemovableBox & UbuntuDeleteUnusedConfigBox in a row
     * Chosen means "will remove" in UbuntuDeleteUnusedConfigBox & UbuntuAutoRemovableBox
 
-2010-05-28 Homer Xing <homer.xing@gmail.com>
+2010-05-28 Homer Hsing <homer.hsing@gmail.com>
 
     * Support YLMF. YLMF users please upgrade to version 10.05.92
 
@@ -409,7 +409,7 @@
 
     * Add a lot of software for Fedora
 	
-2010-05-23 Homer Xing <homer.xing@gmail.com>
+2010-05-23 Homer Hsing <homer.hsing@gmail.com>
 
     * Immediately show/hide "quick setup" button.
     * Immediately show/hide icons at the side of software names.
@@ -422,21 +422,21 @@
 
     * Optimize the behaviour of lib.notify()
 
-2010-05-22 Homer Xing <homer.xing@gmail.com>
+2010-05-22 Homer Hsing <homer.hsing@gmail.com>
 
     * Add button, in order to support "copy to clipboard"
 
-2010-05-21 Homer Xing <homer.xing@gmail.com>
+2010-05-21 Homer Hsing <homer.hsing@gmail.com>
 
     * Clean up Nautilus thumbnails image cache.
     * Remove unused software configuration.
     * Dynamic pane loading.
 
-2010-05-20 Homer Xing <homer.xing@gmail.com>
+2010-05-20 Homer Hsing <homer.hsing@gmail.com>
 
     * Detect missing packages in ArchLinux
 
-2010-05-19 Homer Xing <homer.xing@gmail.com>
+2010-05-19 Homer Hsing <homer.hsing@gmail.com>
 
     * Add SweetHome3D
     * Add Fix_error_in_netbeans_shortcut_Ubuntu in "Computer Doctor" pane.
@@ -444,11 +444,11 @@
     * Add Fix_error_in_fontconfig_properties_Ubuntu in "Computer Doctor" pane.
     * Add Fix_error_in_49_sansserif_conf in "Computer Doctor" pane.
 
-2010-05-18 Homer Xing <homer.xing@gmail.com>
+2010-05-18 Homer Hsing <homer.hsing@gmail.com>
 
     * Add "Computer Doctor" pane.
 
-2010-05-16 Homer Xing <homer.xing@gmail.com>
+2010-05-16 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve "Clean up unused kernels". Display Linux kernel size.
     * Add "Remove auto-removable packages" feature.
@@ -465,7 +465,7 @@
     
     * Add Ailurus un-install script. It helps developers to un-install Ailurus.
     
-2010-05-14 Homer Xing <homer.xing@gmail.com>
+2010-05-14 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix bug: DisableGetty output error on Fedora 13
 
@@ -484,7 +484,7 @@
     * Add icon for package that has no icon
     * Move some relative code to loader.py 
 
-2010-05-11 Homer Xing <homer.xing@gmail.com>
+2010-05-11 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve show_text_window()
     * Improve other code via show_text_window()
@@ -505,7 +505,7 @@
 
     * Add XELatex support for Fedora
 
-2010-05-08 Homer Xing <homer.xing@gmail.com>
+2010-05-08 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix a bug: all repository give no response on Ubuntu hardy.
     * Print message if python-distutils-extra is missing.
@@ -527,7 +527,7 @@
 
     * Fix a bug: "CPU Cache information is incorrect in some kernel version"
 
-2010-05-07 Homer Xing <homer.xing@gmail.com>
+2010-05-07 Homer Hsing <homer.hsing@gmail.com>
 
     * Optimize source code architecture. Provide a generic architecture for software install/remove.
     * Improve TeXLive installation. Do not download 1.4G iso any more. Reduce disk space cost.
@@ -554,7 +554,7 @@
       Gray buttons if Ailurus cache is empty.
       Make folder statistic more precise. 
 
-2010-05-03 Homer Xing <homer.xing@gmail.com>
+2010-05-03 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve memory information. Display "GB" if memory is more than 1 GB.
 
@@ -571,7 +571,7 @@
 
     * Add web page url: Upgrade Fedora using an application called "PreUpgrade"
 
-2010-05-01 Homer Xing <homer.xing@gmail.com>
+2010-05-01 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve the efficiency of automatically updating "Information pane".
       Only refresh necessary items.
@@ -583,7 +583,7 @@
     * Merge the "Hardware information pane" and the "Linux information pane"
     * "Information pane" will now Automatically update the information
 
-2010-04-30 Homer Xing <homer.xing@gmail.com>
+2010-04-30 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix problem: Synaptic is not installed on KUbuntu.
 
@@ -597,7 +597,7 @@
     * Add lshw: display hardware information
     * Show "gnome control center" item in menu
 
-2010-04-26 Homer Xing <homer.xing@gmail.com>
+2010-04-26 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix problem: After installing Ailurus on Fedora, 
       "Ailurus quick setup" does not appear in "System Tools" entry.
@@ -620,7 +620,7 @@
 
     * Improve installation of Pidgin beta version
 
-2010-04-24 Homer Xing <homer.xing@gmail.com>
+2010-04-24 Homer Hsing <homer.hsing@gmail.com>
 
     * Do not raise exception when user cancel policy-kit in clean up pane.
     * Show a notify after clearing recent documents list.
@@ -632,7 +632,7 @@
     * Reduce border width of "Quick install" button. Increase its width.
     * Fix bug: Cannot launch Ailurus by root.
 
-2010-04-23 Homer Xing <homer.xing@gmail.com>
+2010-04-23 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix bug: APT cache is not automatically refreshed after "apt-get update".
     * Correct some typos.
@@ -645,12 +645,12 @@
     * Display OpenGL version.
     * Add third party software.
 
-2010-04-18 Homer Xing <homer.xing@gmail.com>
+2010-04-18 Homer Hsing <homer.hsing@gmail.com>
 
     * Optimize source code:
       Reduce strings in "license=" attributes.
 
-2010-04-17 Homer Xing <homer.xing@gmail.com>
+2010-04-17 Homer Hsing <homer.hsing@gmail.com>
 
     * Add "Contributing to Ailurus" dialog in "Others" menu.
     * Optimize source code: 
@@ -662,7 +662,7 @@
       Do not write "logo=" attribute any more.
       Remove "size=" attribute. 
 
-2010-04-16 Homer Xing <homer.xing@gmail.com>
+2010-04-16 Homer Hsing <homer.hsing@gmail.com>
 
     * Implement "Fastest repository" pane for Fedora.
     * Fix bug: If netbeans 6.5 is installed, then "Netbeans 6.8" item is displayed as installed. (issue 47)
@@ -686,7 +686,7 @@
     * Add game "World of Padman".
     * Fix bug: cannot speed up Firefox
 
-2010-04-11 Homer Xing <homer.xing@gmail.com>
+2010-04-11 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix bug: Error happens when there is no sub-items in a big category. 
 
@@ -700,7 +700,7 @@
     * Add a function returned a button with image
     * Cut down start up time of "clean up pane" to less than 1 second.
 
-2010-04-08 Homer Xing <homer.xing@gmail.com>
+2010-04-08 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix bug: "apt-get update" run two times before install songbird.
     * Fix bug: duplicate package names are output when songbird fails to be installed.
@@ -712,11 +712,11 @@
     * Improve Eclipse installation in Ubuntu.
     * Add PiTiVi for editing video. 
 
-2010-04-05 Homer Xing <homer.xing@gmail.com>
+2010-04-05 Homer Hsing <homer.hsing@gmail.com>
 
     * Re-write GConfImageEntry. Make source code cleaner.
 
-2010-04-04 Homer Xing <homer.xing@gmail.com>
+2010-04-04 Homer Hsing <homer.hsing@gmail.com>
 
     * Add clean rpm cache functionality.
 
@@ -741,7 +741,7 @@
     * Add error message when remove Firefox extensions
     * Fix a bug that more packages will be remove when try to remove gstreamer
 
-2010-04-03 Homer Xing <homer.xing@gmail.com>
+2010-04-03 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix problem: Program crashes when change shortcut keys.
     * Add Alfred State College repository.
@@ -758,12 +758,12 @@
     * Improve copyright text in "About" dialog
     * Move "Reclaim memory" and "Clean recent documents" to "Clean up" pane.
 
-2010-04-02 Homer Xing <homer.xing@gmail.com>
+2010-04-02 Homer Hsing <homer.hsing@gmail.com>
 
     * Merge apt-recovery.desktop and rpm-recovery.desktop
     * Do not crash when "/sbin/sysctl -p" fails.
 
-2010-04-01 Homer Xing <homer.xing@gmail.com>
+2010-04-01 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve "quick setup" functionality.
       Change button text to "Start quick setup".
@@ -785,7 +785,7 @@
     * Remove desktop background setting
     * Add 'stable version' or 'beta version' in third party repositories.
 
-2010-03-31 Homer Xing <homer.xing@gmail.com>
+2010-03-31 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix error: Ailurus cannot be started if /sbin/sysctl failed.
     * Fix error: Ailurus cannot be started if argv is "ailurus --fast". Issue 209
@@ -797,7 +797,7 @@
     * Install Eclipse from repository.
     * Improve Gnash in Fedora 
 
-2010-03-30 Homer Xing <homer.xing@gmail.com>
+2010-03-30 Homer Hsing <homer.hsing@gmail.com>
 
     * Add more information in CommandFailError
     * We can launch partial functionality now. Our time is saved.
@@ -807,7 +807,7 @@
 
     * Add an icon for "clean up" pane.
 
-2010-03-30 Homer Xing <homer.xing@gmail.com>
+2010-03-30 Homer Hsing <homer.hsing@gmail.com>
 
     * Makes text shorter in "clean up" pane.
     * Fix folder size bug in "clean up" pane.
@@ -820,7 +820,7 @@
       Add a feature to remove unused kernel.
     * Add "RPM recovery" pane.
 
-2010-03-29 Homer Xing <homer.xing@gmail.com>
+2010-03-29 Homer Hsing <homer.hsing@gmail.com>
 
     * Do not terminate program when authentication fails.
     * Do not raise exception when GNOMEArtNG thumbnails cannot be downloaded.
@@ -829,15 +829,15 @@
     * Remove Dropbox.
     * Remove repositories which provides non-open-source software only.
 
-2010-03-28 Homer Xing <homer.xing@gmail.com>
+2010-03-28 Homer Hsing <homer.hsing@gmail.com>
 
     * Check DBus status when program start up.
 
-2010-03-27 Homer Xing <homer.xing@gmail.com>
+2010-03-27 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix "Launch helper exited with error" issue.
 
-2010-03-26 Homer Xing <homer.xing@gmail.com>
+2010-03-26 Homer Hsing <homer.hsing@gmail.com>
 
     * Fix "Songbird cannot be installed" issue.
     * Improve installation process.
@@ -850,7 +850,7 @@
 
     * Show license for every software
     
-2010-03-24 Homer Xing <homer.xing@gmail.com>
+2010-03-24 Homer Hsing <homer.hsing@gmail.com>
 
     * Remove Livna repository.
     * Remove ATrpms repository.
@@ -882,7 +882,7 @@
       autotools, OpenGL-dev, boost, SDL-dev, pipe viewer, auto-apt, checkinstall, etc.
     * Improve SUN JDK 6 installation.
       
-2010-03-22 Homer Xing <homer.xing@gmail.com>
+2010-03-22 Homer Hsing <homer.hsing@gmail.com>
 
     * Disable FoxitReader.
 
@@ -896,7 +896,7 @@
     * Improve the "check for update" functionality.
       Make this functionality available in Fedora, Ubuntu and Mint.
 
-2010-03-20 Homer Xing <homer.xing@gmail.com>
+2010-03-20 Homer Hsing <homer.hsing@gmail.com>
 
     * Remove "Offline installation" functionality.
     * Fix "Quick setup is not launchable" issue.
@@ -913,7 +913,7 @@
     * Ailurus has new toolbar icon and splash now!
     * Change toolbar icon size to 40.
 
-2010-03-19 Homer Xing <homer.xing@gmail.com>
+2010-03-19 Homer Hsing <homer.hsing@gmail.com>
 
     * Merge menubar and toolbar. 
       "Study linux", "Preferences" and "Others" menu are moved into toolbar.
@@ -924,7 +924,7 @@
 
     * We can read change log in "About" dialog now.
 
-2010-03-18 Homer Xing <homer.xing@gmail.com>
+2010-03-18 Homer Hsing <homer.hsing@gmail.com>
 
     * Simplify source code.
       Take out "change language" functionality. Use native locale information instead.
@@ -942,7 +942,7 @@
     * Add functionality for changing menubar.
     * Add NScript: some useful Nautilus scripts
 
-2010-03-16 Homer Xing <homer.xing@gmail.com>
+2010-03-16 Homer Hsing <homer.hsing@gmail.com>
 
     * Adopt distutils. 
       We can use "python setup.py install" to install ailurus now.
@@ -965,7 +965,7 @@
     * Make several download URL cacheable
     * Add capability for changing name of My computer icon, Home folder icon, Network server icon and Trash icon
 
-2010-03-12 Homer Xing <homer.xing@gmail.com>
+2010-03-12 Homer Hsing <homer.hsing@gmail.com>
 
     * Use socket instead of ping for detecting server speed.
     * Improve efficiency of server speed detection.
@@ -992,11 +992,11 @@
 
     * Automatically save/load repository response time.
 
-2010-03-04 Homer Xing <homer.xing@gmail.com>
+2010-03-04 Homer Hsing <homer.hsing@gmail.com>
 
     * Fixed a locale fetching bug.
 
-2010-03-02 Homer Xing <homer.xing@gmail.com>
+2010-03-02 Homer Hsing <homer.hsing@gmail.com>
 
     * Improve mplayer-vod.
 
@@ -1006,7 +1006,7 @@
     * Add XBMC and Songbird.
     * Add Dropbox, Skype and Fcitx.
 
-2010-02-28 Homer Xing <homer.xing@gmail.com>
+2010-02-28 Homer Hsing <homer.hsing@gmail.com>
 
     * Merged translation from Launchpad
     * Added repository in Ghana & Peru
@@ -1028,7 +1028,7 @@
     * Adopted tree-view in left pane
     * Randomly display a tip after logging in GNOME
 
-2010-01-17 Homer Xing <homer.xing@gmail.com>
+2010-01-17 Homer Hsing <homer.hsing@gmail.com>
 
     * Ailurus can install some Eclipse extensions, such as Aptana, Mylyn, PDT, RadRails and Subversive.
     * Add 61 Eclipse mirrors.
@@ -1043,9 +1043,9 @@
 
 2010-01-17 CHEN Yangyang <stabyy@gmail.com>
 
-    * Implemented “Quick setup” feature with Homer Xing.
+    * Implemented “Quick setup” feature with Homer Hsing.
     
-2010-01-04 Homer Xing <homer.xing@gmail.com>
+2010-01-04 Homer Hsing <homer.hsing@gmail.com>
 
     * “Find fastest repository” functionality is improved.
       340 repositories were available. GUI was re-designed.
@@ -1056,7 +1056,7 @@
 
 2010-01-17 CHEN Yangyang <stabyy@gmail.com>
 
-    * Implemented “APT recovery” functionality with Homer Xing.
+    * Implemented “APT recovery” functionality with Homer Hsing.
 
 2010-01-17 QI Chengjie <starboy.qi@gmail.com>
 
@@ -1064,7 +1064,7 @@
     * Three educational application are added. They are Tux Paint, ChildsPlay and GCompris.
     * Two Linux skills are added.
 
-2010-01-01 Homer Xing <homer.xing@gmail.com>
+2010-01-01 Homer Hsing <homer.hsing@gmail.com>
 
     * Add 83 Linux skills. They are provided by Mr. Oneleaf and Ubuntu Chinese forum.
 
@@ -1081,7 +1081,7 @@
     * Update installation for Adobe Reader. Adobe Reader 9.2.10 can be installed from now on.
     * “Show Polish program and web-pages” is added in “Preferences” menu.
 
-2009-12-27 Homer Xing <homer.xing@gmail.com>
+2009-12-27 Homer Hsing <homer.hsing@gmail.com>
 
     * If software is not installed, then the reason is displayed in the “detail” window.
     * If the installation failed, then the user can scroll the terminal to view the whole traceback.
@@ -1102,7 +1102,7 @@
     * Python and C++ support is added to Eclipse 3.5
     * Search box in “Install/Remove” pane is improved.
 
-2009-12-22 Homer Xing <homer.xing@gmail.com>
+2009-12-22 Homer Hsing <homer.hsing@gmail.com>
 
     * POSIX manpages installation function is realized.
     * Alipay (Zhi Fu Bao) plugin is re-added.
@@ -1110,7 +1110,7 @@
     * Automatically hide a category if there is no items in this category.
     * The logo is changed.
 
-2009-12-11 Homer Xing <homer.xing@gmail.com>
+2009-12-11 Homer Hsing <homer.hsing@gmail.com>
 
     * French translation is merged into Ailurus.
     * From now on, users can press “Ctrl+C” to terminate any task which is running in “Ailurus terminal”.
@@ -1151,7 +1151,7 @@
     * A splash window appears when any pane is re-enabled.
     * A button “Disable terminal beep sound” is ready in “Ubuntu setting” pane.
 
-2009-11-28 Homer Xing <homer.xing@gmail.com>
+2009-11-28 Homer Hsing <homer.hsing@gmail.com>
 
     * Any pane can be disabled/enabled.
     * The 10.04.3 version will occupy 40M memory even if all panes are enabled. However, the 10.04.2 version occupies 80M memory.
@@ -1189,7 +1189,7 @@
 
     * Realize a tooltip images feature.
 
-2009-11-19 Homer Xing <homer.xing@gmail.com>
+2009-11-19 Homer Hsing <homer.hsing@gmail.com>
 
     The following bugs have been eliminated:
     * A bug in OpenJUMP installation
@@ -1224,25 +1224,25 @@
 
     * "Ubuntu Easy Setuper" is renamed to "Ubun-student"!
 
-2009-09-17 Homer Xing <homer.xing@gmail.com>
+2009-09-17 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate two bugs.
 
-2009-08-17 Homer Xing <homer.xing@gmail.com>
+2009-08-17 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade VirtualBox to 3.0.4
 
-2009-08-03 Homer Xing <homer.xing@gmail.com>
+2009-08-03 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade Adobe Reader to 9.1.3
 
-2009-07-23 Homer Xing <homer.xing@gmail.com>
+2009-07-23 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade Linux Kernel to 2.6.31-rc3 due to this report 
     * http://threatpost.com/blogs/researcher-uses-new-linux-kernel-flaw-bypass-selinux-other-protections
     Add Linux Kernel deb URL.
 
-2009-07-16 Homer Xing <homer.xing@gmail.com>
+2009-07-16 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate bugs:
     * Chinese font bug of the second JDK.
@@ -1251,7 +1251,7 @@
     * Icon bug of Warcraft III.
     Add JDK-6-doc URL.
 
-2009-07-02 Homer Xing <homer.xing@gmail.com>
+2009-07-02 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade
     * Eclipse -> 3.5.0
@@ -1259,21 +1259,21 @@
     * VirtualBox -> 3.0
     Eliminate stardict font bug.
 
-2009-06-30 Homer Xing <homer.xing@gmail.com>
+2009-06-30 Homer Hsing <homer.hsing@gmail.com>
 
     Rewrite WINE installation code.
     Upgrade
     * VirtualBox -> 3.0 Beta 2
     * Netbeans -> 6.7
 
-2009-06-29 Homer Xing <homer.xing@gmail.com>
+2009-06-29 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate '\' bug in `installwar3.py'.
     Use wqy-zenhei.ttc instead of simsun.ttc as the Chinese font of WINE.
     Add Jian-Xin Warcraft III patch.
     Add Warcraft III screen resolution auto detection.
 
-2009-06-27 Homer Xing <homer.xing@gmail.com>
+2009-06-27 Homer Hsing <homer.hsing@gmail.com>
 
     Rewrite KScope and FireStarter installation code.
     Do not install pagesaver.xpi .
@@ -1282,7 +1282,7 @@
     Reduce codes.
     Eliminate file owner bug of `How to compose a LaTeX file'.
 
-2009-06-19 Homer Xing <homer.xing@gmail.com>
+2009-06-19 Homer Hsing <homer.hsing@gmail.com>
 
     Add Linux Kernel 2.6.30, which enhances the capability of Intel GM945 video card.
     Upgrade:
@@ -1292,33 +1292,33 @@
     * Netbeans installation bug
     * Eclipse shortcut bug
 
-2009-06-08 Homer Xing <homer.xing@gmail.com>
+2009-06-08 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade:
     * Netbeans -> 6.7 rc1
 
-2009-06-05 Homer Xing <homer.xing@gmail.com>
+2009-06-05 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate a bunch of bugs.
 
-2009-05-31 Homer Xing <homer.xing@gmail.com>
+2009-05-31 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade:
     * VirtualBox -> 2.2.4
     * WINE -> 1.1.22
 
-2009-05-12 Homer Xing <homer.xing@gmail.com>
+2009-05-12 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate the bug that GEdit cannot recognize GB2312 coding.
     UPgrade:
     * WINE -> 1.1.21
     * DownThemAll -> 1.1.3
 
-2009-05-01 Homer Xing <homer.xing@gmail.com>
+2009-05-01 Homer Hsing <homer.hsing@gmail.com>
 
     Add Eclipse 3.4.2 + PyDev + CDT
 
-2009-04-30 Homer Xing <homer.xing@gmail.com>
+2009-04-30 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade:
     * WINE -> 1.1.20
@@ -1328,54 +1328,54 @@
     Add a bunch of download URLs .
     Rewrite installation code of VirtualBox.
 
-2009-04-24 Homer Xing <homer.xing@gmail.com>
+2009-04-24 Homer Hsing <homer.hsing@gmail.com>
     
     Upgrade:
     * WINE -> 1.1.19
     Support Ubuntu 9.04
 
-2009-04-23 Homer Xing <homer.xing@gmail.com>
+2009-04-23 Homer Hsing <homer.hsing@gmail.com>
 
     Refuse to start if the program is started by `sudo'
 
-2009-04-22 Homer Xing <homer.xing@gmail.com>
+2009-04-22 Homer Hsing <homer.hsing@gmail.com>
 
     Add OpenGL 2D to Eclipse.
 
-2009-04-17 Homer Xing <homer.xing@gmail.com>
+2009-04-17 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate several bugs.
     Make codes clean and clear.
 
-2009-04-11 Homer Xing <homer.xing@gmail.com>
+2009-04-11 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade WINE to 1.1.18
 
-2009-04-10 Homer Xing <homer.xing@gmail.com>
+2009-04-10 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade VirtualBox to 2.2.0
 
-2009-04-06 Homer Xing <homer.xing@gmail.com>
+2009-04-06 Homer Hsing <homer.hsing@gmail.com>
 
     Make codes clean and clear.
     Add documents.
     Add construction method.
 
-2009-04-05 Homer Xing <homer.xing@gmail.com>
+2009-04-05 Homer Hsing <homer.hsing@gmail.com>
 
     Reduce Windows_XP_SP3.vdi from 2,291 MB to 1,350 MB.
 
-2009-03-30 Homer Xing <homer.xing@gmail.com>
+2009-03-30 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade:
     * Matlab -> 2009a
     * WarcraftIII -> 1.23
 
-2009-03-28 Homer Xing <homer.xing@gmail.com>
+2009-03-28 Homer Hsing <homer.hsing@gmail.com>
 
     Add AdobeReader 9.1
 
-2009-03-27 Homer Xing <homer.xing@gmail.com>
+2009-03-27 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade:
     * DownThemAll -> 1.1.2
@@ -1383,62 +1383,62 @@
     * WINE -> 1.1.17
     * Netbeans -> 6.7 M2
 
-2009-03-07 Homer Xing <homer.xing@gmail.com>
+2009-03-07 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade DotA to 6.59c
 
-2009-03-06 Homer Xing <homer.xing@gmail.com>
+2009-03-06 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate CUPS do not print into pdf file bug.
 
-2009-02-28 Homer Xing <homer.xing@gmail.com>
+2009-02-28 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate Flash Chinese font bug.
     Add 7-zip.
 
-2009-02-23 Homer Xing <homer.xing@gmail.com>
+2009-02-23 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade WINE to 1.1.15
     Elimate a trivial bug.
     Change the coding of readme.txt
 
-2009-02-21 Homer Xing <homer.xing@gmail.com>
+2009-02-21 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade VirtualBox to 2.1.4
 
-2009-02-15 Homer Xing <homer.xing@gmail.com>
+2009-02-15 Homer Hsing <homer.hsing@gmail.com>
     
     Eliminate bugs:
     * Netbeans J2SE programs start up bug.
     * J2ME programs start up bug on x86_64 systems.
     Upgrade VirtualBox to 2.1.2
 
-2009-01-15 Homer Xing <homer.xing@gmail.com>
+2009-01-15 Homer Hsing <homer.hsing@gmail.com>
 
     Reduce the size of generated pdf files.
     Eliminate the bug that eps files cannot be inserted into pdf.
 
-2009-01-11 Homer Xing <homer.xing@gmail.com>
+2009-01-11 Homer Hsing <homer.hsing@gmail.com>
     
     Eliminate a trivial bug.
 
-2009-01-09 Homer Xing <homer.xing@gmail.com>
+2009-01-09 Homer Hsing <homer.hsing@gmail.com>
     
     Add auto-install function for FoxitReader.
 
-2009-01-04 Homer Xing <homer.xing@gmail.com>
+2009-01-04 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade Tencent QQ to 1.0 Beta1
 
-2009-01-02 Homer Xing <homer.xing@gmail.com>
+2009-01-02 Homer Hsing <homer.hsing@gmail.com>
 
     Add msn-pecan
 
-2009-01-01 Homer Xing <homer.xing@gmail.com>
+2009-01-01 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade DownThemAll to 1.1.0
 
-2008-12-31 Homer Xing <homer.xing@gmail.com>
+2008-12-31 Homer Hsing <homer.hsing@gmail.com>
 
     Improve Gedit, Nautilus, Terminal, Font settings.
     Improve the documents.
@@ -1447,7 +1447,7 @@
     Add partial auto installation for EIOffice & NetBeans.
     Reduce the installation of VirtualBox.
 
-2008-12-30 Homer Xing <homer.xing@gmail.com>
+2008-12-30 Homer Hsing <homer.hsing@gmail.com>
 
     Reduce WindowsXP_SP3.vdi from 6,886 MB to 2,291 MB
     Add documents.
@@ -1455,7 +1455,7 @@
     Rewrite LaTeX example file.
     Upgrade TeXLive to 2008.
 
-2008-12-29 Homer Xing <homer.xing@gmail.com>
+2008-12-29 Homer Hsing <homer.hsing@gmail.com>
 
     Do not install inkscape and its tutorial.
     Add SUN JDK instead of OpenJDK.
@@ -1469,143 +1469,143 @@
     Add Chinese Language support for FoxitReader.
     Add CrossFTP.
 
-2008-12-25 Homer Xing <homer.xing@gmail.com>
+2008-12-25 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate Matlab Chinese font bug.
 
-2008-12-22 Homer Xing <homer.xing@gmail.com>
+2008-12-22 Homer Hsing <homer.hsing@gmail.com>
 
     Rewrite Battle net document.
     Upgrade VirtualBox to 2.1.0
 
-2008-12-15 Homer Xing <homer.xing@gmail.com>
+2008-12-15 Homer Hsing <homer.hsing@gmail.com>
 
     Add Warcraft III auto installation.
     Upgrade DotA to 6.57
 
-2008-12-11 Homer Xing <homer.xing@gmail.com>
+2008-12-11 Homer Hsing <homer.hsing@gmail.com>
     
     Upgrade DownThemAll to 1.0.4
 
-2008-12-05 Homer Xing <homer.xing@gmail.com>
+2008-12-05 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade:
     * Matlab -> 2008b
     * TeXLive -> 2008
     * Adobe Reader -> 8.13
 
-2008-11-28 Homer Xing <homer.xing@gmail.com>
+2008-11-28 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade DotA to 6.56
 
-2008-11-27 Homer Xing <homer.xing@gmail.com>
+2008-11-27 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade Tencent QQ to preview 3.
 
-2008-11-24 Homer Xing <homer.xing@gmail.com>
+2008-11-24 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade VirtualBox to 2.0.6
 
-2008-11-20 Homer Xing <homer.xing@gmail.com>
+2008-11-20 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade Netbeans to 6.5
 
-2008-11-13 Homer Xing <homer.xing@gmail.com>
+2008-11-13 Homer Hsing <homer.hsing@gmail.com>
 
     Rewrite the package download scripts.
 
-2008-11-07 Homer Xing <homer.xing@gmail.com>
+2008-11-07 Homer Hsing <homer.hsing@gmail.com>
 
     Add Intel Compiler. Add document. Eliminate Intel compiler installation bug.
 
-2008-11-06 Homer Xing <homer.xing@gmail.com>
+2008-11-06 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade PageSaver to 2.0.0
 
-2008-11-02 Homer Xing <homer.xing@gmail.com>
+2008-11-02 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate ivtv library bug.
     Eliminate Firefox xpi installation bug.
     Add document for comic.
     Add kscope. Eliminate kscope start up bug.
 
-2008-11-01 Homer Xing <homer.xing@gmail.com>
+2008-11-01 Homer Hsing <homer.hsing@gmail.com>
 
     Add Flash plugin for x86_64 systems.
 
-2008-10-31 Homer Xing <homer.xing@gmail.com>
+2008-10-31 Homer Hsing <homer.hsing@gmail.com>
 
     Do a complete test in Ubuntu 8.10
     Improve the prompt message.
     Eliminate Matlab OpenJDK start up bug.
     Upgrade Ubuntu.iso to 8.10
 
-2008-10-29 Homer Xing <homer.xing@gmail.com>
+2008-10-29 Homer Hsing <homer.hsing@gmail.com>
 
     Update VirtualBox to 2.0.4
 
-2008-10-03 Homer Xing <homer.xing@gmail.com>
+2008-10-03 Homer Hsing <homer.hsing@gmail.com>
 
     Update Tencent QQ to version 0926
 
-2008-09-22 Homer Xing <homer.xing@gmail.com>
+2008-09-22 Homer Hsing <homer.hsing@gmail.com>
 
     Add documents for LaTeX.
     Eliminate file owner bug.
 
-2008-09-20 Homer Xing <homer.xing@gmail.com>
+2008-09-20 Homer Hsing <homer.hsing@gmail.com>
 
     Add Ubuntu installation document, battle net document and virtualbox document.
     Do not set DHCP, DNS server.
 
-2008-09-19 Homer Xing <homer.xing@gmail.com>
+2008-09-19 Homer Hsing <homer.hsing@gmail.com>
 
     Add VIM LaTeX forward search.
     Add Warcraft III battle net.
     Eliminate the bug that VirtualBox cannot use host USB devices.
 
-2008-09-17 Homer Xing <homer.xing@gmail.com>
+2008-09-17 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade VirtualBox to 2.0.2
 
-2008-09-09 Homer Xing <homer.xing@gmail.com>
+2008-09-09 Homer Hsing <homer.hsing@gmail.com>
     
     Rewrite VirtualBox image
 
-2008-09-08 Homer Xing <homer.xing@gmail.com>
+2008-09-08 Homer Hsing <homer.hsing@gmail.com>
     
     Upgrade VirtualBox to 2.0.0
 
-2008-09-03 Homer Xing <homer.xing@gmail.com>
+2008-09-03 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate the bug that some folders are owned by root.
 
-2008-09-01 Homer Xing <homer.xing@gmail.com>
+2008-09-01 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate the bug that libqt3-mt is not installed before VirtualBox.
 
-2008-08-31 Homer Xing <homer.xing@gmail.com>
+2008-08-31 Homer Hsing <homer.hsing@gmail.com>
 
     Eliminate several bugs.
 
-2008-08-30 Homer Xing <homer.xing@gmail.com>
+2008-08-30 Homer Hsing <homer.hsing@gmail.com>
 
     Add mplayer for comic.
 
-2008-08-28 Homer Xing <homer.xing@gmail.com>
+2008-08-28 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade PageSaver to 1.7.1
     Add Ubuntu iso on server.
     Do not install VMWare.
     Add VirtualBox.
 
-2008-08-26 Homer Xing <homer.xing@gmail.com>
+2008-08-26 Homer Hsing <homer.hsing@gmail.com>
 
     Upgrade WarcraftIII to 1.22.
     Upgrade DotA to 6.54.
 
     change log before 2008-08-26 are lost ...
     
-2007-07-01 Homer Xing <homer.xing@gmail.com>
+2007-07-01 Homer Hsing <homer.hsing@gmail.com>
 
     * Begin developing "Ubuntu Easy Setuper".

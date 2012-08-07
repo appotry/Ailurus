@@ -1,9 +1,9 @@
 Format-Specification: http://svn.debian.org/wsvn/dep/web/deps/dep5.mdwn?op=file&rev=135
 Name: Ailurus
-Maintainer: Homer Xing <homer.xing@gmail.com>
+Maintainer: Homer Hsing <homer.hsing@gmail.com>
 Source: http://code.google.com/p/ailurus
 
-Copyright: 2007-2011, Homer Xing <homer.xing@gmail.com>
+Copyright: 2007-2011, Homer Hsing <homer.hsing@gmail.com>
 License: GPL-2+
 
    This package is free software; you can redistribute it and/or 
