@@ -1,8 +1,7 @@
 include COPYING INSTALL
 include MANIFEST.in MANIFEST
 include ChangeLog
-include ailurus.1 ailurus.desktop*
+include ailurus.1 ailurus.desktop
 recursive-include data/ *
 recursive-include ailurus/ *
 recursive-include po *
-recursive-include support *

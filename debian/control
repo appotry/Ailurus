@@ -3,11 +3,11 @@ Section: utils
 Priority: optional
 Maintainer: Aron Xu <happyaron.xu@gmail.com>
 Build-Depends: cdbs, debhelper (>= 5), python (>= 2.5), python-support, python-distutils-extra
-Build-Depends-Indep: autotools-dev, gettext
+Build-Depends-Indep: gettext
 Standards-Version: 3.8.4
 Homepage: http://ailurus.googlecode.com/
 
 Package: ailurus
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, python, python-gtk2, python-notify, python-vte, python-apt, python-gobject, procps
-Description: a tool for recording installed software, recovering system later
+Depends: ${shlibs:Depends}, ${misc:Depends}, python, python-gtk2, python-vte, python-apt, python-gobject
+Description: a tool for backuping a name list of installed software

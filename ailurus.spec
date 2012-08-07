@@ -4,9 +4,9 @@
 %endif
 
 Name:			ailurus
-Version: 10.10.5
+Version: 12.08
 Release:		1%{?dist}
-Summary:		A tool for recording installed software, recovering system later
+Summary:		A tool for backuping a name list of installed software
 Group:			Applications/System
 License:		GPLv2+
 URL:			http://ailurus.googlecode.com/
@@ -15,10 +15,10 @@ BuildRequires:	python2-devel python-distutils-extra intltool
 BuildRequires:	desktop-file-utils
 BuildArch:		noarch
 # The automatic dependency consists of python and rpmlib only. It is insufficient.
-Requires:		pygtk2 notify-python vte rpm-python pygobject2
+Requires:		pygtk2 vte rpm-python pygobject2
 
 %description
-Ailurus is a tool for changing hidden GNOME configuration.
+Ailurus is a tool for backuping a name list of installed software.
 
 %prep
 %setup -q -n %{name}-%{version}
